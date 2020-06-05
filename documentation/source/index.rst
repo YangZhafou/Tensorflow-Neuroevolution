@@ -1,16 +1,22 @@
 Welcome to TFNE's documentation!
 ================================
 
-Here is some text
+**[WORK IN PROGRESS]**
+
+Tensorflow-Neuroevolution documentation. Currently a work in progress.
+
+
 
 See here for pages about the framework!
 =======================================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Framework Overview
+   :caption: TFNE Framework
 
    framework/framework-overview
+   framework/framework-architecture
+   framework/framework-version-history
 
 
 See here for pages about the algorithms!
@@ -18,9 +24,10 @@ See here for pages about the algorithms!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Algorithm Overview
+   :caption: Algorithms
 
-   algorithms/codeepneat-overview
+   algorithms/codeepneat-specification
+   algorithms/codeepneat-implementation
 
 
 Indices and tables

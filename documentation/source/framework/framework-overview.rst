@@ -1,38 +1,19 @@
 Framework Overview
-===========================
+==================
 
-This is a test commit/documentaiton for TFNE
+**[WORK IN PROGRESS]**
 
-Sphinx is a powerful documentation generator that
-has many great features for writing technical documentation including:
+This page will cover:
 
-* Generate web pages, printable PDFs, documents for e-readers (ePub),
-  and more all from the same sources
-* You can use reStructuredText or Markdown to write documentation
-* An extensive system of cross-referencing code and documentation
-* Syntax highlighted code samples
-* A vibrant ecosystem of first and third-party extensions_
-
-.. _extensions: http://www.sphinx-doc.org/en/master/ext/builtins.html#builtin-sphinx-extensions
+* General info about framework (intention, author)
+* Projects in which TFNE was used
+* etc
 
 
-Test Quick Start Video
-----------------------
 
-Test video
+Subheading 1
+------------
 
-.. raw:: html
-
-    <div style="text-align: center; margin-bottom: 2em;">
-    <iframe width="100%" height="350" src="https://www.youtube.com/embed/oJsUvBQyHBs?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-
-
-Test Quick start
-----------------
-
-Assuming you have Python already, this is a command to install sphinx:
-
-    bash $
-    pip install sphinx
+Subheading 2
+------------
 
