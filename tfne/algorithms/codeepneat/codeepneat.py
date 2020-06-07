@@ -47,6 +47,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm):
         self.modules = dict()
         self.mod_species = dict()
         self.mod_species_repr = dict()
+        self.mod_species_type = dict()
         self.mod_species_counter = 0
 
         # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm
@@ -239,6 +240,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm):
                 self.modules[module_id] = module
                 self.mod_species[chosen_species].append(module_id)
 
+                # Create a species representative if speciation method is not 'basic' and no representative chosen yet
+                if self.mod_spec_type != 'basic' and chosen_species not in self.mod_species_repr:
+                    self.mod_species_repr[chosen_species] = module_id
+
             #### Initialize Blueprint Population ####
             # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
             # None species or the 'input' species respectively) and a single output node, having a randomly assigned
@@ -259,6 +264,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm):
                 # Append newly create blueprint to blueprint container and to only initial blueprint species
                 self.blueprints[blueprint_id] = blueprint
                 self.bp_species[1].append(blueprint_id)
+
+                # Create a species representative if speciation method is not 'basic' and no representative chosen yet
+                if self.bp_spec_type != 'basic' and 1 not in self.bp_species_repr:
+                    self.bp_species_repr[1] = blueprint_id
         else:
             raise NotImplementedError("Initializing population with pre-evolved initial population not yet implemented")
 
@@ -347,7 +356,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm):
         sys.stdout.write(print_str)
         sys.stdout.flush()
 
+        # Evaluate each blueprint independent from its species by building 'genomes_per_bp' genomes and averaging out
+        # and assigning the resulting fitness
         for blueprint in self.blueprints.values():
+            # Get the species ids of all species present in the blueprint currently evaluated
             bp_module_species = blueprint.get_species()
 
             # Create container collecting the fitness of the genomes that involve that specific blueprint.
