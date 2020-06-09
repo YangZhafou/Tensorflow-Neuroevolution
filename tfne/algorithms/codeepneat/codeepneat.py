@@ -306,8 +306,45 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def evolve_population(self) -> bool:
         """"""
-        print("CLEAN EXIT")
-        exit()
+        #### Select Modules ####
+        if self.mod_spec_type == 'basic':
+            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_basic()
+        elif self.mod_spec_type == 'param-distance-fixed':
+            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_param_distance_fixed()
+        elif self.mod_spec_type == 'param-distance-dynamic':
+            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_param_distance_dynamic()
+        else:
+            raise RuntimeError(f"Module speciation type '{self.mod_spec_type}' not yet implemented")
+
+        # If population went extinct abort evolution and return True
+        if pop_extinct:
+            return True
+
+        #### Select Blueprints ####
+        if self.bp_spec_type == 'basic':
+            bp_species_offspring, pop_extinct = self._select_blueprints_basic()
+        elif self.bp_spec_type == 'gene-overlap-fixed':
+            bp_species_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
+        elif self.bp_spec_type == 'gene-overlap-dynamic':
+            bp_species_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
+        else:
+            raise RuntimeError(f"Blueprint speciation type '{self.bp_spec_type}' not yet implemented")
+
+        # If population went extinct abort evolution and return True
+        if pop_extinct:
+            return True
+
+        #### Evolve Modules ####
+        pass
+
+        #### Evolve Blueprints ####
+        pass
+
+        #### Speciate Modules ####
+        pass
+
+        #### Speciate Blueprints ####
+        pass
 
     def save_population(self, save_dir_path):
         """"""
