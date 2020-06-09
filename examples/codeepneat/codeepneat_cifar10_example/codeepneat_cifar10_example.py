@@ -51,7 +51,7 @@ def codeepneat_cifar10_example(_):
 
     # Set (not initialize) the environment and initialize the specific NE algorithm
     environment = tfne.environments.CIFAR10Environment
-    ne_algorithm = tfne.CoDeepNEAT(config, environment)
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
 
     # Initialize evolution engine and supply config as well as initialized NE elements
     engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
