@@ -4,7 +4,7 @@ from ...encodings.codeepneat import CoDeepNEATBlueprint
 from ...helper_functions import round_with_step
 
 
-class Initialization:
+class CoDeepNEATInitialization:
     def _create_initial_blueprint(self, initial_node_species) -> (int, CoDeepNEATBlueprint):
         """"""
         # Create the dict that keeps track of the way a blueprint has been mutated or created

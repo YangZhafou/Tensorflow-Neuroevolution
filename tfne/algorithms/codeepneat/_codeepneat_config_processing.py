@@ -1,7 +1,7 @@
 from ...helper_functions import read_option_from_config
 
 
-class ConfigProcessing:
+class CoDeepNEATConfigProcessing:
     def _process_config(self, config):
         """"""
         # Read and process the general config values for CoDeepNEAT

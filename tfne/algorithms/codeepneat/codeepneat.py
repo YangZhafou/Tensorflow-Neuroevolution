@@ -8,13 +8,19 @@ import tfne
 from ..base_algorithm import BaseNeuroevolutionAlgorithm
 from ...encodings.codeepneat import CoDeepNEATGenome
 
-from ._config_processing import ConfigProcessing
-from ._initialization import Initialization
+from ._codeepneat_config_processing import CoDeepNEATConfigProcessing
+from ._codeepneat_initialization import CoDeepNEATInitialization
+from ._codeepneat_selection import CoDeepNEATSelection
+from ._codeepneat_evolution import CoDeepNEATEvolution
+from ._codeepneat_speciation import CoDeepNEATSpeciation
 
 
 class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
-                 ConfigProcessing,
-                 Initialization):
+                 CoDeepNEATConfigProcessing,
+                 CoDeepNEATInitialization,
+                 CoDeepNEATSelection,
+                 CoDeepNEATEvolution,
+                 CoDeepNEATSpeciation):
     """"""
 
     def __init__(self, config, environment, initial_population_file_path=None):
@@ -308,11 +314,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         """"""
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
-            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_basic()
+            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_basic()
         elif self.mod_spec_type == 'param-distance-fixed':
-            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_param_distance_fixed()
+            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_param_distance_fixed()
         elif self.mod_spec_type == 'param-distance-dynamic':
-            mod_species_offspring, extinct_species, pop_extinct = self._select_modules_param_distance_dynamic()
+            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_param_distance_dynamic()
         else:
             raise RuntimeError(f"Module speciation type '{self.mod_spec_type}' not yet implemented")
 
