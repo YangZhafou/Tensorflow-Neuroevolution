@@ -2,7 +2,7 @@ from ...helper_functions import read_option_from_config
 
 
 class ConfigProcessing:
-    def process_config(self, config):
+    def _process_config(self, config):
         """"""
         # Read and process the general config values for CoDeepNEAT
         self.dtype = read_option_from_config(config, 'GENERAL', 'dtype')

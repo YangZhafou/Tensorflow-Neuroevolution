@@ -20,7 +20,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
     def __init__(self, config, environment, initial_population_file_path=None):
         """"""
         # Read and process the supplied config and register the optionally supplied initial population
-        self.process_config(config)
+        self._process_config(config)
         self.initial_population_file_path = initial_population_file_path
 
         # Register the supplied environment class and declare the container for the initialized evaluation environments
@@ -127,7 +127,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 initial_node_species = random.choice(available_mod_species)
 
                 # Initialize a new blueprint with minimal graph only using initial node species
-                blueprint_id, blueprint = self.create_initial_blueprint(initial_node_species)
+                blueprint_id, blueprint = self._create_initial_blueprint(initial_node_species)
 
                 # Append newly create blueprint to blueprint container and to only initial blueprint species
                 self.blueprints[blueprint_id] = blueprint
