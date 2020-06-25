@@ -1,5 +1,5 @@
-Welcome to TFNE's documentation!
-================================
+Welcome to the documentation of the Tensorflow-Neuroevolution framework!
+========================================================================
 
 **[WORK IN PROGRESS. IMPROVE THE HEADINGS, etc]**
 
@@ -7,8 +7,8 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
 
 
 
-See here for an overview of the TFNE framework
-==============================================
+[See here for an overview of the TFNE framework]
+================================================
 
 .. toctree::
    :maxdepth: 2
@@ -22,8 +22,8 @@ See here for an overview of the TFNE framework
 
 
 
-See here for the specifications of the algorithms as understood by TFNE
-=======================================================================
+[See here for the specifications of the algorithms as understood by TFNE]
+=========================================================================
 
 .. toctree::
    :maxdepth: 3
@@ -36,8 +36,8 @@ See here for the specifications of the algorithms as understood by TFNE
 
 
 
-See here for the implementation details of the NE algorithms in the TFNE framework
-==================================================================================
+[See here for the implementation details of the NE algorithms in the TFNE framework]
+====================================================================================
 
 .. toctree::
    :maxdepth: 3
