@@ -21,7 +21,7 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 master_doc = 'index'
-project = 'TFNE'
+project = 'Tensorflow-Neuroevolution'
 copyright = '2020, Paul Pauls'
 author = 'Paul Pauls'
 

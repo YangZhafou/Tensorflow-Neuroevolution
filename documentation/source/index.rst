@@ -1,38 +1,50 @@
 Welcome to TFNE's documentation!
 ================================
 
-**[WORK IN PROGRESS]**
+**[WORK IN PROGRESS. IMPROVE THE HEADINGS, etc]**
 
 Tensorflow-Neuroevolution documentation. Currently a work in progress.
 
 
 
-See here for pages about the framework!
-=======================================
+See here for an overview of the TFNE framework
+==============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: TFNE Framework
 
-   framework/framework-overview
-   framework/framework-architecture
-   framework/framework-version-history
+   framework/tfne-installation
+   framework/tfne-usage
+   framework/tfne-architecture
+   framework/tfne-visualizer
+   framework/tfne-version-history
 
 
-See here for pages about the algorithms!
-========================================
+
+See here for the specifications of the algorithms as understood by TFNE
+=======================================================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Algorithms
+   :maxdepth: 3
+   :caption: Algorithm Specifications
 
-   algorithms/codeepneat-specification
-   algorithms/codeepneat-implementation
+   algorithm_specifications/neat-specification
+   algorithm_specifications/deepneat-specification
+   algorithm_specifications/codeepneat-specification
+   algorithm_specifications/subgraphneat-deepneat-specification
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+See here for the implementation details of the NE algorithms in the TFNE framework
+==================================================================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Algorithm Implementations
+
+   algorithm_implementations/neat-implementation
+   algorithm_implementations/deepneat-implementation
+   algorithm_implementations/codeepneat-implementation
+   algorithm_implementations/subgraphneat-deepneat-implementation
+
