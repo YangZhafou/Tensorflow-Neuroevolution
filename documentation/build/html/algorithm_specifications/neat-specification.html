@@ -91,12 +91,11 @@
 <p class="caption"><span class="caption-text">Algorithm Specifications</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NEAT Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#genome-encoding">Genome Encoding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#neat-algorithm">NEAT Algorithm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subsubheading-1">SubSubHeading 1</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#neat-genome-encoding">NEAT Genome Encoding</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subsubheading-2">SubSubHeading 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evolution-of-bias-nodes">Evolution of Bias Nodes</a></li>
 </ul>
 </li>
 </ul>
@@ -178,31 +177,40 @@
   <div class="section" id="neat-specification">
 <h1>NEAT Specification<a class="headerlink" href="#neat-specification" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
-<p>This page will cover:</p>
+<p>The NeuroEvolution of Augmemting Topologies (NEAT) method was introduced in 2002 by Kenneth O. Stanley and Risto Miikkulainen and refined in 2 subsequent publications. These publications are listed below. NEATs basic idea is to start out with a minimal densely connected neural network and add a single or multiple neurons each generation, upon which each member of the population discerns itself more and more from the other members of the population. This allows the population to form clusters of similar population members, called species, that ideally each represent a different approach to the problem. This in turn then allows the algorithm to identify which approach to the problem works well and promote the further exploration of the according species.</p>
+<p>Research papers that introduced the NEAT method:</p>
 <ul class="simple">
-<li><p>Link to original paper and authors</p></li>
-<li><p>video on specification details</p></li>
-<li><p>Official specifications as per paper and author</p></li>
-<li><p>etc</p></li>
+<li><p><a class="reference external" href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf">Kenneth O. Stanley, Risto Miikkulainen - Evolving Neural Networks through Augmenting Topologies [2002]</a></p></li>
+<li><p><a class="reference external" href="http://nn.cs.utexas.edu/downloads/papers/stanley.cec02.pdf">Kenneth O. Stanley, Risto Miikkulainen - Efficient Evolution of Neural Network Topologies [2002]</a></p></li>
+<li><p><a class="reference external" href="http://nn.cs.utexas.edu/downloads/papers/stanley.phd04.pdf">Kenneth O. Stanley, Risto Miikkulainen - Efficient Evolution of Neural Networks through Complexification [2004]</a></p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This documentation solely lists the algorithm &amp; encoding specifications without concerning itself with the validity or potential of the specific choices that make up the NEAT method.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This specification outlines the NEAT algorithm &amp; encoding as understood by the TFNE project. While the TFNE project aims to stay as close as possible to the original specification, does it also aim to be a superset of the configuration options of the original specification. This specification also concretizes the algorithm specification if the original specification is too vague and no code was supplied. If you find an issue with the specification or the implementation details please contact <a class="reference external" href="mailto:tfne&#37;&#52;&#48;paulpauls&#46;de">tfne<span>&#64;</span>paulpauls<span>&#46;</span>de</a>. Thank you.</p>
+<p>This documentation outlines the NEAT algorithm &amp; encoding specifications as understood by the TFNE project. While the TFNE project aims to stay as close as possible to the original specification, does it also aim to be a superset of the configuration options of the original specification. This specification also concretizes the algorithm specification if the original specification is too vague and no code was supplied. If you find an issue with the specification or the implementation details please contact <a class="reference external" href="mailto:tfne&#37;&#52;&#48;paulpauls&#46;de">tfne<span>&#64;</span>paulpauls<span>&#46;</span>de</a>. Thank you.</p>
+</div>
+<div class="section" id="genome-encoding">
+<h2>Genome Encoding<a class="headerlink" href="#genome-encoding" title="Permalink to this headline">¶</a></h2>
+<p>All information of a NEAT genotype is saved in the individual genes that make up the NEAT genome. The NEAT genome has no global parameters and its list of individual genes can be unordered.
+There are three types of NEAT genes: A node gene, a connection gene and a bias gene. Each gene has a unique gene id.</p>
 </div>
 <div class="section" id="neat-algorithm">
 <h2>NEAT Algorithm<a class="headerlink" href="#neat-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>Ipsum Lorem</p>
 <div class="section" id="subsubheading-1">
 <h3>SubSubHeading 1<a class="headerlink" href="#subsubheading-1" title="Permalink to this headline">¶</a></h3>
-<p>foobar</p>
-</div>
-</div>
-<div class="section" id="neat-genome-encoding">
-<h2>NEAT Genome Encoding<a class="headerlink" href="#neat-genome-encoding" title="Permalink to this headline">¶</a></h2>
 <p>this is an example text</p>
+</div>
 <div class="section" id="subsubheading-2">
 <h3>SubSubHeading 2<a class="headerlink" href="#subsubheading-2" title="Permalink to this headline">¶</a></h3>
 <p>that is continued here</p>
+</div>
+<div class="section" id="evolution-of-bias-nodes">
+<h3>Evolution of Bias Nodes<a class="headerlink" href="#evolution-of-bias-nodes" title="Permalink to this headline">¶</a></h3>
+<img alt="../_images/neat_bias_evolution.png" src="../_images/neat_bias_evolution.png" />
 </div>
 </div>
 </div>

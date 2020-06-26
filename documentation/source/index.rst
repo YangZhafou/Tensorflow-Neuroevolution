@@ -1,7 +1,7 @@
 Welcome to the documentation of the Tensorflow-Neuroevolution framework!
 ========================================================================
 
-**[WORK IN PROGRESS. IMPROVE THE HEADINGS, etc]**
+**[WORK IN PROGRESS]**
 
 Tensorflow-Neuroevolution documentation. Currently a work in progress.
 
