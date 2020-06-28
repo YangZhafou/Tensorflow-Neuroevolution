@@ -4,18 +4,15 @@ from ...helper_functions import read_option_from_config
 class CoDeepNEATConfigProcessing:
     def _process_config(self, config):
         """"""
-        # Read and process the general config values for CoDeepNEAT
-        self.dtype = read_option_from_config(config, 'GENERAL', 'dtype')
-        self.bp_pop_size = read_option_from_config(config, 'GENERAL', 'bp_pop_size')
-        self.mod_pop_size = read_option_from_config(config, 'GENERAL', 'mod_pop_size')
-        self.genomes_per_bp = read_option_from_config(config, 'GENERAL', 'genomes_per_bp')
-        self.eval_epochs = read_option_from_config(config, 'GENERAL', 'eval_epochs')
-        self.eval_batch_size = read_option_from_config(config, 'GENERAL', 'eval_batch_size')
+        # Read and process the population config values for CoDeepNEAT
+        self.bp_pop_size = read_option_from_config(config, 'POPULATION', 'bp_pop_size')
+        self.mod_pop_size = read_option_from_config(config, 'POPULATION', 'mod_pop_size')
+        self.genomes_per_bp = read_option_from_config(config, 'POPULATION', 'genomes_per_bp')
 
         # Read and process the config values that concern the genome creation for CoDeepNEAT
+        self.dtype = read_option_from_config(config, 'GENOME', 'dtype')
         self.available_modules = read_option_from_config(config, 'GENOME', 'available_modules')
         self.available_optimizers = read_option_from_config(config, 'GENOME', 'available_optimizers')
-        self.preprocessing = read_option_from_config(config, 'GENOME', 'preprocessing')
         self.output_layers = read_option_from_config(config, 'GENOME', 'output_layers')
 
         # Adjust output_layers config to include the configured datatype

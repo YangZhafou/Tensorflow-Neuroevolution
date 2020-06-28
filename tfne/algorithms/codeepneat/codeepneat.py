@@ -51,7 +51,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.modules = dict()
         self.mod_species = dict()
         self.mod_species_repr = dict()
-        self.mod_species_type = dict()
         self.mod_species_counter = 0
 
         # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm

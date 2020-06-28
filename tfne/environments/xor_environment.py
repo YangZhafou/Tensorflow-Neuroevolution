@@ -9,6 +9,11 @@ from .base_environment import BaseEnvironment
 class XOREnvironment(BaseEnvironment):
     """"""
 
+    def __init__(self, config, verbosity):
+        """"""
+        pass
+
+    '''
     def __init__(self, weight_training, verbosity, epochs=None, batch_size=None):
         """"""
         # Initialize corresponding input and output mappings
@@ -90,3 +95,4 @@ class XOREnvironment(BaseEnvironment):
     def get_output_shape(self) -> (int,):
         """"""
         return (1,)
+    '''
