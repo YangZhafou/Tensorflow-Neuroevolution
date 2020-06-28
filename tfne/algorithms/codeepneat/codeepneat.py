@@ -115,9 +115,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 if self.mod_spec_type != 'basic' and chosen_species not in self.mod_species_repr:
                     self.mod_species_repr[chosen_species] = module_id
 
-            print("CORRECT EXIT")
-            exit()
-
             #### Initialize Blueprint Population ####
             # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
             # None species or the 'input' species respectively) and a single output node, having a randomly assigned
@@ -312,6 +309,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def evolve_population(self) -> bool:
         """"""
+
+        print("CORRECT EXIT")
+        exit()
+
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
             mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_basic()
