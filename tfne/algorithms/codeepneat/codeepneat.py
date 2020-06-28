@@ -25,8 +25,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def __init__(self, config, environment, initial_population_file_path=None):
         """"""
-        # Read and process the supplied config and register the optionally supplied initial population
-        self._process_config(config)
+        # Save and process the supplied config and register the optionally supplied initial population
+        self.config = config
+        self._process_config()
         self.initial_population_file_path = initial_population_file_path
 
         # Register the supplied environment class and declare the container for the initialized evaluation environments
@@ -63,10 +64,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         """"""
         # Initialize only one instance as implementation currently only supports single instance evaluation
         for _ in range(1):
-            initialized_env = self.environment(weight_training=True,
-                                               verbosity=verbosity,
-                                               epochs=self.eval_epochs,
-                                               batch_size=self.eval_batch_size)
+            initialized_env = self.environment(config=self.config, verbosity=verbosity)
             self.envs.append(initialized_env)
 
         # Determine required input and output dimensions and shape
