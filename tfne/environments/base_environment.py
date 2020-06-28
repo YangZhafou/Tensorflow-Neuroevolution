@@ -17,11 +17,6 @@ class BaseEnvironment(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of BaseEnvironment does not implement 'replay_genome()'")
 
     @abstractmethod
-    def duplicate(self) -> BaseEnvironment:
-        """"""
-        raise NotImplementedError("Subclass of BaseEnvironment does not implement 'duplicate()'")
-
-    @abstractmethod
     def get_input_shape(self) -> (int, ...):
         """"""
         raise NotImplementedError("Subclass of BaseEnvironment does not implement 'get_input_shape()'")

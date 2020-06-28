@@ -25,7 +25,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def __init__(self, config, environment, initial_population_file_path=None):
         """"""
-        # Save and process the supplied config and register the optionally supplied initial population
+        # Register and process the supplied config and register the optionally supplied initial population
         self.config = config
         self._process_config()
         self.initial_population_file_path = initial_population_file_path
@@ -52,6 +52,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.modules = dict()
         self.mod_species = dict()
         self.mod_species_repr = dict()
+        self.mod_species_type = dict()
         self.mod_species_counter = 0
 
         # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm
@@ -64,7 +65,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         """"""
         # Initialize only one instance as implementation currently only supports single instance evaluation
         for _ in range(1):
-            initialized_env = self.environment(config=self.config, verbosity=verbosity)
+            initialized_env = self.environment(weight_training=True, verbosity=verbosity, config=self.config)
             self.envs.append(initialized_env)
 
         # Determine required input and output dimensions and shape
@@ -87,8 +88,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             # Initialize module population with a basic speciation scheme, even when another speciation type is supplied
             # as config, only speciating modules according to their module type. Each module species (and therefore
             # module type) is initiated with the same amount of modules (or close to the same amount if module pop size
-            # not evenly divisble). Parameters of all initial modules chosen as per module implementation (though
-            # usually uniformly random)
+            # not evenly divisble). Parameters of all initial modules chosen as per module initialization implementation
 
             # Set initial species counter of basic speciation, initialize module species list and map each species to
             # its type
@@ -114,6 +114,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 # Create a species representative if speciation method is not 'basic' and no representative chosen yet
                 if self.mod_spec_type != 'basic' and chosen_species not in self.mod_species_repr:
                     self.mod_species_repr[chosen_species] = module_id
+
+            print("CORRECT EXIT")
+            exit()
 
             #### Initialize Blueprint Population ####
             # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
