@@ -12,7 +12,8 @@ from ._codeepneat_config_processing import CoDeepNEATConfigProcessing
 from ._codeepneat_initialization import CoDeepNEATInitialization
 from ._codeepneat_selection_mod import CoDeepNEATSelectionMOD
 from ._codeepneat_selection_bp import CoDeepNEATSelectionBP
-from ._codeepneat_evolution import CoDeepNEATEvolution
+from ._codeepneat_evolution_mod import CoDeepNEATEvolutionMOD
+from ._codeepneat_evolution_bp import CoDeepNEATEvolutionBP
 from ._codeepneat_speciation import CoDeepNEATSpeciation
 
 
@@ -21,7 +22,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                  CoDeepNEATInitialization,
                  CoDeepNEATSelectionMOD,
                  CoDeepNEATSelectionBP,
-                 CoDeepNEATEvolution,
+                 CoDeepNEATEvolutionMOD,
+                 CoDeepNEATEvolutionBP,
                  CoDeepNEATSpeciation):
     """"""
 
@@ -54,7 +56,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.modules = dict()
         self.mod_species = dict()
         self.mod_species_repr = dict()
-        self.mod_species_type = dict()
         self.mod_species_counter = 0
 
         # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm
@@ -92,30 +93,30 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             # module type) is initiated with the same amount of modules (or close to the same amount if module pop size
             # not evenly divisble). Parameters of all initial modules chosen as per module initialization implementation
 
-            # Set initial species counter of basic speciation, initialize module species list and map each species to
-            # its type
-            for mod_type in self.available_modules:
-                self.mod_species_counter += 1
-                self.mod_species[self.mod_species_counter] = list()
-                self.mod_species_type[self.mod_species_counter] = mod_type
+            # Set initial species counter of basic speciation and initialize module species list
+            self.mod_species_counter = len(self.available_modules)
+            for i in range(self.mod_species_counter):
+                spec_id = i + 1  # Start species counter with 1
+                self.mod_species[spec_id] = list()
 
             for i in range(self.mod_pop_size):
                 # Decide on for which species a new module is added (uniformly distributed)
-                chosen_species = (i % self.mod_species_counter) + 1
+                chosen_species = (i % self.mod_species_counter)
 
                 # Determine type and the associated config parameters of chosen species and initialize a module with it
-                mod_type = self.mod_species_type[chosen_species]
+                mod_type = self.available_modules[chosen_species]
                 mod_config_params = self.available_mod_params[mod_type]
                 module_id, module = self.encoding.create_initial_module(mod_type=mod_type,
                                                                         config_params=mod_config_params)
 
                 # Append newly created initial module to module container and to according species
+                chosen_species_id = chosen_species + 1
                 self.modules[module_id] = module
-                self.mod_species[chosen_species].append(module_id)
+                self.mod_species[chosen_species_id].append(module_id)
 
                 # Create a species representative if speciation method is not 'basic' and no representative chosen yet
-                if self.mod_spec_type != 'basic' and chosen_species not in self.mod_species_repr:
-                    self.mod_species_repr[chosen_species] = module_id
+                if self.mod_spec_type != 'basic' and chosen_species_id not in self.mod_species_repr:
+                    self.mod_species_repr[chosen_species_id] = module_id
 
             #### Initialize Blueprint Population ####
             # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
@@ -340,14 +341,14 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         if pop_extinct:
             return True
 
-        print("CORRECT EXIT")
-        exit()
-
         #### Evolve Modules ####
-        pass
+        new_module_ids = self.evolve_modules(mod_species_offspring, reinit_offspring)
 
         #### Evolve Blueprints ####
         pass
+
+        print("CORRECT EXIT")
+        exit()
 
         #### Speciate Modules ####
         pass
