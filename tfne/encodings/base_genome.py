@@ -16,6 +16,10 @@ class BaseGenome(object, metaclass=ABCMeta):
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement '__str__()'")
 
+    def serialize(self) -> dict:
+        """"""
+        raise NotImplementedError("Subclass of BaseGenome does not implement 'serialize()'")
+
     def save_genotype(self, save_dir_path):
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement 'save_genotype()'")

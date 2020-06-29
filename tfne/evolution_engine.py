@@ -46,7 +46,8 @@ class EvolutionEngine:
         self.backup_dir_path = os.path.abspath(backup_dir_path)
         if self.backup_dir_path[-1] != '/':
             self.backup_dir_path += '/'
-        self.backup_dir_path += datetime.now(tz=datetime.now().astimezone().tzinfo).strftime("run_%Y-%b-%d_%H-%M-%S/")
+        backup_dir_str = datetime.now(tz=datetime.now().astimezone().tzinfo).strftime("tfne_run_%Y-%b-%d_%H-%M-%S/")
+        self.backup_dir_path += backup_dir_str
         os.makedirs(self.backup_dir_path)
         print("Backing up population to directory: {}".format(self.backup_dir_path))
 
@@ -62,10 +63,8 @@ class EvolutionEngine:
             generation_counter, best_fitness = self.ne_algorithm.evaluate_population()
             self.ne_algorithm.summarize_population()
 
-            # Backup population in according gen directory
-            gen_backup_dir_path = self.backup_dir_path + f"gen_{generation_counter}/"
-            os.makedirs(gen_backup_dir_path)
-            self.ne_algorithm.save_population(save_dir_path=gen_backup_dir_path)
+            # Backup population
+            self.ne_algorithm.save_population(save_dir_path=self.backup_dir_path)
 
             # Exit training loop if maximum number of generations or maximum fitness has been reached
             if self.max_fitness is not None and best_fitness >= self.max_fitness:

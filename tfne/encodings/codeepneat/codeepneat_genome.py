@@ -57,13 +57,8 @@ class CoDeepNEATGenome(BaseGenome):
                                                              self.blueprint.optimizer_factory.get_name(),
                                                              self.origin_generation)
 
-    def save_genotype(self, save_dir_path):
+    def serialize(self) -> dict:
         """"""
-        # Set save file name as the genome id and indicate that its the genotype that is being saved
-        if save_dir_path[-1] != '/':
-            save_dir_path += '/'
-        save_file_path = save_dir_path + f"genome_{self.genome_id}_genotype.json"
-
         # Serializethe assignmend of modules to the bp species for json output
         serialized_bp_assigned_mods = dict()
         for spec, assigned_mod in self.bp_assigned_modules.items():
@@ -79,6 +74,18 @@ class CoDeepNEATGenome(BaseGenome):
             'dtype': self.dtype,
             'origin_generation': self.origin_generation
         }
+
+        return serialized_genome
+
+    def save_genotype(self, save_dir_path):
+        """"""
+        # Set save file name as the genome id and indicate that its the genotype that is being saved
+        if save_dir_path[-1] != '/':
+            save_dir_path += '/'
+        save_file_path = save_dir_path + f"genome_{self.genome_id}_genotype.json"
+
+        # Create serialization of the genome
+        serialized_genome = self.serialize()
 
         # Actually save the just serialzied genome as a json file
         with open(save_file_path, 'w') as save_file:

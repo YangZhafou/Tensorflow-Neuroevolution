@@ -1,4 +1,5 @@
 import sys
+import json
 import random
 import statistics
 
@@ -376,7 +377,39 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def save_population(self, save_dir_path):
         """"""
-        pass
+        # Set save file name as 'pop backup' and including the current generation
+        if save_dir_path[-1] != '/':
+            save_dir_path += '/'
+        save_file_path = save_dir_path + f"tfne_run_backup_gen_{self.generation_counter}.json"
+
+        # Serialize all modules for json output
+        serialized_modules = dict()
+        for mod_id, module in self.modules.items():
+            serialized_modules[mod_id] = module.serialize()
+
+        # Serialize all blueprints for json output
+        serialized_blueprints = dict()
+        for bp_id, blueprint in self.blueprints.items():
+            serialized_blueprints[bp_id] = blueprint.serialize()
+
+        # Use serialized module and blueprint population and extend it by algorithm internal evolution information
+        serialized_population = {
+            'generation_counter': self.generation_counter,
+            'modules': serialized_modules,
+            'mod_species': self.mod_species,
+            'mod_species_repr': self.mod_species_repr if self.mod_species_repr else None,
+            'mod_species_counter': self.mod_species_counter,
+            'blueprints': serialized_blueprints,
+            'bp_species': self.bp_species,
+            'bp_species_repr': self.bp_species_repr if self.bp_species_repr else None,
+            'bp_species_counter': self.bp_species_counter,
+            'best_genome': self.best_genome.serialize()
+        }
+
+        # Save the just serialzied population as a json file
+        with open(save_file_path, 'w') as save_file:
+            json.dump(serialized_population, save_file, indent=4)
+        print(f"Backed up generation {self.generation_counter} of the CoDeepNEAT run to file: {save_file_path}")
 
     def get_best_genome(self) -> CoDeepNEATGenome:
         """"""
