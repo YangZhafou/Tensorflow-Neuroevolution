@@ -2,7 +2,7 @@ import random
 
 
 class CoDeepNEATEvolutionMOD:
-    def evolve_modules(self, mod_species_offspring, reinit_offspring) -> list:
+    def evolve_modules(self, mod_species_offspring, mod_reinit_offspring) -> list:
         """"""
         # Create container for new modules that will be speciated in a later function
         new_module_ids = list()
@@ -64,7 +64,7 @@ class CoDeepNEATEvolutionMOD:
         # Initialize predetermined number of new modules as species went extinct and reinitialization is activated
         available_modules_count = len(self.available_modules)
 
-        for i in range(reinit_offspring):
+        for i in range(mod_reinit_offspring):
             # Decide on for which species a new module is added (uniformly distributed)
             chosen_species = i % available_modules_count
 
