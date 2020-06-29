@@ -210,3 +210,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
             'dropout_flag': self.dropout_flag,
             'dropout_rate': self.dropout_rate
         }
+
+    def get_module_name(self) -> str:
+        """"""
+        return 'DenseDropout'

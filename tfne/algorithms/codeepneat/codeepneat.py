@@ -362,11 +362,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
         #### Speciate Blueprints ####
         if self.bp_spec_type == 'basic':
-            self._speciate_blueprints_basic(new_module_ids)
+            self._speciate_blueprints_basic(new_blueprint_ids)
         elif self.bp_spec_type == 'gene-overlap-fixed':
-            self._speciate_blueprints_gene_overlap_fixed(new_module_ids)
+            self._speciate_blueprints_gene_overlap_fixed(new_blueprint_ids)
         elif self.bp_spec_type == 'gene-overlap-dynamic':
-            self._speciate_blueprints_gene_overlap_dynamic(new_module_ids)
+            self._speciate_blueprints_gene_overlap_dynamic(new_blueprint_ids)
         else:
             raise RuntimeError(f"Blueprint speciation type '{self.bp_spec_type}' not yet implemented")
 

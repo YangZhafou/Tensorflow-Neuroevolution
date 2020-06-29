@@ -52,6 +52,11 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'serialize()'")
 
+    @abstractmethod
+    def get_module_name(self) -> str:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_module_name()'")
+
     def set_fitness(self, fitness):
         self.fitness = fitness
 
