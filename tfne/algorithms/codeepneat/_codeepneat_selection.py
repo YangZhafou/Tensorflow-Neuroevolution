@@ -1,2 +1,0 @@
-class CoDeepNEATSelection:
-    pass

@@ -10,7 +10,8 @@ from ...encodings.codeepneat import CoDeepNEATGenome
 
 from ._codeepneat_config_processing import CoDeepNEATConfigProcessing
 from ._codeepneat_initialization import CoDeepNEATInitialization
-from ._codeepneat_selection import CoDeepNEATSelection
+from ._codeepneat_selection_mod import CoDeepNEATSelectionMOD
+from ._codeepneat_selection_bp import CoDeepNEATSelectionBP
 from ._codeepneat_evolution import CoDeepNEATEvolution
 from ._codeepneat_speciation import CoDeepNEATSpeciation
 
@@ -18,7 +19,8 @@ from ._codeepneat_speciation import CoDeepNEATSpeciation
 class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                  CoDeepNEATConfigProcessing,
                  CoDeepNEATInitialization,
-                 CoDeepNEATSelection,
+                 CoDeepNEATSelectionMOD,
+                 CoDeepNEATSelectionBP,
                  CoDeepNEATEvolution,
                  CoDeepNEATSpeciation):
     """"""
@@ -310,16 +312,13 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
     def evolve_population(self) -> bool:
         """"""
 
-        print("CORRECT EXIT")
-        exit()
-
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
-            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_basic()
+            mod_species_offspring, reinit_offspring, pop_extinct = self._select_modules_basic()
         elif self.mod_spec_type == 'param-distance-fixed':
-            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_param_distance_fixed()
+            mod_species_offspring, reinit_offspring, pop_extinct = self._select_modules_param_distance_fixed()
         elif self.mod_spec_type == 'param-distance-dynamic':
-            mod_species_offspring, extinct_mod_species, pop_extinct = self._select_modules_param_distance_dynamic()
+            mod_species_offspring, reinit_offspring, pop_extinct = self._select_modules_param_distance_dynamic()
         else:
             raise RuntimeError(f"Module speciation type '{self.mod_spec_type}' not yet implemented")
 
@@ -329,17 +328,20 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
         #### Select Blueprints ####
         if self.bp_spec_type == 'basic':
-            bp_species_offspring, pop_extinct = self._select_blueprints_basic()
+            bp_species_offspring, reinit_offspring, pop_extinct = self._select_blueprints_basic()
         elif self.bp_spec_type == 'gene-overlap-fixed':
-            bp_species_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
+            bp_species_offspring, reinit_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
         elif self.bp_spec_type == 'gene-overlap-dynamic':
-            bp_species_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
+            bp_species_offspring, reinit_offspring, pop_extinct = self._select_blueprints_gene_overlap_dynamic()
         else:
             raise RuntimeError(f"Blueprint speciation type '{self.bp_spec_type}' not yet implemented")
 
         # If population went extinct abort evolution and return True
         if pop_extinct:
             return True
+
+        print("CORRECT EXIT")
+        exit()
 
         #### Evolve Modules ####
         pass

@@ -94,6 +94,7 @@ class CoDeepNEATConfigProcessing:
         self.bp_spec_type = read_option_from_config(self.config, 'BP_SPECIATION', 'bp_spec_type')
         if self.bp_spec_type == 'basic':
             self.bp_spec_bp_elitism = read_option_from_config(self.config, 'BP_SPECIATION', 'bp_spec_bp_elitism')
+            self.bp_spec_min_offspring = read_option_from_config(self.config, 'BP_SPECIATION', 'bp_spec_min_offspring')
             self.bp_spec_reprod_thres = read_option_from_config(self.config, 'BP_SPECIATION', 'bp_spec_reprod_thres')
         elif self.bp_spec_type == 'gene-overlap-fixed':
             self.bp_spec_distance = read_option_from_config(self.config, 'BP_SPECIATION', 'bp_spec_distance')
