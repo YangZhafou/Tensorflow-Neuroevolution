@@ -14,7 +14,8 @@ from ._codeepneat_selection_mod import CoDeepNEATSelectionMOD
 from ._codeepneat_selection_bp import CoDeepNEATSelectionBP
 from ._codeepneat_evolution_mod import CoDeepNEATEvolutionMOD
 from ._codeepneat_evolution_bp import CoDeepNEATEvolutionBP
-from ._codeepneat_speciation import CoDeepNEATSpeciation
+from ._codeepneat_speciation_mod import CoDeepNEATSpeciationMOD
+from ._codeepneat_speciation_bp import CoDeepNEATSpeciationBP
 
 
 class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
@@ -24,7 +25,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                  CoDeepNEATSelectionBP,
                  CoDeepNEATEvolutionMOD,
                  CoDeepNEATEvolutionBP,
-                 CoDeepNEATSpeciation):
+                 CoDeepNEATSpeciationMOD,
+                 CoDeepNEATSpeciationBP):
     """"""
 
     def __init__(self, config, environment, initial_population_file_path=None):
@@ -342,13 +344,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             return True
 
         #### Evolve Modules ####
-        new_module_ids = self.evolve_modules(mod_species_offspring, mod_reinit_offspring)
+        new_module_ids = self._evolve_modules(mod_species_offspring, mod_reinit_offspring)
 
         #### Evolve Blueprints ####
-        new_blueprint_ids = self.evolve_blueprints(bp_species_offspring, bp_reinit_offspring)
-
-        print("CORRECT EXIT")
-        exit()
+        new_blueprint_ids = self._evolve_blueprints(bp_species_offspring, bp_reinit_offspring)
 
         #### Speciate Modules ####
         if self.mod_spec_type == 'basic':
@@ -369,6 +368,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             self._speciate_blueprints_gene_overlap_dynamic(new_blueprint_ids)
         else:
             raise RuntimeError(f"Blueprint speciation type '{self.bp_spec_type}' not yet implemented")
+
+        #### Return ####
+        # Adjust generation counter and return False, signalling that the population has not gone extinct
+        self.generation_counter += 1
+        return False
 
     def save_population(self, save_dir_path):
         """"""

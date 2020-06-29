@@ -6,7 +6,7 @@ from ...encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode
 
 
 class CoDeepNEATEvolutionBP:
-    def evolve_blueprints(self, bp_species_offspring, bp_reinit_offspring) -> list:
+    def _evolve_blueprints(self, bp_species_offspring, bp_reinit_offspring) -> list:
         """"""
         # Create container for new blueprints that will be speciated in a later function
         new_blueprint_ids = list()

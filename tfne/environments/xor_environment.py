@@ -67,7 +67,7 @@ class XOREnvironment(BaseEnvironment):
         '''
         # During species dev, randomize genome training results
         import random
-        evaluated_fitness = random.random()
+        evaluated_fitness = random.random() * 100
 
         return round(evaluated_fitness, 4)
 

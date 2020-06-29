@@ -2,7 +2,7 @@ import random
 
 
 class CoDeepNEATEvolutionMOD:
-    def evolve_modules(self, mod_species_offspring, mod_reinit_offspring) -> list:
+    def _evolve_modules(self, mod_species_offspring, mod_reinit_offspring) -> list:
         """"""
         # Create container for new modules that will be speciated in a later function
         new_module_ids = list()
