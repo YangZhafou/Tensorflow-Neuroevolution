@@ -65,9 +65,6 @@ class CoDeepNEATSelectionMOD:
     def _select_modules_param_distance_fixed(self) -> ({int: int}, int, bool):
         """"""
         #### Determination of Species Extinction ####
-        # Initialize counter of species elements that should be reinitialized upon species extinction
-        reinit_offspring = 0
-
         # Determine average fitness of each current species and append it to the species avg fitness history
         for spec_id, spec_mod_ids in self.mod_species.items():
             spec_avg_fitness = statistics.mean([self.modules[mod_id].get_fitness() for mod_id in spec_mod_ids])
@@ -111,23 +108,117 @@ class CoDeepNEATSelectionMOD:
                 spec_ids_to_remove.append(spec_id)
                 species_type_frequency[species_mod_type] -= 1
 
+        #### Offspring Size Calculation ####
+        # Distinguish offspring size calculation depending on if extinct offspring will be reinitialized or not
+        # (see config option 'mod_spec_reinit_extinct')
+        reinit_offspring = 0
+        if self.mod_spec_reinit_extinct and len(spec_ids_to_remove) > 0:
+            # Determine total average fitness of all species, including the species going extinct
+            total_avg_fitness = 0
+            for fitness_history in self.mod_species_fitness_history.values():
+                total_avg_fitness += fitness_history[-1]
+
+            # Determine the assigned offspring size of each species. The intended species size is the species share of
+            # the total avg fitness, while the species offspring is this size minus the elite modules that will be
+            # preserved. Population space that is intended for species that will be removed is instead allocated to the
+            # reinit_offspring counter, which dictates how many new modules will be reinitialized during actual module
+            # evolution
+            current_total_size = 0
+            mod_species_offspring = dict()
+            for spec_id, spec_fitness_history in self.mod_species_fitness_history.items():
+                # The intended future size of the species is its share of the total avg fitness
+                spec_intend_size = math.floor((spec_fitness_history[-1] / total_avg_fitness) * self.mod_pop_size)
+
+                if spec_id in spec_ids_to_remove:
+                    # Allocate species size that is about to go extinct to reinit_offspring counter
+                    reinit_offspring += spec_intend_size
+                    current_total_size += spec_intend_size
+                else:
+                    # Determine offspring size and correct to minimal offspring size if needed
+                    offspring_size = spec_intend_size - self.mod_spec_mod_elitism
+                    if offspring_size <= self.mod_spec_min_offspring:
+                        offspring_size = self.mod_spec_min_offspring
+
+                    mod_species_offspring[spec_id] = offspring_size
+                    current_total_size += (offspring_size + self.mod_spec_mod_elitism)
+
+            # If during math flooring operations and minimal offspring calculations the total size of the future species
+            # deviates from the intended module population size, adjust the offspring by either removing/adding
+            # offspring from/to the species or reinit_offspring size counter with the most/least members.
+            while current_total_size < self.mod_pop_size:
+                min_spec_id = min(mod_species_offspring.keys(), key=mod_species_offspring.get)
+                if mod_species_offspring[min_spec_id] < reinit_offspring:
+                    mod_species_offspring[min_spec_id] += 1
+                    current_total_size += 1
+                else:
+                    reinit_offspring += 1
+                    current_total_size += 1
+            while current_total_size > self.mod_pop_size:
+                max_spec_id = max(mod_species_offspring.keys(), key=mod_species_offspring.get)
+                if mod_species_offspring[max_spec_id] > reinit_offspring:
+                    mod_species_offspring[max_spec_id] -= 1
+                    current_total_size -= 1
+                else:
+                    reinit_offspring -= 1
+                    current_total_size -= 1
+
+        else:  # No reinitialization of extinct species or no species going extinct
+            # Determine total average fitness of all species, excluding the species going extinct
+            total_avg_fitness = 0
+            for spec_id, fitness_history in self.mod_species_fitness_history.items():
+                if spec_id not in spec_ids_to_remove:
+                    total_avg_fitness += fitness_history[-1]
+
+            # Calculate the amount of assigned offspring for each species for evolution. This is based on the species
+            # share of the total avg fitness excluding the extinct species. The perservering species that won't go
+            # extinct will occupy the population space previously held by those species going extinct.
+            mod_species_offspring = dict()
+            current_total_size = 0
+            for spec_id, spec_fitness_history in self.mod_species_fitness_history.items():
+                # Disregard offspring calculation for species going extinct. Their fitness is not included in the total
+                if spec_id in spec_ids_to_remove:
+                    continue
+
+                # Determine offspring size and correct to minimal offspring size if needed
+                intend_spec_size = math.floor((spec_fitness_history[-1] / total_avg_fitness) * self.mod_pop_size)
+                offspring_size = intend_spec_size - self.mod_spec_mod_elitism
+                if offspring_size <= self.mod_spec_min_offspring:
+                    offspring_size = self.mod_spec_min_offspring
+
+                mod_species_offspring[spec_id] = offspring_size
+                current_total_size += (offspring_size + self.mod_spec_mod_elitism)
+
+            # If during math flooring operations and minimal offspring calculations the total size of the future species
+            # deviates from the intended module size, adjust the offspring by removing offspring from the species with
+            # the most assigned offspring or adding offspring by adding offspring to the species with least assigned
+            # offspring
+            while current_total_size < self.mod_pop_size:
+                min_spec_id = min(mod_species_offspring.keys(), key=mod_species_offspring.get)
+                mod_species_offspring[min_spec_id] += 1
+                current_total_size += 1
+            while current_total_size > self.mod_pop_size:
+                max_spec_id = max(mod_species_offspring.keys(), key=mod_species_offspring.get)
+                mod_species_offspring[max_spec_id] -= 1
+                current_total_size -= 1
+
+        #### Module Selection ####
+        print("FORCED EXIT")
+        exit()
+
+        '''
         # Remove just determined species and species elements. If reinit_extinct flag activated, count how many species
         # memebers have gone extinct as this amount will be reinitialized later
         for spec_id in spec_ids_to_remove:
-            if self.reinit_extinct:
+            if self.mod_spec_reinit_extinct:
                 reinit_offspring += len(self.mod_species[spec_id])
             for mod_id in self.mod_species[spec_id]:
                 del self.modules[mod_id]
             del self.mod_species[spec_id]
             del self.mod_species_repr[spec_id]
             del self.mod_species_fitness_history[spec_id]
+        '''
 
-        # If all species have been removed then abort and return positive population extinction flag
-        if len(self.mod_species) == 0:
-            return None, None, True
-
-        print("FORCED EXIT")
-        exit()
+        return mod_species_offspring, reinit_offspring, pop_extinction
 
     def _select_modules_param_distance_dynamic(self) -> ({int: int}, int, bool):
         """"""
