@@ -65,6 +65,9 @@ class CoDeepNEATSelectionMOD:
     def _select_modules_param_distance_fixed(self) -> ({int: int}, int, bool):
         """"""
         #### Determination of Species Extinction ####
+        # Initialize counter of species elements that should be reinitialized upon species extinction
+        reinit_offspring = 0
+
         # Determine average fitness of each current species and append it to the species avg fitness history
         for spec_id, spec_mod_ids in self.mod_species.items():
             spec_avg_fitness = statistics.mean([self.modules[mod_id].get_fitness() for mod_id in spec_mod_ids])
@@ -73,24 +76,54 @@ class CoDeepNEATSelectionMOD:
             else:
                 self.mod_species_fitness_history[spec_id] = [spec_avg_fitness]
 
-        # Determine if species has existed long enough to be considered for extinction. Then determine if it stagnated
-        # for the recent config specified time period (meaning that it had not produced a better fitness in the recent
-        # time period than before)
+        # Determine if species can be considered for extinction. Critera: Species existed long enough; species can be
+        # removed according to species elitism; species is not the last of its module type. Then determine if species is
+        # stagnating for the recent config specified time period (meaning that it had not improved at any time in the
+        # recent time period). Preprocess current species by listing the frequency of module types as to not remove the
+        # last species of a unique module type
+        species_type_frequency = dict()
+        for mod_id in self.mod_species_repr.values():
+            species_mod_type = self.modules[mod_id].get_type()
+            if species_mod_type in species_type_frequency:
+                species_type_frequency[species_mod_type] += 1
+            else:
+                species_type_frequency[species_mod_type] = 1
+
         spec_ids_to_remove = list()
         for spec_id in self.mod_species:
-            if len(self.mod_species_fitness_history[spec_id]) >= self.mod_spec_max_stagnation:
-                distant_avg_fitness = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation]
-                recent_fitness_history = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation:]
-                if distant_avg_fitness >= max(recent_fitness_history):
-                    spec_ids_to_remove.append(spec_id)
+            # Don't consider species for extinction if it hasn't existed long enough
+            if len(self.mod_species_fitness_history[spec_id]) < self.mod_spec_max_stagnation:
+                continue
+            # Don't consider species for extinction if species elitism doesn't allow removal of further species
+            if len(self.mod_species) <= self.mod_spec_species_elitism:
+                continue
+            # Don't consider species for extinction if it is the last of its module type
+            species_mod_type = self.modules[self.mod_species_repr[spec_id]].get_type()
+            if species_type_frequency[species_mod_type] == 1:
+                continue
 
-        # Remove just determined species and species elements
+            # Consider species for extinction and determine if it has been stagnating
+            distant_avg_fitness = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation]
+            recent_fitness_history = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation:]
+            if distant_avg_fitness >= max(recent_fitness_history):
+                # Species is stagnating. Flag species to be removed later and decrement species type frequency
+                spec_ids_to_remove.append(spec_id)
+                species_type_frequency[species_mod_type] -= 1
+
+        # Remove just determined species and species elements. If reinit_extinct flag activated, count how many species
+        # memebers have gone extinct as this amount will be reinitialized later
         for spec_id in spec_ids_to_remove:
+            if self.reinit_extinct:
+                reinit_offspring += len(self.mod_species[spec_id])
             for mod_id in self.mod_species[spec_id]:
                 del self.modules[mod_id]
             del self.mod_species[spec_id]
             del self.mod_species_repr[spec_id]
             del self.mod_species_fitness_history[spec_id]
+
+        # If all species have been removed then abort and return positive population extinction flag
+        if len(self.mod_species) == 0:
+            return None, None, True
 
         print("FORCED EXIT")
         exit()
