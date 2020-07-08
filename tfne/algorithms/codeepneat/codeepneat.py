@@ -59,12 +59,14 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.modules = dict()
         self.mod_species = dict()
         self.mod_species_repr = dict()
+        self.mod_species_fitness_history = dict()
         self.mod_species_counter = 0
 
         # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm
         self.blueprints = dict()
         self.bp_species = dict()
         self.bp_species_repr = dict()
+        self.bp_species_fitness_history = dict()
         self.bp_species_counter = 0
 
     def initialize_environments(self, num_cpus, num_gpus, verbosity):
@@ -398,10 +400,12 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             'modules': serialized_modules,
             'mod_species': self.mod_species,
             'mod_species_repr': self.mod_species_repr if self.mod_species_repr else None,
+            'mod_species_fitness_history': self.mod_species_fitness_history,
             'mod_species_counter': self.mod_species_counter,
             'blueprints': serialized_blueprints,
             'bp_species': self.bp_species,
             'bp_species_repr': self.bp_species_repr if self.bp_species_repr else None,
+            'bp_species_fitness_history': self.bp_species_fitness_history,
             'bp_species_counter': self.bp_species_counter,
             'best_genome': self.best_genome.serialize()
         }
