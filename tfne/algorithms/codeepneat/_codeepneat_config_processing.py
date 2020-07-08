@@ -32,7 +32,9 @@ class CoDeepNEATConfigProcessing:
                                                                  'MODULE_SPECIATION',
                                                                  'mod_spec_reprod_thres')
         elif self.mod_spec_type == 'param-distance-fixed':
-            self.mod_spec_distance = read_option_from_config(self.config, 'MODULE_SPECIATION', 'mod_spec_distance')
+            self.mod_spec_distance = read_option_from_config(self.config,
+                                                             'MODULE_SPECIATION',
+                                                             'mod_spec_distance')
             self.mod_spec_mod_elitism = read_option_from_config(self.config,
                                                                 'MODULE_SPECIATION',
                                                                 'mod_spec_mod_elitism')
