@@ -83,7 +83,7 @@ class CoDeepNEATSelectionMOD:
         # last species of a unique module type
         spec_type_frequency = dict()
         for mod_id in self.mod_species_repr.values():
-            spec_mod_type = self.modules[mod_id].get_type()
+            spec_mod_type = self.modules[mod_id].get_module_type()
             if spec_mod_type in spec_type_frequency:
                 spec_type_frequency[spec_mod_type] += 1
             else:
@@ -99,7 +99,7 @@ class CoDeepNEATSelectionMOD:
                 continue
             # Don't consider species for extinction if it is the last of its module type and species elitism is set to
             # a value higher than all possible module types.
-            spec_mod_type = self.modules[self.mod_species_repr[spec_id]].get_type()
+            spec_mod_type = self.modules[self.mod_species_repr[spec_id]].get_module_type()
             if spec_type_frequency[spec_mod_type] == 1 and self.mod_spec_species_elitism >= len(self.available_modules):
                 continue
 
