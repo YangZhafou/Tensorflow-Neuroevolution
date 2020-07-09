@@ -210,6 +210,11 @@ class CoDeepNEATSelectionBP:
                 removal_threshold_index = self.bp_spec_bp_elitism
             spec_bp_ids_to_remove = spec_bp_ids_sorted[removal_threshold_index:]
 
+            # Exclude the species representative from removal, in case the species representative does not clear the
+            # removal threshold of the species
+            spec_bp_ids_to_remove = [bp_id for bp_id in spec_bp_ids_to_remove
+                                     if bp_id not in self.bp_species_repr[spec_id]]
+
             # Delete low performing blueprints that will not be considered for reproduction from species assignment
             for bp_id_to_remove in spec_bp_ids_to_remove:
                 self.bp_species[spec_id].remove(bp_id_to_remove)
