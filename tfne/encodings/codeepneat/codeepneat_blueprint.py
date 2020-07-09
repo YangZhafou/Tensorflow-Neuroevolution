@@ -147,10 +147,15 @@ class CoDeepNEATBlueprint:
     def set_fitness(self, fitness):
         self.fitness = fitness
 
-    def get_distance(self, other_bp) -> float:
+    def get_gene_overlap(self, other_bp) -> float:
         """"""
-        import random
-        return random.random()
+        # Calculate the gene overlap between 2 blueprints as the average of both blueprints node ids shared by the other
+        # blueprint
+        bp_node_ids = set(self.blueprint_graph.keys())
+        other_bp_node_ids = set(other_bp.blueprint_graph.keys())
+        node_id_intersection = bp_node_ids.intersection(other_bp_node_ids)
+
+        return (len(node_id_intersection) / len(bp_node_ids) + len(node_id_intersection) / len(other_bp_node_ids)) / 2.0
 
     def get_blueprint_graph(self) -> {int: object}:
         """"""

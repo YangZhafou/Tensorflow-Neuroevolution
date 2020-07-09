@@ -58,7 +58,7 @@ class CoDeepNEATSpeciationBP:
             blueprint_spec_distances = dict()
             for spec_id, spec_bp_repr_id in self.bp_species_repr.items():
                 spec_bp_repr = self.blueprints[self.bp_species_repr[spec_id]]
-                blueprint_spec_distances[spec_id] = spec_bp_repr.get_distance(self.blueprints[bp_id])
+                blueprint_spec_distances[spec_id] = spec_bp_repr.get_gene_overlap(self.blueprints[bp_id])
 
             # Determine if of all the distances to other species on distance falls below the config specified
             # 'bp_spec_distance', signaling that the blueprint should be assigned to this species
@@ -102,7 +102,7 @@ class CoDeepNEATSpeciationBP:
                     if bp_id == spec_bp_repr_id:
                         break
                     blueprint = self.blueprints[bp_id]
-                    distance_to_other_spec_repr = [blueprint.get_distance(self.blueprints[other_bp_id])
+                    distance_to_other_spec_repr = [blueprint.get_gene_overlap(self.blueprints[other_bp_id])
                                                    for other_bp_id in other_spec_bp_repr_ids]
                     if all(distance >= self.bp_spec_distance for distance in distance_to_other_spec_repr):
                         self.bp_species_repr[spec_id] = bp_id
@@ -127,7 +127,7 @@ class CoDeepNEATSpeciationBP:
                 # Determine distance of species repr to all other species repr
                 other_spec_bp_repr_ids = [bp_id for bp_id in self.bp_species_repr.values()
                                           if bp_id != spec_bp_repr_id]
-                sorted_distances_to_other_specs = sorted([bp_repr.get_distance(self.blueprints[other_bp_id])
+                sorted_distances_to_other_specs = sorted([bp_repr.get_gene_overlap(self.blueprints[other_bp_id])
                                                           for other_bp_id in other_spec_bp_repr_ids])
                 # Set optimal distance of current species repr such that it conforms to 'bp_spec_species_count'
                 optimal_spec_distance = sorted_distances_to_other_specs[-self.bp_spec_species_count - 1]
