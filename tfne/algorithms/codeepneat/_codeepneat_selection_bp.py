@@ -61,3 +61,14 @@ class CoDeepNEATSelectionBP:
         reinit_offspring = 0
         pop_extinction = False
         return bp_species_offspring, reinit_offspring, pop_extinction
+
+
+    def _select_blueprints_gene_overlap_fixed(self) -> ({int: int}, int, bool):
+        """"""
+        print("FORCED EXIT")
+        exit()
+
+    def _select_blueprints_gene_overlap_dynamic(self) -> ({int: int}, int, bool):
+        """"""
+        # selection process identical for both variants of blueprint speciation
+        return self._select_blueprints_gene_overlap_fixed()

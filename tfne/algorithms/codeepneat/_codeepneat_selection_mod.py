@@ -202,22 +202,34 @@ class CoDeepNEATSelectionMOD:
                 current_total_size -= 1
 
         #### Module Selection ####
-        print("FORCED EXIT")
-        exit()
-
-        '''
-        # Remove just determined species and species elements. If reinit_extinct flag activated, count how many species
-        # memebers have gone extinct as this amount will be reinitialized later
+        # Remove the species and their elements that were determined to go extinct.
         for spec_id in spec_ids_to_remove:
-            if self.mod_spec_reinit_extinct:
-                reinit_offspring += len(self.mod_species[spec_id])
             for mod_id in self.mod_species[spec_id]:
                 del self.modules[mod_id]
             del self.mod_species[spec_id]
             del self.mod_species_repr[spec_id]
             del self.mod_species_fitness_history[spec_id]
-        '''
 
+        # Remove the elements from each surviving species that do not pass the reproduction threshold
+        for spec_id, spec_mod_ids in self.mod_species.items():
+            # Sort module ids in species according to their fitness
+            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.modules[x].get_fitness(), reverse=True)
+
+            # Determine module ids to remove in order to prevent to use them for reproduction
+            removal_threshold_index = int(len(spec_mod_ids) * (1 - self.mod_spec_reprod_thres))
+            # Correct removal index threshold if reproduction threshold so high that elitism modules would be removed
+            if removal_threshold_index + self.mod_spec_mod_elitism < len(spec_mod_ids):
+                removal_threshold_index = self.mod_spec_mod_elitism
+            spec_mod_ids_to_remove = spec_mod_ids_sorted[removal_threshold_index:]
+
+            # Delete low performing modules that will not be considered for reproduction from species assignment
+            for mod_id_to_remove in spec_mod_ids_to_remove:
+                self.mod_species[spec_id].remove(mod_id_to_remove)
+                del self.modules[mod_id_to_remove]
+
+        # Return the determined module species offspring dict, the count of reinitialized offspring and the flag
+        # indicating that the population did not go extinct
+        pop_extinction = False
         return mod_species_offspring, reinit_offspring, pop_extinction
 
     def _select_modules_param_distance_dynamic(self) -> ({int: int}, int, bool):
