@@ -18,3 +18,11 @@ class CoDeepNEATSpeciationBP:
         ### Species Assignment ###
         # Basic speciation assigns each new blueprint to species 1, as the only existing species
         self.bp_species[1] += new_blueprint_ids
+
+    def _speciate_blueprints_gene_overlap_fixed(self, new_blueprint_ids):
+        """"""
+        pass
+
+    def _speciate_blueprints_gene_overlap_dynamic(self, new_blueprint_ids):
+        """"""
+        pass

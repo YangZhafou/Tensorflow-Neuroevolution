@@ -30,3 +30,12 @@ class CoDeepNEATSpeciationMOD:
             mod_type = self.modules[mod_id].get_module_type()
             according_mod_spec_id = species_mod_type_to_id[mod_type]
             self.mod_species[according_mod_spec_id].append(mod_id)
+
+    def _speciate_modules_param_distance_fixed(self, new_module_ids):
+        """"""
+        print("FORCED EXIT")
+        exit()
+
+    def _speciate_modules_param_distance_dynamic(self, new_module_ids):
+        """"""
+        pass

@@ -210,6 +210,10 @@ class CoDeepNEATSelectionMOD:
             del self.mod_species_repr[spec_id]
             del self.mod_species_fitness_history[spec_id]
 
+        # If all species went extinct, return positive for pop_extinct
+        if len(self.mod_species) == 0:
+            return None, None, True
+
         # Remove the elements from each surviving species that do not pass the reproduction threshold
         for spec_id, spec_mod_ids in self.mod_species.items():
             # Sort module ids in species according to their fitness
