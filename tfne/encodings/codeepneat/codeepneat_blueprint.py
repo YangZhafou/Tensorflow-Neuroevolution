@@ -41,7 +41,7 @@ class CoDeepNEATBlueprint:
         self.optimizer_factory = optimizer_factory
 
         # Initialize internal variables
-        self.fitness = None
+        self.fitness = 0
 
         # Declare graph related internal variables
         # species: set of all species present in blueprint

@@ -117,7 +117,12 @@ class CoDeepNEATSpeciationMOD:
                 # in the current species according to their fitness
                 other_spec_mod_repr_ids = [mod_id for mod_id in self.mod_species_repr.values()
                                            if mod_id != spec_mod_repr_id]
-                spec_mod_ids_sorted = sorted(self.mod_species[spec_id],
+
+                # Only consider members of the species that have been evaluated before as potential new species
+                # representatives
+                evaluated_mod_species = [mod_id for mod_id in self.mod_species[spec_id]
+                                         if self.modules[mod_id].get_fitness() != 0]
+                spec_mod_ids_sorted = sorted(evaluated_mod_species,
                                              key=lambda x: self.modules[x].get_fitness(),
                                              reverse=True)
                 # Traverse each module id in the sorted module id list beginning with the best. Determine the distance

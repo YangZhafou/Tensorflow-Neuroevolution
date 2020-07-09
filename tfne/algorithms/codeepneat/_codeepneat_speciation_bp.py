@@ -85,9 +85,15 @@ class CoDeepNEATSpeciationBP:
                 # blueprints in the current species according to their fitness
                 other_spec_bp_repr_ids = [bp_id for bp_id in self.bp_species_repr.values()
                                           if bp_id != spec_bp_repr_id]
-                spec_bp_ids_sorted = sorted(self.bp_species[spec_id],
+
+                # Only consider members of the species that have been evaluated before as potential new species
+                # representatives
+                evaluated_bp_species = [bp_id for bp_id in self.bp_species[spec_id]
+                                        if self.blueprints[bp_id].get_fitness() != 0]
+                spec_bp_ids_sorted = sorted(evaluated_bp_species,
                                             key=lambda x: self.blueprints[x].get_fitness(),
                                             reverse=True)
+
                 # Traverse each blueprint id in the sorted blueprint id list beginning with the best. Determine the
                 # distance to other species representative blueprint ids and if the distance to all other species
                 # representatives is higher than the specified minimum distance for a new species, set the blueprint as
