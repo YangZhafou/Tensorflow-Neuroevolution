@@ -147,6 +147,11 @@ class CoDeepNEATBlueprint:
     def set_fitness(self, fitness):
         self.fitness = fitness
 
+    def get_distance(self, other_bp) -> float:
+        """"""
+        import random
+        return random.random()
+
     def get_blueprint_graph(self) -> {int: object}:
         """"""
         return self.blueprint_graph

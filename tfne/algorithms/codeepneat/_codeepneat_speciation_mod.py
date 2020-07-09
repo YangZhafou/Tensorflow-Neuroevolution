@@ -92,7 +92,7 @@ class CoDeepNEATSpeciationMOD:
                     module_spec_distances[spec_id] = spec_mod_repr.get_distance(self.modules[mod_id])
 
             # Determine if of all the distances to other species on distance falls below the config specified
-            # 'mod_spec_distance', signalling that the module should be assigned to this species
+            # 'mod_spec_distance', signaling that the module should be assigned to this species
             min_mod_spec_distance = min(module_spec_distances.values())
             if min_mod_spec_distance <= self.mod_spec_distance:
                 # Find the species to which the new module has the minimal distance, which is sufficiently small, and
@@ -132,6 +132,7 @@ class CoDeepNEATSpeciationMOD:
                                                    for other_mod_id in other_spec_mod_repr_ids]
                     if all(distance >= self.mod_spec_distance for distance in distance_to_other_spec_repr):
                         self.mod_species_repr[spec_id] = mod_id
+                        break
 
     def _speciate_modules_param_distance_dynamic(self, new_module_ids):
         """"""
@@ -154,8 +155,7 @@ class CoDeepNEATSpeciationMOD:
                                            if mod_id != spec_mod_repr_id]
                 sorted_distances_to_other_specs = sorted([mod_repr.get_distance(self.modules[other_mod_id])
                                                           for other_mod_id in other_spec_mod_repr_ids])
-                # Set optimal distance of current species repr such that only 'mod_spec_species_count' species would
-                # exit
+                # Set optimal distance of current species repr such that it conforms to 'mod_spec_species_count'
                 optimal_spec_distance = sorted_distances_to_other_specs[-self.mod_spec_species_count - 1]
                 optimal_spec_distance_per_species.append(optimal_spec_distance)
 
