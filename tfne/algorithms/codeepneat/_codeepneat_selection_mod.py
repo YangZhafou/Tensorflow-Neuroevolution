@@ -106,7 +106,7 @@ class CoDeepNEATSelectionMOD:
             if distant_avg_fitness >= max(recent_fitness_history):
                 # Species is stagnating. Flag species to be removed later and decrement species type frequency
                 spec_ids_to_remove.append(spec_id)
-                species_type_frequency[species_mod_type] -= 1
+                spec_type_frequency[species_mod_type] -= 1
 
         #### Offspring Size Calculation ####
         # Distinguish offspring size calculation depending on if extinct offspring will be reinitialized or not
