@@ -312,6 +312,10 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
             'dropout_rate': self.dropout_rate
         }
 
+    def get_distance(self, other_module) -> float:
+        """"""
+        raise NotImplementedError()
+
     def get_module_type(self) -> str:
         """"""
         return 'Conv2DMaxPool2DDropout'

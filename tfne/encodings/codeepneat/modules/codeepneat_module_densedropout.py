@@ -211,6 +211,12 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
             'dropout_rate': self.dropout_rate
         }
 
+    def get_distance(self, other_module) -> float:
+        """"""
+        # raise NotImplementedError()
+        import random
+        return random.random()
+
     def get_module_type(self) -> str:
         """"""
         return 'DenseDropout'

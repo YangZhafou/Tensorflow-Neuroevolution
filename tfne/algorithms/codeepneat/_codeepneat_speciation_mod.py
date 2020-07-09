@@ -1,3 +1,6 @@
+import statistics
+
+
 class CoDeepNEATSpeciationMOD:
     def _speciate_modules_basic(self, new_module_ids):
         """"""
@@ -55,7 +58,7 @@ class CoDeepNEATSpeciationMOD:
             # As the current species representative has to always be carried over to the next species for the purpose
             # of assigning new modules to the according species, check if species representative is among the elite
             # modules. If not then decrease module elitism by 1 and also carry over the species representative
-            if self.mod_spec_repr[spec_id] in spec_mod_ids_sorted[:self.mod_spec_mod_elitism]:
+            if self.mod_species_repr[spec_id] in spec_mod_ids_sorted[:self.mod_spec_mod_elitism]:
                 spec_mod_ids_to_carry_over = spec_mod_ids_sorted[:self.mod_spec_mod_elitism]
                 spec_mod_ids_to_remove = [mod_id for mod_id in spec_mod_ids if
                                           mod_id not in spec_mod_ids_to_carry_over]
@@ -63,18 +66,98 @@ class CoDeepNEATSpeciationMOD:
                 spec_mod_ids_to_carry_over = spec_mod_ids_sorted[:(self.mod_spec_mod_elitism - 1)]
                 spec_mod_ids_to_remove = [mod_id for mod_id in spec_mod_ids if
                                           mod_id not in spec_mod_ids_to_carry_over and
-                                          mod_id not in self.mod_species_repr[spec_id]]
+                                          mod_id != self.mod_species_repr[spec_id]]
 
             # Delete just determined module ids from the module species list and the module container
             for mod_id_to_remove in spec_mod_ids_to_remove:
                 self.mod_species[spec_id].remove(mod_id_to_remove)
                 del self.modules[mod_id_to_remove]
 
+        ### Species Assignment ###
+        # Traverse all new module ids, determine their type and compare their parameter distance with other species of
+        # that type. If the distance to one species of the same type is below the config specified 'mod_spec_distance'
+        # then assign the new module to that species. If not, create a new species
+        for mod_id in new_module_ids:
+            module_type = self.modules[mod_id].get_module_type()
 
+            # Calculate the distance of the module to each species representative and associate each species with its
+            # distance in the module_spec_distances dict
+            module_spec_distances = dict()
+            for spec_mod_type, spec_ids in species_type_to_id.items():
+                if module_type != spec_mod_type:
+                    continue
 
+                for spec_id in spec_ids:
+                    spec_mod_repr = self.modules[self.mod_species_repr[spec_id]]
+                    module_spec_distances[spec_id] = spec_mod_repr.get_distance(self.modules[mod_id])
 
+            # Determine if of all the distances to other species on distance falls below the config specified
+            # 'mod_spec_distance', signalling that the module should be assigned to this species
+            min_mod_spec_distance = min(module_spec_distances.values())
+            if min_mod_spec_distance <= self.mod_spec_distance:
+                # Find the species to which the new module has the minimal distance, which is sufficiently small, and
+                # assign the new module to that species
+                for spec_id, mod_spec_distance in module_spec_distances.items():
+                    if mod_spec_distance == min_mod_spec_distance:
+                        self.mod_species[spec_id].append(mod_id)
+            else:
+                # Create a new species with the new module as the representative
+                self.mod_species_counter += 1
+                self.mod_species[self.mod_species_counter] = [mod_id]
+                self.mod_species_repr[self.mod_species_counter] = mod_id
+                species_type_to_id[module_type].append(self.mod_species_counter)
 
+        ### Rebase Species Representative ###
+        # If Rebase representative config flag set to true, rechoose the representative of each species as the best
+        # module of the species that also holds the minimum set distance ('mod_spec_distance') to all other species
+        # representatives
+        if self.mod_spec_rebase_repr:
+            for spec_id, spec_mod_repr_id in self.mod_species_repr.items():
+                # Determine the module ids of all other species representatives and create a sorted list of the modules
+                # in the current species according to their fitness
+                other_spec_mod_repr_ids = [mod_id for mod_id in self.mod_species_repr.values()
+                                           if mod_id != spec_mod_repr_id]
+                spec_mod_ids_sorted = sorted(self.mod_species[spec_id],
+                                             key=lambda x: self.modules[x].get_fitness(),
+                                             reverse=True)
+                # Traverse each module id in the sorted module id list beginning with the best. Determine the distance
+                # to other species representative module ids and if the distance to all other species representatives is
+                # higher than the specified minimum distance for a new species, set the module as the new
+                # representative.
+                for mod_id in spec_mod_ids_sorted:
+                    if mod_id == spec_mod_repr_id:
+                        break
+                    module = self.modules[mod_id]
+                    distance_to_other_spec_repr = [module.get_distance(self.modules[other_mod_id])
+                                                   for other_mod_id in other_spec_mod_repr_ids]
+                    if all(distance >= self.mod_spec_distance for distance in distance_to_other_spec_repr):
+                        self.mod_species_repr[spec_id] = mod_id
 
     def _speciate_modules_param_distance_dynamic(self, new_module_ids):
         """"""
-        pass
+        # Perform param-distance-fixed speciation as identical to dynamic variant and subsequently adjust distance
+        self._speciate_modules_param_distance_fixed(new_module_ids)
+
+        ### Dynamic Adjustment of Species Distance ###
+        # If the species count is too low, decrease the species distance by 10 percent. If the species count is too
+        # high, determine the distances of each species representative to all other species representatives and choose
+        # the distance that would set the species count right. Average that optimal distance for each species repr out
+        # to get the new species distance.
+        if len(self.mod_species) < self.mod_spec_species_count:
+            self.mod_spec_distance = self.mod_spec_distance * 0.9
+        elif len(self.mod_species) > self.mod_spec_species_count:
+            optimal_spec_distance_per_species = list()
+            for spec_id, spec_mod_repr_id in self.mod_species_repr.items():
+                mod_repr = self.modules[spec_mod_repr_id]
+                # Determine distance of species repr to all other species repr
+                other_spec_mod_repr_ids = [mod_id for mod_id in self.mod_species_repr.values()
+                                           if mod_id != spec_mod_repr_id]
+                sorted_distances_to_other_specs = sorted([mod_repr.get_distance(self.modules[other_mod_id])
+                                                          for other_mod_id in other_spec_mod_repr_ids])
+                # Set optimal distance of current species repr such that only 'mod_spec_species_count' species would
+                # exit
+                optimal_spec_distance = sorted_distances_to_other_specs[-self.mod_spec_species_count - 1]
+                optimal_spec_distance_per_species.append(optimal_spec_distance)
+
+            # Average out all optimal distances for each species repr to get the new distance
+            self.mod_spec_distance = statistics.mean(optimal_spec_distance_per_species)

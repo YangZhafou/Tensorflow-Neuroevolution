@@ -229,7 +229,7 @@ class CoDeepNEATSelectionMOD:
             # Exclude the species representative from removal, in case the species representative does not clear the
             # removal threshold of the species
             spec_mod_ids_to_remove = [mod_id for mod_id in spec_mod_ids_to_remove
-                                      if mod_id not in self.mod_species_repr[spec_id]]
+                                      if mod_id != self.mod_species_repr[spec_id]]
 
             # Delete low performing modules that will not be considered for reproduction from species assignment
             for mod_id_to_remove in spec_mod_ids_to_remove:

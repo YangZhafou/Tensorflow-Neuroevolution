@@ -53,6 +53,11 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'serialize()'")
 
     @abstractmethod
+    def get_distance(self, other_module) -> float:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_distance()'")
+
+    @abstractmethod
     def get_module_type(self) -> str:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_module_name()'")
