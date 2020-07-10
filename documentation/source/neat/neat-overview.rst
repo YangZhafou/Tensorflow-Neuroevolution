@@ -1,5 +1,5 @@
-NEAT Specification
-==================
+NEAT Overview
+=============
 
 **[WORK IN PROGRESS]**
 

@@ -1,4 +1,4 @@
-SubGraphNeat/-DeepNEAT Specification
+SubGraphNeat/-DeepNEAT Overview
 ====================================
 
 **[WORK IN PROGRESS]**

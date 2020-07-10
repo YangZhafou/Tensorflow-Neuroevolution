@@ -11,7 +11,7 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
 ================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: TFNE Framework
 
    framework/tfne-installation
@@ -22,29 +22,54 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
 
 
 
-[See here for the specifications of the algorithms as understood by TFNE]
-=========================================================================
+[See here for the NEAT algorithm and how it is implemented in TFNE
+==================================================================
 
 .. toctree::
    :maxdepth: 3
-   :caption: Algorithm Specifications
+   :caption: NEAT
 
-   algorithm_specifications/neat-specification
-   algorithm_specifications/deepneat-specification
-   algorithm_specifications/codeepneat-specification
-   algorithm_specifications/subgraphneat-deepneat-specification
-
+   neat/neat-overview
+   neat/neat-specification
+   neat/neat-config
 
 
-[See here for the implementation details of the NE algorithms in the TFNE framework]
+
+[See here for the DeepNEAT algorithm and how it is implemented in TFNE
+======================================================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: DeepNEAT
+
+   deepneat/deepneat-overview
+   deepneat/deepneat-specification
+   deepneat/deepneat-config
+
+
+
+[See here for the CoDeepNEAT algorithm and how it is implemented in TFNE
+========================================================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: CoDeepNEAT
+
+   codeepneat/codeepneat-overview
+   codeepneat/codeepneat-specification
+   codeepneat/codeepneat-config
+   codeepneat/codeepneat-modules
+
+
+
+[See here for the SubGraphNEAT/-DeepNEAT algorithm and how it is implemented in TFNE
 ====================================================================================
 
 .. toctree::
    :maxdepth: 3
-   :caption: Algorithm Implementations
+   :caption: SubGraphNEAT/-DeepNEAT
 
-   algorithm_implementations/neat-implementation
-   algorithm_implementations/deepneat-implementation
-   algorithm_implementations/codeepneat-implementation
-   algorithm_implementations/subgraphneat-deepneat-implementation
+   subgraphneat-deepneat/subgraphneat-deepneat-overview
+   subgraphneat-deepneat/subgraphneat-deepneat-specification
+   subgraphneat-deepneat/subgraphneat-deepneat-config
 

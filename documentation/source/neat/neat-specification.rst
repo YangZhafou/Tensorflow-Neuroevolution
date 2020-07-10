@@ -1,5 +1,5 @@
-CoDeepNEAT Implementation
-=========================
+NEAT Specification
+==================
 
 **[WORK IN PROGRESS]**
 

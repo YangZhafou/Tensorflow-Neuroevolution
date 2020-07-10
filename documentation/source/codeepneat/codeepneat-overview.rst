@@ -1,5 +1,5 @@
-CoDeepNEAT Specification
-========================
+CoDeepNEAT Overview
+===================
 
 **[WORK IN PROGRESS]**
 

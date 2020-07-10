@@ -1,5 +1,5 @@
-DeepNEAT Specification
-======================
+DeepNEAT Overview
+=================
 
 **[WORK IN PROGRESS]**
 
