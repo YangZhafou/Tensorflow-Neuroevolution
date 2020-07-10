@@ -1,5 +1,5 @@
-DeepNEAT Config
-===============
+DeepNEAT Configuration
+======================
 
 **[WORK IN PROGRESS]**
 

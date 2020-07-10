@@ -1,5 +1,5 @@
-CoDeepNEAT Pre-Implemented Modules
-==================================
+CoDeepNEAT Modules
+==================
 
 **[WORK IN PROGRESS]**
 

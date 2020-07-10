@@ -1,5 +1,5 @@
-SubGraphNEAT/-DeepNEAT Config
-=====================================
+SubGraphNEAT/-DeepNEAT Configuration
+====================================
 
 **[WORK IN PROGRESS]**
 

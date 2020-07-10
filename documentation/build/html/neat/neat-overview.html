@@ -101,26 +101,26 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neat-specification.html">NEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="neat-config.html">NEAT Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neat-config.html">NEAT Configuration</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DeepNEAT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-overview.html">DeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-specification.html">DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-config.html">DeepNEAT Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-config.html">DeepNEAT Configuration</a></li>
 </ul>
 <p class="caption"><span class="caption-text">CoDeepNEAT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-overview.html">CoDeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-specification.html">CoDeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-config.html">CoDeepNEAT Config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-modules.html">CoDeepNEAT Pre-Implemented Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-config.html">CoDeepNEAT Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-modules.html">CoDeepNEAT Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">SubGraphNEAT/-DeepNEAT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-overview.html">SubGraphNeat/-DeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-specification.html">SubGraphNEAT/-DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Configuration</a></li>
 </ul>
 
             
@@ -195,14 +195,6 @@
 <li><p><a class="reference external" href="http://nn.cs.utexas.edu/downloads/papers/stanley.cec02.pdf">Kenneth O. Stanley, Risto Miikkulainen - Efficient Evolution of Neural Network Topologies [2002]</a></p></li>
 <li><p><a class="reference external" href="http://nn.cs.utexas.edu/downloads/papers/stanley.phd04.pdf">Kenneth O. Stanley, Risto Miikkulainen - Efficient Evolution of Neural Networks through Complexification [2004]</a></p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This documentation solely lists the algorithm &amp; encoding specifications without concerning itself with the validity or potential of the specific choices that make up the NEAT method.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This documentation outlines the NEAT algorithm &amp; encoding specifications as understood by the TFNE project. While the TFNE project aims to stay as close as possible to the original specification, does it also aim to be a superset of the configuration options of the original specification. This specification also concretizes the algorithm specification if the original specification is too vague and no code was supplied. If you find an issue with the specification or the implementation details please contact <a class="reference external" href="mailto:tfne&#37;&#52;&#48;paulpauls&#46;de">tfne<span>&#64;</span>paulpauls<span>&#46;</span>de</a>. Thank you.</p>
-</div>
 <div class="section" id="genome-encoding">
 <h2>Genome Encoding<a class="headerlink" href="#genome-encoding" title="Permalink to this headline">¶</a></h2>
 <p>All information of a NEAT genotype is saved in the individual genes that make up the NEAT genome. The NEAT genome has no global parameters and its list of individual genes can be unordered.

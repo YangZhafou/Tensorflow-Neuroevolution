@@ -1,5 +1,5 @@
-NEAT Config
-===========
+NEAT Configuration
+==================
 
 **[WORK IN PROGRESS]**
 

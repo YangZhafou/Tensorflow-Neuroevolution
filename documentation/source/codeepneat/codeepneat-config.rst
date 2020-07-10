@@ -1,5 +1,5 @@
-CoDeepNEAT Config
-=================
+CoDeepNEAT Configuration
+========================
 
 **[WORK IN PROGRESS]**
 
