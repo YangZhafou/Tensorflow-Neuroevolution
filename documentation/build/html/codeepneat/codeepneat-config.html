@@ -193,14 +193,14 @@
 <div class="section" id="evaluation-config-parameters">
 <h2>[EVALUATION] Config Parameters<a class="headerlink" href="#evaluation-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">epochs</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">epochs</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Specifies the amount of epochs a genome phenotype is to be trained on the environment before evaluating its fitness.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0 | None</p>
+<p><strong>Description</strong>: Supplied batch_size value for the model.fit function. batch_size is the number of training examples used for a single iteration of backpropagating the gradient of the loss function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></dt><dd><p><strong>Value Range</strong>: -</p>
+<p><strong>Description</strong>: &lt;FEATURE STILL IN DEVELOPMENT&gt;</p>
 </dd>
 </dl>
 </div>
@@ -208,14 +208,14 @@
 <div class="section" id="population-config-parameters">
 <h2>[POPULATION] Config Parameters<a class="headerlink" href="#population-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Size of the Blueprint population throughout the evolution. The population size is constant.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Size of the Module population throughout the evolution. The population size is constant.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">genomes_per_bp</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">genomes_per_bp</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Specifies the amount of genomes that are created from blueprints and modules for the evaluation phase of each generation. Each blueprint is accordingly often used as the base topology to create genomes.</p>
 </dd>
 </dl>
 </div>
@@ -223,17 +223,17 @@
 <div class="section" id="genome-config-parameters">
 <h2>[GENOME] Config Parameters<a class="headerlink" href="#genome-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p><strong>Value Range</strong>: valid Tensorflow datatype</p>
+<p><strong>Description</strong>: Datatype of the genome phenotype, being a Tensorflow model.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">available_modules</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">available_modules</span></code></dt><dd><p><strong>Value Range</strong>: list of strings of valid TFNE CoDeepNEAT modules</p>
+<p><strong>Description</strong>: Specifies the module types that will be created during the CoDeepNEAT evolution. The association of module string name to module implementation is in a simple association file within the CoDeepNEAT encoding. This association file registers the names of all pre-implemented CoDeepNEAT modules and can easily be extended to register custom-created modules.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">available_optimizers</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">available_optimizers</span></code></dt><dd><p><strong>Value Range</strong>: list of strings of valid Tensorflow Optimizers</p>
+<p><strong>Description</strong>: Specifies the possibly used optimizers that are associated with CoDeepNEAT blueprints. Valid values are string representations of all Tensorflow Optimizers, as TFNE uses Tensorflow deserialization of the optimizers.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">output_layers</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">output_layers</span></code></dt><dd><p><strong>Value Range</strong>: list of dictionaries that represent deserializable Tensorflow layers</p>
+<p><strong>Description</strong>: Specifies the layers and their configuration that will be appended to the evolved CoDeepNEAT genome in order to control the output despite fitness oriented evolution of the phenotype. The output layers will be appended to the genome in the same order in which they are listed.</p>
 </dd>
 </dl>
 </div>
@@ -241,35 +241,35 @@
 <div class="section" id="module-speciation-config-parameters">
 <h2>[MODULE_SPECIATION] Config Parameters<a class="headerlink" href="#module-speciation-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: ‘basic’ | ‘param-distance-fixed’ | ‘param-distance-dynamic’</p>
+<p><strong>Description</strong>: Sets speciation method for modules. Can be set to either a basic speciation; a speciation based on the parameter distance of the modules with fixed parameter distance; or a speciation based on the parameter distance of the modules but with dynamically changing parameter distance. For details of these speciation methods, check the CoDeepNEAT specification.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-dynamic’ speciation]</strong> Specifies the desired species count the dynamic parameter distance speciation scheme should aim for when adjusting the species distance. The species count considers the total amount of species and is not considered per module type.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies minimum distance of 2 modules such that they are classified into 2 different species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_mod_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_mod_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Specifies the amount of best modules in each species that will be carried over unchanged into the next generation after the evolution. The module elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the minimum amount of newly generated offspring for each species, in case the average fitness of the species becomes so relatively low that it isn’t assigned offspring otherwise.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the minimum relative fitness threshold of a module compared with other modules in its species in order for the module to be considered a possible parent for reproduction. E.g. if the value 0.4 is choosen then for a module to be considered an elligible parent for the species its fitness has be higher than the bottom 40 percent of the species (or in other words: it has to belong to the top 60% of modules in the species).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies the maximum number of generations a species does not improve its average fitness before it will be considered stagnating and therefore will go extinct. This stagnation is defined as not producing in either of the last x generations an average fitness better than the fitness x generations ago.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies the minimum amount of species that are to survive, regardless of the consideration that they are stagnating or not. The minimum amount of surving species are the best of the current generation.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: bool</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies if after each evolution the species representatives should be rebased to the best module of the species that also holds the minimal distance to all other species representatives as specified in via <code class="docutils literal notranslate"><span class="pre">mod_spec_species_distance</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: bool</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies if the population size occupied by a species should be reinitialized to new modules upon species extinction or if the population size occupied by the extinct species should be divided among the remaining species.</p>
 </dd>
 </dl>
 </div>
@@ -277,14 +277,14 @@
 <div class="section" id="module-evolution-config-parameters">
 <h2>[MODULE_EVOLUTION] Config Parameters<a class="headerlink" href="#module-evolution-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the maximum percentage to which a module is mutated during evolution from one generation to the next.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_mutation_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_mutation_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new module is evolved through mutation of an elligible parent module. Evolution probabilities of modules must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new module is evolved through crossover of two elligible parent modules. Evolution probabilities of modules must add up to 1.</p>
 </dd>
 </dl>
 </div>
@@ -292,35 +292,35 @@
 <div class="section" id="bp-speciation-config-parameters">
 <h2>[BP_SPECIATION] Config Parameters<a class="headerlink" href="#bp-speciation-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: ‘basic’ | ‘gene-overlap-fixed’ | ‘gene-overlap-dynamic’</p>
+<p><strong>Description</strong>: Sets speciation method for blueprints. Can be set to either a basic speciation; a speciation based on the gene overlap of the blueprints with fixed overlap distance; or a speciation based on the gene overlap of the blueprints but with dynamically changing overlap distance. For details of these speciation methods, check the CoDeepNEAT specification.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-dynamic’ speciation]</strong> Specifies the desired species count the dynamic gene overlap distance speciation scheme should aim for when adjusting the species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies the minimum distance of 2 blueprints such that they are classified into 2 different species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_bp_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_bp_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: Specifies the amount of best blueprints in each species that will be carried over unchanged into the next generation after the evolution. The blueprint elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the minimum amount of newly generated offspring for each species, in case the average fitness of the species becomes so relatively low that it isn’t assigned offspring otherwise.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the minimum relative fitness threshold of a blueprint compared with other blueprints in its species in order for the blueprint to be considered a possible parent for reproduction. E.g. if the value 0.4 is choosen then for a blueprint to be considered an elligible parent for the species its fitness has to be higher than the bottom 40 percent of the species (or in other words: it has to belong to the top 60% of blueprints in the species).</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies the maximum number of generations a species does not improve its average fitness before it will be considered stagnating and therefore will go extinct. This stagnation is defined as not producing in either of the last x generations an average fitness better than the fitness x generations ago.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies the minimum amount of species that are to survive, regardless of the consideration that they are stagnating or not. The minimum amount of surviving species are the ebst of the current generation.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: bool</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies if after each evolution the species representatives should be rebased to the best blueprint of the species that also holds the minimal distance to all other species representatives as specified via <code class="docutils literal notranslate"><span class="pre">bp_spec_species_distance</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: bool</p>
+<p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies if the population size occupied by a species should be reinitialized to new blueprints upon species extinction or if the population size occupied by the extinct species should be divided among the remaining species.</p>
 </dd>
 </dl>
 </div>
@@ -328,29 +328,29 @@
 <div class="section" id="bp-evolution-config-parameters">
 <h2>[BP_EVOLUTION] Config Parameters<a class="headerlink" href="#bp-evolution-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the maximum percentage to which a blueprint is mutated during evolution from one generation to the next.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by adding a connection to an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by adding a node to an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by removing a connection from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by removing a node from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_node_spec_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_node_spec_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by mutating the species of the blueprint nodes from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_optimizer_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_optimizer_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by mutating the config options of the blueprint associated optimizer of an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
-<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by crossing over 2 elligible parent blueprints. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
 </dl>
 </div>
