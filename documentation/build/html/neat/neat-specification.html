@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CoDeepNEAT Implementation &mdash; Tensorflow-Neuroevolution Framework 0.2 documentation</title>
+  <title>NEAT Specification &mdash; Tensorflow-Neuroevolution Framework 0.2 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="SubGraphNEAT/-DeepNEAT Implementation" href="subgraphneat-deepneat-implementation.html" />
-    <link rel="prev" title="DeepNEAT Implementation" href="deepneat-implementation.html" /> 
+    <link rel="next" title="NEAT Config" href="neat-config.html" />
+    <link rel="prev" title="NEAT Overview" href="neat-overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,18 +88,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../framework/tfne-visualizer.html">TFNE Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../framework/tfne-version-history.html">TFNE Version History</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Algorithm Specifications</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../algorithm_specifications/neat-specification.html">NEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../algorithm_specifications/deepneat-specification.html">DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../algorithm_specifications/codeepneat-specification.html">CoDeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../algorithm_specifications/subgraphneat-deepneat-specification.html">SubGraphNeat/-DeepNEAT Specification</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Algorithm Implementations</span></p>
+<p class="caption"><span class="caption-text">NEAT</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="neat-implementation.html">NEAT Implementation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deepneat-implementation.html">DeepNEAT Implementation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">CoDeepNEAT Implementation</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="neat-overview.html">NEAT Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NEAT Specification</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#subheading-1">Subheading 1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subsubheading-1">SubSubHeading 1</a></li>
 </ul>
@@ -110,7 +102,26 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="subgraphneat-deepneat-implementation.html">SubGraphNEAT/-DeepNEAT Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neat-config.html">NEAT Config</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DeepNEAT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-overview.html">DeepNEAT Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-specification.html">DeepNEAT Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-config.html">DeepNEAT Config</a></li>
+</ul>
+<p class="caption"><span class="caption-text">CoDeepNEAT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-overview.html">CoDeepNEAT Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-specification.html">CoDeepNEAT Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-config.html">CoDeepNEAT Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-modules.html">CoDeepNEAT Pre-Implemented Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SubGraphNEAT/-DeepNEAT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-overview.html">SubGraphNeat/-DeepNEAT Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-specification.html">SubGraphNEAT/-DeepNEAT Specification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Config</a></li>
 </ul>
 
             
@@ -156,13 +167,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>CoDeepNEAT Implementation</li>
+      <li>NEAT Specification</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/algorithm_implementations/codeepneat-implementation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/neat/neat-specification.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -175,8 +186,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="codeepneat-implementation">
-<h1>CoDeepNEAT Implementation<a class="headerlink" href="#codeepneat-implementation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="neat-specification">
+<h1>NEAT Specification<a class="headerlink" href="#neat-specification" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
 <p>This page will cover:</p>
 <ul class="simple">
@@ -212,10 +223,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="subgraphneat-deepneat-implementation.html" class="btn btn-neutral float-right" title="SubGraphNEAT/-DeepNEAT Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="neat-config.html" class="btn btn-neutral float-right" title="NEAT Config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="deepneat-implementation.html" class="btn btn-neutral float-left" title="DeepNEAT Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="neat-overview.html" class="btn btn-neutral float-left" title="NEAT Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
