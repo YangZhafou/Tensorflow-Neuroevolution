@@ -105,14 +105,15 @@
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-overview.html">CoDeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-specification.html">CoDeepNEAT Specification</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CoDeepNEAT Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subheading-1">Subheading 1</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#subsubheading-1">SubSubHeading 1</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#subheading-2">Subheading 2</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#subsubheading-2">SubSubHeading 2</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-config-parameters">[EVALUATION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#population-config-parameters">[POPULATION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#genome-config-parameters">[GENOME] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-speciation-config-parameters">[MODULE_SPECIATION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-evolution-config-parameters">[MODULE_EVOLUTION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bp-speciation-config-parameters">[BP_SPECIATION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bp-evolution-config-parameters">[BP_EVOLUTION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-module-config-parameters">[MODULE_&lt;MODULE&gt;] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimizer-optimizer-config-parameters">[OPTIMIZER_&lt;OPTIMIZER&gt;] Config Parameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-modules.html">CoDeepNEAT Modules</a></li>
@@ -189,21 +190,179 @@
   <div class="section" id="codeepneat-configuration">
 <h1>CoDeepNEAT Configuration<a class="headerlink" href="#codeepneat-configuration" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
-<div class="section" id="subheading-1">
-<h2>Subheading 1<a class="headerlink" href="#subheading-1" title="Permalink to this headline">¶</a></h2>
-<p>Ipsum Lorem</p>
-<div class="section" id="subsubheading-1">
-<h3>SubSubHeading 1<a class="headerlink" href="#subsubheading-1" title="Permalink to this headline">¶</a></h3>
-<p>foobar</p>
+<div class="section" id="evaluation-config-parameters">
+<h2>[EVALUATION] Config Parameters<a class="headerlink" href="#evaluation-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">epochs</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
 </div>
+<hr class="docutils" />
+<div class="section" id="population-config-parameters">
+<h2>[POPULATION] Config Parameters<a class="headerlink" href="#population-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_pop_size</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">genomes_per_bp</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
 </div>
-<div class="section" id="subheading-2">
-<h2>Subheading 2<a class="headerlink" href="#subheading-2" title="Permalink to this headline">¶</a></h2>
-<p>this is an example text</p>
-<div class="section" id="subsubheading-2">
-<h3>SubSubHeading 2<a class="headerlink" href="#subsubheading-2" title="Permalink to this headline">¶</a></h3>
-<p>that is continued here</p>
+<hr class="docutils" />
+<div class="section" id="genome-config-parameters">
+<h2>[GENOME] Config Parameters<a class="headerlink" href="#genome-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">dtype</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">available_modules</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">available_optimizers</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">output_layers</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
 </div>
+<hr class="docutils" />
+<div class="section" id="module-speciation-config-parameters">
+<h2>[MODULE_SPECIATION] Config Parameters<a class="headerlink" href="#module-speciation-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_mod_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+<div class="section" id="module-evolution-config-parameters">
+<h2>[MODULE_EVOLUTION] Config Parameters<a class="headerlink" href="#module-evolution-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_mutation_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+<div class="section" id="bp-speciation-config-parameters">
+<h2>[BP_SPECIATION] Config Parameters<a class="headerlink" href="#bp-speciation-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_type</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_count</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_bp_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reprod_thres</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_max_stagnation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_species_elitism</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_rebase_repr</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_reinit_extinct</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+<div class="section" id="bp-evolution-config-parameters">
+<h2>[BP_EVOLUTION] Config Parameters<a class="headerlink" href="#bp-evolution-config-parameters" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_max_mutation</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_add_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_conn_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_node_spec_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_optimizer_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_crossover_prob</span></code></dt><dd><p><strong>Value Range</strong>: Lorem ipsum dolor sit amet</p>
+<p><strong>Description</strong>: Lorem ipsum dolor sit amet</p>
+</dd>
+</dl>
+</div>
+<hr class="docutils" />
+<div class="section" id="module-module-config-parameters">
+<h2>[MODULE_&lt;MODULE&gt;] Config Parameters<a class="headerlink" href="#module-module-config-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Lorem ipsum dolor sit amet</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="optimizer-optimizer-config-parameters">
+<h2>[OPTIMIZER_&lt;OPTIMIZER&gt;] Config Parameters<a class="headerlink" href="#optimizer-optimizer-config-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Lorem ipsum dolor sit amet</p>
 </div>
 </div>
 
