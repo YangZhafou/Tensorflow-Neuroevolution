@@ -139,8 +139,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             if self.bp_spec_type != 'basic' and self.pop.bp_species_counter not in self.pop.bp_species_repr:
                 self.pop.bp_species_repr[self.pop.bp_species_counter] = blueprint_id
 
-        print('debug_print')
-
     def evaluate_population(self) -> (int, int):
         """"""
         print("FORCED EXIT")
