@@ -3,6 +3,7 @@ from tfne import algorithms
 from tfne import encodings
 from tfne import environments
 from tfne import experimental
+from tfne import populations
 
 # Import general modules
 from tfne.evolution_engine import EvolutionEngine

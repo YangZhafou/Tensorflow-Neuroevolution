@@ -19,7 +19,7 @@ def codeepneat_xor_example(_):
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
     config_file_path = './codeepneat_xor_example_dynamic_config.cfg'
-    backup_dir_path = './tfne_run_backups/'
+    backup_dir_path = './tfne_backups/'
     max_generations = 100
     max_fitness = None
 
@@ -43,9 +43,12 @@ def codeepneat_xor_example(_):
     environment = tfne.environments.XOREnvironment(config)
     ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
 
-    # Initialize evolution engine and supply config as well as initialized NE elements
+    # Initialize evolution engine and supply config as well as initialized NE elements. As CoDeepNEAT currently only
+    # supports single-instance evaluation, set num_cpus and num_gpus to 1
     engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
                                   backup_dir_path=backup_dir_path,
+                                  num_cpus=1,
+                                  num_gpus=1,
                                   max_generations=max_generations,
                                   max_fitness=max_fitness)
 

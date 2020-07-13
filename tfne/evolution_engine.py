@@ -46,10 +46,10 @@ class EvolutionEngine:
         self.backup_dir_path = os.path.abspath(backup_dir_path)
         if self.backup_dir_path[-1] != '/':
             self.backup_dir_path += '/'
-        backup_dir_str = datetime.now(tz=datetime.now().astimezone().tzinfo).strftime("tfne_run_%Y-%b-%d_%H-%M-%S/")
+        backup_dir_str = datetime.now(tz=datetime.now().astimezone().tzinfo).strftime("tfne_backup_%Y-%b-%d_%H-%M-%S/")
         self.backup_dir_path += backup_dir_str
         os.makedirs(self.backup_dir_path)
-        print("Backing up population to directory: {}".format(self.backup_dir_path))
+        print("Creating TFNE generational Backups to directory: {}".format(self.backup_dir_path))
 
     def train(self) -> BaseGenome:
         """"""
@@ -85,10 +85,13 @@ class EvolutionEngine:
                       "Exiting evolutionary training loop...")
                 break
 
-            # Reset models, counters, layers, etc including in the GPU to avoid clutter from old models as most likely
-            # only limited memory is available
+            # Reset models, counters, layers, etc including in the GPU to avoid memory clutter from old models as most
+            # likely only limited gpu memory is available
             tf.keras.backend.clear_session()
 
-        # Determine best genome from evolutionary process and return it. This should return the best genome of the
+        # Shutdown multiprocessing libraries now that training is ending
+        ray.shutdown()
+
+        # Get best genome from evolutionary process and return it. This should return the best genome of the
         # evolutionary process, even if the population went extinct.
         return self.ne_algorithm.get_best_genome()

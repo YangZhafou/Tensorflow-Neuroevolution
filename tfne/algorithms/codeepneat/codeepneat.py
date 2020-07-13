@@ -32,58 +32,40 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def __init__(self, config, environment, initial_population_file_path=None):
         """"""
-        # Register and process the supplied config and register the optionally supplied initial population
+        # Register and process the supplied configuration
         self.config = config
         self._process_config()
-        self.initial_population_file_path = initial_population_file_path
 
-        # Register the supplied environment class and declare the container for the initialized evaluation environments
-        # as well as the environment parameters (input and output dimension/shape) to which the created neural networks
-        # have to adhere to and which will be set when initializing the environments.
+        # Register the supplied environment and determine the environment parameters (input and output dimension/shape)
+        # to which the created neural networks have to adhere to.
         self.environment = environment
-        self.envs = list()
-        self.input_shape = None
-        self.input_dim = None
-        self.output_shape = None
-        self.output_dim = None
+        self.input_shape = environment.get_input_shape()
+        self.input_dim = len(self.input_shape)
+        self.output_shape = environment.get_output_shape()
+        self.output_dim = len(self.output_shape)
 
         # Initialize and register the associated CoDeepNEAT encoding
         self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
 
-        # Declare internal variables of the population
-        self.generation_counter = None
-        self.best_genome = None
-        self.best_fitness = None
-
-        # Declare and initialize internal variables concerning the module population of the CoDeepNEAT algorithm
-        self.modules = dict()
-        self.mod_species = dict()
-        self.mod_species_repr = dict()
-        self.mod_species_fitness_history = dict()
-        self.mod_species_counter = 0
-
-        # Declare and initialize internal variables concerning the blueprint population of the CoDeepNEAT algorithm
-        self.blueprints = dict()
-        self.bp_species = dict()
-        self.bp_species_repr = dict()
-        self.bp_species_fitness_history = dict()
-        self.bp_species_counter = 0
+        # Initialize and register the associated CoDeepnEAT population
+        self.pop = tfne.populations.CoDeepNEATPopulation(initial_population_file_path)
 
     def initialize_environments(self, num_cpus, num_gpus, verbosity):
         """"""
-        # Initialize only one instance as implementation currently only supports single instance evaluation
-        for _ in range(1):
-            initialized_env = self.environment(weight_training=True, verbosity=verbosity, config=self.config)
-            self.envs.append(initialized_env)
+        # Set up the evaluation of the environment as weight training and hand over the verbosity
+        self.environment.set_up_evaluation(weight_training=True, verbosity=verbosity)
 
-        # Determine required input and output dimensions and shape
-        self.input_shape = self.envs[0].get_input_shape()
-        self.input_dim = len(self.input_shape)
-        self.output_shape = self.envs[0].get_output_shape()
-        self.output_dim = len(self.output_shape)
+        # Print warning if attempting to run CoDeepNEAT in parallel
+        if num_cpus > 1 or num_gpus > 1:
+            logging.warning("Attempting to run CoDeepNEAT algorithm with more than a single instance of CPU or GPU."
+                            "TFNE CoDeepNEAT does currently only support single instance evaluation.")
 
     def initialize_population(self):
         """"""
+
+        print("FORCED EXIT")
+        exit()
+
         if self.initial_population_file_path is None:
             print("Initializing a new population of {} blueprints and {} modules..."
                   .format(self.bp_pop_size, self.mod_pop_size))
