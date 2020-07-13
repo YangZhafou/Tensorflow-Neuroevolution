@@ -120,7 +120,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # speciated in the beginning and are assigned to species 1.
 
         # Initialize blueprint species list and create tuple of the possible species the output node can take on
-        self.pop.bp_species[1] = list()
+        self.pop.bp_species_counter = 1
+        self.pop.bp_species[self.pop.bp_species_counter] = list()
         available_mod_species = tuple(self.pop.mod_species.keys())
 
         for _ in range(self.bp_pop_size):
@@ -132,11 +133,13 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
             # Append newly create blueprint to blueprint container and to only initial blueprint species
             self.pop.blueprints[blueprint_id] = blueprint
-            self.pop.bp_species[1].append(blueprint_id)
+            self.pop.bp_species[self.pop.bp_species_counter].append(blueprint_id)
 
             # Create a species representative if speciation method is not 'basic' and no representative chosen yet
-            if self.bp_spec_type != 'basic' and 1 not in self.pop.bp_species_repr:
-                self.pop.bp_species_repr[1] = blueprint_id
+            if self.bp_spec_type != 'basic' and self.pop.bp_species_counter not in self.pop.bp_species_repr:
+                self.pop.bp_species_repr[self.pop.bp_species_counter] = blueprint_id
+
+        print('debug_print')
 
     def evaluate_population(self) -> (int, int):
         """"""
@@ -368,8 +371,12 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.generation_counter += 1
         return False
 
-    def save_population(self, save_dir_path):
+    def save_state(self, save_dir_path):
         """"""
+
+        raise NotImplementedError("Change function to save the state of the whole evolution, including variables of"
+                                  "the encoding and the algorithm")
+
         # Set save file name as 'pop backup' and including the current generation
         if save_dir_path[-1] != '/':
             save_dir_path += '/'

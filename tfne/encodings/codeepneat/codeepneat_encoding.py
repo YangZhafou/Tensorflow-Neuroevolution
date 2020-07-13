@@ -11,7 +11,7 @@ from .modules.codeepneat_module_association import MODULES
 class CoDeepNEATEncoding(BaseEncoding):
     """"""
 
-    def __init__(self, dtype):
+    def __init__(self, dtype, saved_state=None):
         """"""
         # Register parameters
         self.dtype = dtype
@@ -32,40 +32,22 @@ class CoDeepNEATEncoding(BaseEncoding):
         self.node_counter = 2
         self.conn_split_history = dict()
 
+        # If saved_state provided, load the parameters
+        if saved_state is not None:
+            self._load_state(saved_state)
+
     def create_initial_module(self, mod_type, config_params) -> (int, CoDeepNEATModuleBase):
         """"""
         # Determine module ID and set the parent mutation to 'init' notification
-        module_id = self.get_next_module_id()
+        self.mod_id_counter += 1
         parent_mutation = {'parent_id': None,
                            'mutation': 'init'}
 
-        # Create a dict setting all module parameters to None, only because those parameters are required arguments,
-        # though let the module self initialize
-        module_parameters = dict()
-        for section in config_params.keys():
-            module_parameters[section] = None
-
-        return module_id, MODULES[mod_type](config_params=config_params,
-                                            module_id=module_id,
-                                            parent_mutation=parent_mutation,
-                                            self_initialize=True,
-                                            **module_parameters)
-
-    def get_next_module_id(self) -> int:
-        """"""
-        self.mod_id_counter += 1
-        return self.mod_id_counter
-
-    def create_blueprint(self,
-                         blueprint_graph,
-                         optimizer_factory,
-                         parent_mutation) -> (int, CoDeepNEATBlueprint):
-        """"""
-        self.bp_id_counter += 1
-        return self.bp_id_counter, CoDeepNEATBlueprint(blueprint_id=self.bp_id_counter,
-                                                       parent_mutation=parent_mutation,
-                                                       blueprint_graph=blueprint_graph,
-                                                       optimizer_factory=optimizer_factory)
+        return self.mod_id_counter, MODULES[mod_type](config_params=config_params,
+                                                      module_id=self.mod_id_counter,
+                                                      parent_mutation=parent_mutation,
+                                                      dtype=self.dtype,
+                                                      self_initialization_flag=True)
 
     def create_blueprint_node(self, node, species) -> (int, CoDeepNEATBlueprintNode):
         """"""
@@ -87,14 +69,16 @@ class CoDeepNEATEncoding(BaseEncoding):
         bp_gene_id = self.gene_to_gene_id[gene_key]
         return bp_gene_id, CoDeepNEATBlueprintConn(bp_gene_id, conn_start, conn_end)
 
-    def get_node_for_split(self, conn_start, conn_end) -> int:
+    def create_blueprint(self,
+                         blueprint_graph,
+                         optimizer_factory,
+                         parent_mutation) -> (int, CoDeepNEATBlueprint):
         """"""
-        conn_key = (conn_start, conn_end)
-        if conn_key not in self.conn_split_history:
-            self.node_counter += 1
-            self.conn_split_history[conn_key] = self.node_counter
-
-        return self.conn_split_history[conn_key]
+        self.bp_id_counter += 1
+        return self.bp_id_counter, CoDeepNEATBlueprint(blueprint_id=self.bp_id_counter,
+                                                       parent_mutation=parent_mutation,
+                                                       blueprint_graph=blueprint_graph,
+                                                       optimizer_factory=optimizer_factory)
 
     def create_genome(self,
                       blueprint,
@@ -103,7 +87,6 @@ class CoDeepNEATEncoding(BaseEncoding):
                       input_shape,
                       generation) -> (int, CoDeepNEATGenome):
         """"""
-
         self.genome_id_counter += 1
         # Genome genotype: (blueprint, bp_assigned_modules, output_layers)
         return self.genome_id_counter, CoDeepNEATGenome(genome_id=self.genome_id_counter,
@@ -118,3 +101,31 @@ class CoDeepNEATEncoding(BaseEncoding):
     def create_optimizer_factory(optimizer_parameters) -> OptimizerFactory:
         """"""
         return OptimizerFactory(optimizer_parameters)
+
+    def save_state(self):
+        """"""
+        # TODO set return type
+        raise NotImplementedError()
+
+    def _load_state(self, saved_state):
+        """"""
+        # TODO set return type
+        raise NotImplementedError()
+
+    '''
+    def get_next_module_id(self) -> int:
+        """"""
+        self.mod_id_counter += 1
+        return self.mod_id_counter
+
+    def get_node_for_split(self, conn_start, conn_end) -> int:
+        """"""
+        conn_key = (conn_start, conn_end)
+        if conn_key not in self.conn_split_history:
+            self.node_counter += 1
+            self.conn_split_history[conn_key] = self.node_counter
+
+        return self.conn_split_history[conn_key]
+
+    
+    '''

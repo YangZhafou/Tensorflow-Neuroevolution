@@ -17,20 +17,25 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
                  config_params,
                  module_id,
                  parent_mutation,
-                 merge_method,
-                 filters,
-                 kernel_size,
-                 strides,
-                 padding,
-                 activation,
-                 kernel_init,
-                 bias_init,
-                 max_pool_flag,
-                 max_pool_size,
-                 dropout_flag,
-                 dropout_rate,
-                 self_initialize=False):
+                 dtype,
+                 merge_method=None,
+                 filters=None,
+                 kernel_size=None,
+                 strides=None,
+                 padding=None,
+                 activation=None,
+                 kernel_init=None,
+                 bias_init=None,
+                 max_pool_flag=None,
+                 max_pool_size=None,
+                 dropout_flag=None,
+                 dropout_rate=None,
+                 self_initialization_flag=False):
         """"""
+
+        raise NotImplementedError("NOT UPDATED TO CURRENT REFACTORING")
+
+
         # Register the dict listing the module parameter range specified in the config
         self.config_params = config_params
 
@@ -50,7 +55,7 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         self.dropout_rate = dropout_rate
 
         # If self initialization flag is provided, initialize the module parameters as they are currently set to None
-        if self_initialize:
+        if self_initialization_flag:
             self.initialize()
 
     def __str__(self) -> str:

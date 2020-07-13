@@ -113,14 +113,23 @@ class CoDeepNEATBlueprint:
                     self.species,
                     self.optimizer_factory.get_name())
 
+    def calculate_gene_overlap(self, other_bp) -> float:
+        """"""
+        # Calculate the gene overlap between 2 blueprints as the average of both blueprints node ids shared by the other
+        # blueprint
+        bp_node_ids = set(self.blueprint_graph.keys())
+        other_bp_node_ids = set(other_bp.blueprint_graph.keys())
+        node_id_intersection = bp_node_ids.intersection(other_bp_node_ids)
+
+        return (len(node_id_intersection) / len(bp_node_ids) + len(node_id_intersection) / len(other_bp_node_ids)) / 2.0
+
     def create_optimizer(self) -> tf.keras.optimizers.Optimizer:
         """"""
         return self.optimizer_factory.create_optimizer()
 
     def copy_parameters(self) -> ({int: object}, object):
         """"""
-        return (deepcopy(self.blueprint_graph),
-                self.optimizer_factory.duplicate())
+        return deepcopy(self.blueprint_graph), self.optimizer_factory.duplicate()
 
     def serialize(self) -> dict:
         """"""
@@ -147,15 +156,11 @@ class CoDeepNEATBlueprint:
     def set_fitness(self, fitness):
         self.fitness = fitness
 
-    def get_gene_overlap(self, other_bp) -> float:
-        """"""
-        # Calculate the gene overlap between 2 blueprints as the average of both blueprints node ids shared by the other
-        # blueprint
-        bp_node_ids = set(self.blueprint_graph.keys())
-        other_bp_node_ids = set(other_bp.blueprint_graph.keys())
-        node_id_intersection = bp_node_ids.intersection(other_bp_node_ids)
+    def get_id(self) -> int:
+        return self.blueprint_id
 
-        return (len(node_id_intersection) / len(bp_node_ids) + len(node_id_intersection) / len(other_bp_node_ids)) / 2.0
+    def get_fitness(self) -> float:
+        return self.fitness
 
     def get_blueprint_graph(self) -> {int: object}:
         """"""
@@ -176,9 +181,3 @@ class CoDeepNEATBlueprint:
     def get_graph_topology(self) -> [{int, ...}, ...]:
         """"""
         return self.graph_topology
-
-    def get_id(self) -> int:
-        return self.blueprint_id
-
-    def get_fitness(self) -> float:
-        return self.fitness

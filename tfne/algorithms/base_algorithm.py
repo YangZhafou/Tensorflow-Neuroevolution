@@ -34,9 +34,9 @@ class BaseNeuroevolutionAlgorithm(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of BaseNeuroevolutionAlgorithm does not implement 'evolve_population()'")
 
     @abstractmethod
-    def save_population(self, save_dir_path):
+    def save_state(self, save_dir_path):
         """"""
-        raise NotImplementedError("Subclass of BaseNeuroevolutionAlgorithm does not implement 'save_population()'")
+        raise NotImplementedError("Subclass of BaseNeuroevolutionAlgorithm does not implement 'save_state()'")
 
     @abstractmethod
     def get_best_genome(self) -> BaseGenome:
