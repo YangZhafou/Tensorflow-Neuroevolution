@@ -5,7 +5,7 @@ from ...encodings.codeepneat import CoDeepNEATGenome
 class CoDeepNEATPopulation(BasePopulation):
     """"""
 
-    def __init__(self, saved_population_file_path=None):
+    def __init__(self, saved_state=None):
         """"""
         # Declare internal variables of the CoDeepNEAT population
         self.generation_counter = None
@@ -26,9 +26,9 @@ class CoDeepNEATPopulation(BasePopulation):
         self.bp_species_fitness_history = dict()
         self.bp_species_counter = 0
 
-        # If a file path to a saved population is supplied, load and deserialize it
-        if saved_population_file_path is not None:
-            raise NotImplementedError()
+        # If a saved_state was supplied, load the population from that saved state and overwrite blank defaults
+        if saved_state is not None:
+            self._load_population(saved_state)
 
     def get_best_genome(self) -> CoDeepNEATGenome:
         """"""
@@ -37,3 +37,7 @@ class CoDeepNEATPopulation(BasePopulation):
     def save_population(self, save_dir_path):
         """"""
         raise NotImplementedError("Subclass of BasePopulation does not implement 'save_population()'")
+
+    def _load_population(self, saved_state):
+        """"""
+        raise NotImplementedError()
