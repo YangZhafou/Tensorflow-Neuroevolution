@@ -35,6 +35,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # Register and process the supplied configuration
         self.config = config
         self._process_config()
+        self._sanity_check_config()
 
         # Register the supplied environment and determine the environment parameters (input and output dimension/shape)
         # to which the created neural networks have to adhere to.
@@ -62,78 +63,86 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def initialize_population(self):
         """"""
+        # If population already initialized, summarize status and abort initialization
+        if self.pop.generation_counter is not None:
+            print("Using supplied pre-evolved population. Supplied population summary:")
+            print("Generation:       {:>4} || Best Genome Fitness: {:>8}\n"
+                  "Modules count:    {:>4} || Mod species count:   {:>4}\n"
+                  "Blueprints count: {:>4} || BP species count:    {:>4}\n"
+                  .format(self.pop.generation_counter, self.pop.best_fitness,
+                          len(self.pop.modules), len(self.pop.mod_species),
+                          len(self.pop.blueprints), len(self.pop.bp_species)))
+            return
 
-        print("FORCED EXIT")
-        exit()
+        # No pre-evolved population supplied. Initialize it from scratch
+        print("Initializing a new population of {} blueprints and {} modules..."
+              .format(self.bp_pop_size, self.mod_pop_size))
 
-        if self.initial_population_file_path is None:
-            print("Initializing a new population of {} blueprints and {} modules..."
-                  .format(self.bp_pop_size, self.mod_pop_size))
+        # Set internal variables of the population to the initialization of a new population
+        self.pop.generation_counter = 0
+        self.pop.best_fitness = 0
 
-            # Set internal variables of the population to the initialization of a new population
-            self.generation_counter = 0
-            self.best_fitness = 0
+        #### Initialize Module Population ####
+        # Initialize module population with a basic speciation scheme, even when another speciation type is supplied
+        # as config, only speciating modules according to their module type. Each module species (and therefore
+        # module type) is initiated with the same amount of modules (or close to the same amount if module pop size
+        # not evenly divisble). Parameters of all initial modules chosen as per module initialization implementation
 
-            #### Initialize Module Population ####
-            # Initialize module population with a basic speciation scheme, even when another speciation type is supplied
-            # as config, only speciating modules according to their module type. Each module species (and therefore
-            # module type) is initiated with the same amount of modules (or close to the same amount if module pop size
-            # not evenly divisble). Parameters of all initial modules chosen as per module initialization implementation
+        # Set initial species counter of basic speciation and initialize module species list
+        self.pop.mod_species_counter = len(self.available_modules)
+        for i in range(self.pop.mod_species_counter):
+            spec_id = i + 1  # Start species counter with 1
+            self.pop.mod_species[spec_id] = list()
 
-            # Set initial species counter of basic speciation and initialize module species list
-            self.mod_species_counter = len(self.available_modules)
-            for i in range(self.mod_species_counter):
-                spec_id = i + 1  # Start species counter with 1
-                self.mod_species[spec_id] = list()
+        for i in range(self.mod_pop_size):
+            # Decide on for which species a new module is added (uniformly distributed)
+            chosen_species = (i % self.pop.mod_species_counter)
 
-            for i in range(self.mod_pop_size):
-                # Decide on for which species a new module is added (uniformly distributed)
-                chosen_species = (i % self.mod_species_counter)
+            # Determine type and the associated config parameters of chosen species and initialize a module with it
+            mod_type = self.available_modules[chosen_species]
+            mod_config_params = self.available_mod_params[mod_type]
+            module_id, module = self.encoding.create_initial_module(mod_type=mod_type,
+                                                                    config_params=mod_config_params)
 
-                # Determine type and the associated config parameters of chosen species and initialize a module with it
-                mod_type = self.available_modules[chosen_species]
-                mod_config_params = self.available_mod_params[mod_type]
-                module_id, module = self.encoding.create_initial_module(mod_type=mod_type,
-                                                                        config_params=mod_config_params)
+            # Append newly created initial module to module container and to according species
+            chosen_species_id = chosen_species + 1
+            self.pop.modules[module_id] = module
+            self.pop.mod_species[chosen_species_id].append(module_id)
 
-                # Append newly created initial module to module container and to according species
-                chosen_species_id = chosen_species + 1
-                self.modules[module_id] = module
-                self.mod_species[chosen_species_id].append(module_id)
+            # Create a species representative if speciation method is not 'basic' and no representative chosen yet
+            if self.mod_spec_type != 'basic' and chosen_species_id not in self.pop.mod_species_repr:
+                self.pop.mod_species_repr[chosen_species_id] = module_id
 
-                # Create a species representative if speciation method is not 'basic' and no representative chosen yet
-                if self.mod_spec_type != 'basic' and chosen_species_id not in self.mod_species_repr:
-                    self.mod_species_repr[chosen_species_id] = module_id
+        #### Initialize Blueprint Population ####
+        # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
+        # None species or the 'input' species respectively) and a single output node, having a randomly assigned
+        # species. All hyperparameters of the blueprint are uniform randomly chosen. All blueprints are not
+        # speciated in the beginning and are assigned to species 1.
 
-            #### Initialize Blueprint Population ####
-            # Initialize blueprint population with a minimal blueprint graph, only consisting of an input node (with
-            # None species or the 'input' species respectively) and a single output node, having a randomly assigned
-            # species. All hyperparameters of the blueprint are uniform randomly chosen. All blueprints are not
-            # speciated in the beginning and are assigned to species 1.
+        # Initialize blueprint species list and create tuple of the possible species the output node can take on
+        self.pop.bp_species[1] = list()
+        available_mod_species = tuple(self.pop.mod_species.keys())
 
-            # Initialize blueprint species list and create tuple of the possible species the output node can take on
-            self.bp_species[1] = list()
-            available_mod_species = tuple(self.mod_species.keys())
+        for _ in range(self.bp_pop_size):
+            # Determine the module species of the initial (and only) node
+            initial_node_species = random.choice(available_mod_species)
 
-            for _ in range(self.bp_pop_size):
-                # Determine the module species of the initial (and only) node
-                initial_node_species = random.choice(available_mod_species)
+            # Initialize a new blueprint with minimal graph only using initial node species
+            blueprint_id, blueprint = self._create_initial_blueprint(initial_node_species)
 
-                # Initialize a new blueprint with minimal graph only using initial node species
-                blueprint_id, blueprint = self._create_initial_blueprint(initial_node_species)
+            # Append newly create blueprint to blueprint container and to only initial blueprint species
+            self.pop.blueprints[blueprint_id] = blueprint
+            self.pop.bp_species[1].append(blueprint_id)
 
-                # Append newly create blueprint to blueprint container and to only initial blueprint species
-                self.blueprints[blueprint_id] = blueprint
-                self.bp_species[1].append(blueprint_id)
-
-                # Create a species representative if speciation method is not 'basic' and no representative chosen yet
-                if self.bp_spec_type != 'basic' and 1 not in self.bp_species_repr:
-                    self.bp_species_repr[1] = blueprint_id
-        else:
-            raise NotImplementedError("Initializing population with pre-evolved initial population not yet implemented")
+            # Create a species representative if speciation method is not 'basic' and no representative chosen yet
+            if self.bp_spec_type != 'basic' and 1 not in self.pop.bp_species_repr:
+                self.pop.bp_species_repr[1] = blueprint_id
 
     def evaluate_population(self) -> (int, int):
         """"""
+        print("FORCED EXIT")
+        exit()
+
         # Create container collecting the fitness of the genomes that involve specific modules. Calculate the average
         # fitness of the genomes in which a module is involved in later and assign it as the module's fitness
         mod_fitnesses_in_genomes = dict()
