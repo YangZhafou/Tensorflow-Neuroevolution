@@ -9,3 +9,5 @@ from tfne.evolution_engine import EvolutionEngine
 
 # Import functions
 from tfne.helper_functions import parse_configuration
+from tfne.deserialization import load_genome
+from tfne.deserialization import load_population

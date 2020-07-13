@@ -10,7 +10,7 @@ from ..helper_functions import read_option_from_config
 class XOREnvironment(BaseEnvironment):
     """"""
 
-    def __init__(self, weight_training, verbosity, config):
+    def __init__(self, config):
         """"""
         print("Setting up XOR environment...")
 
@@ -18,22 +18,27 @@ class XOREnvironment(BaseEnvironment):
         self.x = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         self.y = np.array([[0], [1], [1], [0]])
 
-        # Initialize loss function to evaluate performance on either evaluation method
-        self.loss_function = tf.keras.losses.BinaryCrossentropy()
+        # Register the supplied config, which will be evaluated once the method of evaluation is set up
+        self.config = config
 
+        # Initialize loss function to evaluate performance on either evaluation method and declare verbosity
+        self.loss_function = tf.keras.losses.BinaryCrossentropy()
+        self.verbosity = None
+
+    def set_up_evaluation(self, weight_training, verbosity):
+        """"""
         # Set the verbosity level
         self.verbosity = verbosity
 
         # If environment is set to be weight training then set eval_genome_function accordingly and save the supplied
         # weight training parameters
-        self.weight_training = weight_training
-        if self.weight_training:
+        if weight_training:
             # Register the weight training variant as the genome eval function
             self.eval_genome_fitness = self._eval_genome_fitness_weight_training
 
             # Read the required evaluation parameters for a weight training XOR environment
-            self.epochs = read_option_from_config(config, 'EVALUATION', 'epochs')
-            self.batch_size = read_option_from_config(config, 'EVALUATION', 'batch_size')
+            self.epochs = read_option_from_config(self.config, 'EVALUATION', 'epochs')
+            self.batch_size = read_option_from_config(self.config, 'EVALUATION', 'batch_size')
         else:
             # Register the NON weight training variant as the genome eval function
             self.eval_genome_fitness = self._eval_genome_fitness_non_weight_training
@@ -48,9 +53,6 @@ class XOREnvironment(BaseEnvironment):
         # Get model and optimizer required for compilation
         model = genome.get_model()
         optimizer = genome.get_optimizer()
-        if optimizer is None:
-            raise RuntimeError("Genome to evaluate ({}) does not supply an optimizer and no standard optimizer defined"
-                               "for XOR environment as of yet.")
 
         '''
         # Compile and train model
@@ -65,7 +67,7 @@ class XOREnvironment(BaseEnvironment):
         if tf.math.is_nan(evaluated_fitness):
             evaluated_fitness = 0
         '''
-        # During species dev, randomize genome training results
+        # During algorithm development, randomize genome training results for faster testing
         import random
         evaluated_fitness = random.random() * 100
 
@@ -79,9 +81,15 @@ class XOREnvironment(BaseEnvironment):
 
     def replay_genome(self, genome):
         """"""
+        evaluated_fitness = round(float(100 * (1 - self.loss_function(self.y, genome(self.x)))), 4)
         print("Replaying Genome #{}:".format(genome.get_id()))
         print("Solution Values: \t{}\n".format(self.y))
         print("Predicted Values:\t{}\n".format(genome(self.x)))
+        print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
+
+    def duplicate(self) -> XOREnvironment:
+        """"""
+        return XOREnvironment(self.config)
 
     def get_input_shape(self) -> (int,):
         """"""

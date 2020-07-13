@@ -10,6 +10,8 @@ class CIFAR10Environment(BaseEnvironment):
 
     def __init__(self, weight_training, verbosity, epochs=None, batch_size=None):
         """"""
+        raise NotImplementedError("CIFAR10 ENV Not Adjusted to new environment arch")
+
         # Load test data, unpack it and normalize the pixel values
         print("Setting up CIFAR10 environment...")
         cifar10_dataset = tf.keras.datasets.cifar10.load_data()

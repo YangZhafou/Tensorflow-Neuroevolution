@@ -7,6 +7,11 @@ class BaseEnvironment(object, metaclass=ABCMeta):
     """"""
 
     @abstractmethod
+    def set_up_evaluation(self, weight_training, verbosity):
+        """"""
+        raise NotImplementedError("Subclass of BaseEnvironment does not implement 'set_up_evaluation()'")
+
+    @abstractmethod
     def eval_genome_fitness(self, genome) -> float:
         """"""
         raise NotImplementedError("Subclass of BaseEnvironment does not implement 'eval_genome_fitness()'")
@@ -15,6 +20,11 @@ class BaseEnvironment(object, metaclass=ABCMeta):
     def replay_genome(self, genome):
         """"""
         raise NotImplementedError("Subclass of BaseEnvironment does not implement 'replay_genome()'")
+
+    @abstractmethod
+    def duplicate(self) -> BaseEnvironment:
+        """"""
+        raise NotImplementedError("Subclass of BaseEnvironment does not implement 'duplicate()'")
 
     @abstractmethod
     def get_input_shape(self) -> (int, ...):
