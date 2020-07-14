@@ -153,25 +153,22 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def evaluate_population(self) -> (int, int):
         """"""
-        print("FORCED EXIT")
-        exit()
-
         # Create container collecting the fitness of the genomes that involve specific modules. Calculate the average
         # fitness of the genomes in which a module is involved in later and assign it as the module's fitness
         mod_fitnesses_in_genomes = dict()
 
-        # Initialize Progress counter variables for evaluate population progress bar. Print notice of evaluation start
-        genome_pop_size = self.bp_pop_size * self.genomes_per_bp
+        # Initialize population evaluation progress bar. Print notice of evaluation start
+        genome_pop_size = len(self.pop.blueprints) * self.genomes_per_bp
         genome_eval_counter = 0
         genome_eval_counter_div = round(genome_pop_size / 40.0, 4)
-        print("\nEvaluating {} genomes in generation {}...".format(genome_pop_size, self.generation_counter))
+        print("\nEvaluating {} genomes in generation {}...".format(genome_pop_size, self.pop.generation_counter))
         print_str = "\r[{:40}] {}/{} Genomes".format("", genome_eval_counter, genome_pop_size)
         sys.stdout.write(print_str)
         sys.stdout.flush()
 
         # Evaluate each blueprint independent from its species by building 'genomes_per_bp' genomes and averaging out
         # and assigning the resulting fitness
-        for blueprint in self.blueprints.values():
+        for blueprint in self.pop.blueprints.values():
             # Get the species ids of all species present in the blueprint currently evaluated
             bp_module_species = blueprint.get_species()
 
@@ -183,8 +180,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 # blueprint nodes are referring to.
                 bp_assigned_modules = dict()
                 for i in bp_module_species:
-                    chosen_module_id = random.choice(self.mod_species[i])
-                    bp_assigned_modules[i] = self.modules[chosen_module_id]
+                    chosen_module_id = random.choice(self.pop.mod_species[i])
+                    bp_assigned_modules[i] = self.pop.modules[chosen_module_id]
 
                 try:
                     # Create genome, using the specific blueprint, a dict of modules for each species, the configured
@@ -193,7 +190,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                                                                     bp_assigned_modules,
                                                                     self.output_layers,
                                                                     self.input_shape,
-                                                                    self.generation_counter)
+                                                                    self.pop.generation_counter)
 
                 except ValueError:
                     # Catching build value error, occuring when the supplied layers and parameters do not result in a
@@ -215,7 +212,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                     # Now evaluate genome on registered environment and set its fitness
                     # NOTE: As CoDeepNEAT implementation currently only supports 1 eval instance, automatically choose
                     # that instance from the environment list
-                    genome_fitness = self.envs[0].eval_genome_fitness(genome)
+                    genome_fitness = self.environment.eval_genome_fitness(genome)
                     genome.set_fitness(genome_fitness)
 
                 # Print population evaluation progress bar
@@ -239,9 +236,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                         mod_fitnesses_in_genomes[module_id] = [genome_fitness]
 
                 # Register genome as new best if it exhibits better fitness than the previous best
-                if self.best_fitness is None or genome_fitness > self.best_fitness:
-                    self.best_genome = genome
-                    self.best_fitness = genome_fitness
+                if self.pop.best_fitness is None or genome_fitness > self.pop.best_fitness:
+                    self.pop.best_genome = genome
+                    self.pop.best_fitness = genome_fitness
 
             # Average out collected fitness of genomes the blueprint was invovled in. Then assign that average fitness
             # to the blueprint
@@ -252,9 +249,12 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # module
         for mod_id, mod_fitness_list in mod_fitnesses_in_genomes.items():
             mod_genome_fitness_avg = round(statistics.mean(mod_fitness_list), 4)
-            self.modules[mod_id].set_fitness(mod_genome_fitness_avg)
+            self.pop.modules[mod_id].set_fitness(mod_genome_fitness_avg)
 
-        return self.generation_counter, self.best_fitness
+        print("\n\nFORCED EXIT")
+        exit()
+
+        return self.pop.generation_counter, self.best_fitness
 
     def summarize_population(self):
         """"""

@@ -74,31 +74,29 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                                   self.config_params['dropout_rate']['max'],
                                                   self.config_params['dropout_rate']['step']), 4)
 
-    '''
-    def create_module_layers(self, dtype) -> [tf.keras.layers.Layer, ...]:
+    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
         """"""
         # Create the basic keras Dense layer, needed in all variants of the module
         dense_layer = tf.keras.layers.Dense(units=self.units,
                                             activation=self.activation,
                                             kernel_initializer=self.kernel_init,
                                             bias_initializer=self.bias_init,
-                                            dtype=dtype)
-        module_layers.append(dense_layer)
+                                            dtype=self.dtype)
 
-        # If dropout flag present, add the dropout layer as configured to the module layers iterable
-        if self.dropout_flag:
+        # If no dropout flag present, return solely the created dense layer as iterable. If dropout flag present, return
+        # the dense layer and together with the dropout layer
+        if not self.dropout_flag:
+            return (dense_layer,)
+        else:
             dropout_layer = tf.keras.layers.Dropout(rate=self.dropout_rate,
-                                                    dtype=dtype)
-            module_layers.append(dropout_layer)
+                                                    dtype=self.dtype)
+            return dense_layer, dropout_layer
 
-        # Return the iterable containing all layers present in the module
-        return module_layers
-
-    def create_downsampling_layer(self, in_shape, out_shape, dtype) -> tf.keras.layers.Layer:
+    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
         """"""
         raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
 
-
+    '''
     def create_mutation(self,
                         offspring_id,
                         max_degree_of_mutation) -> (int, CoDeepNEATModuleDenseDropout):

@@ -61,8 +61,7 @@ def create_model(blueprint, bp_assigned_modules, output_layers, input_shape, dty
                         if input_nodes_shapes[i] != smallest_out_shape:
                             # output shape of input node mismatched. Create downsampling layer
                             ds_layer = current_node_module.create_downsampling_layer(in_shape=input_nodes[i].shape,
-                                                                                     out_shape=smallest_out_shape,
-                                                                                     dtype=dtype)
+                                                                                     out_shape=smallest_out_shape)
                             downsampled_input = ds_layer(input_nodes[i])
                             input_nodes_downsampled.append(downsampled_input)
                         else:
@@ -82,7 +81,7 @@ def create_model(blueprint, bp_assigned_modules, output_layers, input_shape, dty
                 node_input = node_outputs[current_node_dependencies[0]]
 
             # Create the sequential layers of the module and pipe the just created input through this node/module
-            node_layers = current_node_module.create_module_layers(dtype=dtype)
+            node_layers = current_node_module.create_module_layers()
             node_out = node_input
             for layer in node_layers:
                 node_out = layer(node_out)

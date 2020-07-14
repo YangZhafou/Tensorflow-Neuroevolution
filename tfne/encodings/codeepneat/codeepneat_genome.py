@@ -1,7 +1,6 @@
 import json
 
 import tensorflow as tf
-from absl import logging
 
 from .codeepneat_model import create_model
 from .codeepneat_blueprint import CoDeepNEATBlueprint
@@ -94,14 +93,14 @@ class CoDeepNEATGenome(BaseGenome):
 
     def save_model(self, save_dir_path):
         """"""
-        logging.warning("CoDeepNEATGenome.save_model() NOT YET IMPLEMENTED")
+        raise NotImplementedError()
 
     def set_fitness(self, fitness):
         self.fitness = fitness
 
-    def get_genotype(self) -> (CoDeepNEATBlueprint, {int: CoDeepNEATModuleBase}):
+    def get_genotype(self) -> (CoDeepNEATBlueprint, {int: CoDeepNEATModuleBase}, [dict]):
         """"""
-        return self.blueprint, self.bp_assigned_modules
+        return self.blueprint, self.bp_assigned_modules, self.output_layers
 
     def get_model(self) -> tf.keras.Model:
         """"""
