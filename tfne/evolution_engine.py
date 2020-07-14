@@ -64,7 +64,7 @@ class EvolutionEngine:
             self.ne_algorithm.summarize_population()
 
             # Backup population
-            self.ne_algorithm.save_population(save_dir_path=self.backup_dir_path)
+            self.ne_algorithm.save_state(save_dir_path=self.backup_dir_path)
 
             # Exit training loop if maximum number of generations or maximum fitness has been reached
             if self.max_fitness is not None and best_fitness >= self.max_fitness:

@@ -251,76 +251,35 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             mod_genome_fitness_avg = round(statistics.mean(mod_fitness_list), 4)
             self.pop.modules[mod_id].set_fitness(mod_genome_fitness_avg)
 
-        print("\n\nFORCED EXIT")
-        exit()
+        # Calculate average fitness of each module species and add to pop.mod_species_fitness_history
+        for spec_id, spec_mod_ids in self.pop.mod_species.items():
+            spec_fitness_list = [self.pop.modules[mod_id].get_fitness() for mod_id in spec_mod_ids]
+            spec_avg_fitness = round(statistics.mean(spec_fitness_list), 4)
+            if spec_id in self.pop.mod_species_fitness_history:
+                self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter] = spec_avg_fitness
+            else:
+                self.pop.mod_species_fitness_history[spec_id] = {self.pop.generation_counter: spec_avg_fitness}
 
-        return self.pop.generation_counter, self.best_fitness
+        # Calculate average fitness of each blueprint species and add to pop.bp_species_fitness_history
+        for spec_id, spec_bp_ids in self.pop.bp_species.items():
+            spec_fitness_list = [self.pop.blueprints[bp_id].get_fitness() for bp_id in spec_bp_ids]
+            spec_avg_fitness = round(statistics.mean(spec_fitness_list), 4)
+            if spec_id in self.pop.bp_species_fitness_history:
+                self.pop.bp_species_fitness_history[spec_id][self.pop.generation_counter] = spec_avg_fitness
+            else:
+                self.pop.bp_species_fitness_history[spec_id] = {self.pop.generation_counter: spec_avg_fitness}
+
+        return self.pop.generation_counter, self.pop.best_fitness
 
     def summarize_population(self):
         """"""
-        # Calculate average fitnesses of each module species and total module pop. Determine best module of each species
-        mod_species_avg_fitness = dict()
-        mod_species_best_id = dict()
-        for spec_id, spec_mod_ids in self.mod_species.items():
-            spec_total_fitness = 0
-            for mod_id in spec_mod_ids:
-                mod_fitness = self.modules[mod_id].get_fitness()
-                spec_total_fitness += mod_fitness
-                if spec_id not in mod_species_best_id or mod_fitness > mod_species_best_id[spec_id][1]:
-                    mod_species_best_id[spec_id] = (mod_id, mod_fitness)
-            mod_species_avg_fitness[spec_id] = round(spec_total_fitness / len(spec_mod_ids), 4)
-        modules_avg_fitness = round(sum(mod_species_avg_fitness.values()) / len(mod_species_avg_fitness), 4)
-
-        # Calculate average fitnesses of each bp species and total bp pop. Determine best bp of each species
-        bp_species_avg_fitness = dict()
-        bp_species_best_id = dict()
-        for spec_id, spec_bp_ids in self.bp_species.items():
-            spec_total_fitness = 0
-            for bp_id in spec_bp_ids:
-                bp_fitness = self.blueprints[bp_id].get_fitness()
-                spec_total_fitness += bp_fitness
-                if spec_id not in bp_species_best_id or bp_fitness > bp_species_best_id[spec_id][1]:
-                    bp_species_best_id[spec_id] = (bp_id, bp_fitness)
-            bp_species_avg_fitness[spec_id] = round(spec_total_fitness / len(spec_bp_ids), 4)
-        blueprints_avg_fitness = round(sum(bp_species_avg_fitness.values()) / len(bp_species_avg_fitness), 4)
-
-        # Print summary header
-        print("\n\n\n\033[1m{}  Population Summary  {}\n\n"
-              "Generation: {:>4}  ||  Best Genome Fitness: {:>8}  ||  Average Blueprint Fitness: {:>8}  ||  "
-              "Average Module Fitness: {:>8}\033[0m\n"
-              "Best Genome: {}\n".format('#' * 60,
-                                         '#' * 60,
-                                         self.generation_counter,
-                                         self.best_fitness,
-                                         blueprints_avg_fitness,
-                                         modules_avg_fitness,
-                                         self.best_genome))
-
-        # Print summary of blueprint species
-        print("\033[1mBP Species                || BP Species Avg Fitness                || BP Species Size\n"
-              "Best BP of Species\033[0m")
-        for spec_id, spec_bp_avg_fitness in bp_species_avg_fitness.items():
-            print("{:>6}                    || {:>8}                              || {:>8}\n{}"
-                  .format(spec_id,
-                          spec_bp_avg_fitness,
-                          len(self.bp_species[spec_id]),
-                          self.blueprints[bp_species_best_id[spec_id][0]]))
-
-        # Print summary of module species
-        print("\n\033[1mModule Species            || Module Species Avg Fitness            || "
-              "Module Species Size\nBest Module of Species\033[0m")
-        for spec_id, spec_mod_avg_fitness in mod_species_avg_fitness.items():
-            print("{:>6}                    || {:>8}                              || {:>8}\n{}"
-                  .format(spec_id,
-                          spec_mod_avg_fitness,
-                          len(self.mod_species[spec_id]),
-                          self.modules[mod_species_best_id[spec_id][0]]))
-
-        # Print summary footer
-        print("\n\033[1m" + '#' * 142 + "\033[0m\n")
+        self.pop.summarize_population()
 
     def evolve_population(self) -> bool:
         """"""
+
+        print("FORCED EXIT")
+        exit()
 
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
@@ -383,6 +342,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def save_state(self, save_dir_path):
         """"""
+
+        return
 
         raise NotImplementedError("Change function to save the state of the whole evolution, including variables of"
                                   "the encoding and the algorithm")

@@ -20,6 +20,10 @@ class OptimizerFactory:
         """"""
         return tf.keras.optimizers.deserialize(self.optimizer_parameters)
 
+    def get_name(self) -> str:
+        """"""
+        return self.optimizer_parameters['class_name']
+
     '''
     def duplicate(self):
         """"""
@@ -28,8 +32,4 @@ class OptimizerFactory:
     def get_parameters(self) -> {str: Union[str, dict]}:
         """"""
         return self.optimizer_parameters
-
-    def get_name(self) -> str:
-        """"""
-        return self.optimizer_parameters['class_name']
     '''
