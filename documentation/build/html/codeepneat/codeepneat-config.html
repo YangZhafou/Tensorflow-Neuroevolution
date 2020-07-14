@@ -107,7 +107,6 @@
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-overview.html">CoDeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-specification.html">CoDeepNEAT Specification</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CoDeepNEAT Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#evaluation-config-parameters">[EVALUATION] Config Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#population-config-parameters">[POPULATION] Config Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#genome-config-parameters">[GENOME] Config Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-speciation-config-parameters">[MODULE_SPECIATION] Config Parameters</a></li>
@@ -125,6 +124,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-overview.html">SubGraphNeat/-DeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-specification.html">SubGraphNEAT/-DeepNEAT Specification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">TFNE Evaluation Environments</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../environments/xor-environment.html">XOR Environment</a></li>
 </ul>
 
             
@@ -193,21 +196,6 @@
   <div class="section" id="codeepneat-configuration">
 <h1>CoDeepNEAT Configuration<a class="headerlink" href="#codeepneat-configuration" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
-<div class="section" id="evaluation-config-parameters">
-<h2>[EVALUATION] Config Parameters<a class="headerlink" href="#evaluation-config-parameters" title="Permalink to this headline">¶</a></h2>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">epochs</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
-<p><strong>Description</strong>: Specifies the amount of epochs a genome phenotype is to be trained on the environment before evaluating its fitness.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0 | None</p>
-<p><strong>Description</strong>: Supplied batch_size value for the model.fit function. batch_size is the number of training examples used for a single iteration of backpropagating the gradient of the loss function.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></dt><dd><p><strong>Value Range</strong>: -</p>
-<p><strong>Description</strong>: &lt;FEATURE STILL IN DEVELOPMENT&gt;</p>
-</dd>
-</dl>
-</div>
-<hr class="docutils" />
 <div class="section" id="population-config-parameters">
 <h2>[POPULATION] Config Parameters<a class="headerlink" href="#population-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>

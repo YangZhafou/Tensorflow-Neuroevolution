@@ -73,3 +73,14 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
    subgraphneat-deepneat/subgraphneat-deepneat-specification
    subgraphneat-deepneat/subgraphneat-deepneat-config
 
+
+
+[See here for the TFNE Evaluation Environments and how it is implemented in TFNE
+====================================================================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: TFNE Evaluation Environments
+
+   environments/xor-environment
+
