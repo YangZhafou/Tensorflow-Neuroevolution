@@ -40,9 +40,9 @@ class CoDeepNEATSelectionBP:
             current_total_size -= 1
 
         #### Blueprint Selection ####
-        for spec_id, spec_bp_ids in self.bp_species.items():
+        for spec_id, spec_bp_ids in self.pop.bp_species.items():
             # Sort blueprint ids in species according to their fitness
-            spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.blueprints[x].get_fitness(), reverse=True)
+            spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.pop.blueprints[x].get_fitness(), reverse=True)
 
             # Determine blueprint ids to remove in order to prevent to use them for reproduction
             removal_threshold_index = int(len(spec_bp_ids) * (1 - self.bp_spec_reprod_thres))
@@ -53,8 +53,8 @@ class CoDeepNEATSelectionBP:
 
             # Delete low performing blueprints that will not be considered for reproduction from species assignment
             for bp_id_to_remove in spec_bp_ids_to_remove:
-                self.bp_species[spec_id].remove(bp_id_to_remove)
-                del self.blueprints[bp_id_to_remove]
+                self.pop.bp_species[spec_id].remove(bp_id_to_remove)
+                del self.pop.blueprints[bp_id_to_remove]
 
         # Set reinit offspring to 0 and extinction to False, as no species can go extinct in basic selection
         reinit_offspring = 0
@@ -187,20 +187,20 @@ class CoDeepNEATSelectionBP:
         #### Blueprint Selection ####
         # Remove the species and their elements that were determined to go extinct.
         for spec_id in spec_ids_to_remove:
-            for bp_id in self.bp_species[spec_id]:
-                del self.blueprints[bp_id]
-            del self.bp_species[spec_id]
-            del self.bp_species_repr[spec_id]
-            del self.bp_species_fitness_history[spec_id]
+            for bp_id in self.pop.bp_species[spec_id]:
+                del self.pop.blueprints[bp_id]
+            del self.pop.bp_species[spec_id]
+            del self.pop.bp_species_repr[spec_id]
+            del self.pop.bp_species_fitness_history[spec_id]
 
         # If all species went extinct, return positive for pop_extinct
-        if len(self.bp_species) == 0:
+        if len(self.pop.bp_species) == 0:
             return None, None, True
 
         # Remove the elements from each surviving species that do not pass the reproduction threshold
-        for spec_id, spec_bp_ids in self.bp_species.items():
+        for spec_id, spec_bp_ids in self.pop.bp_species.items():
             # Sort blueprint ids in species according to their fitness
-            spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.blueprints[x].get_fitness(), reverse=True)
+            spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.pop.blueprints[x].get_fitness(), reverse=True)
 
             # Determine blueprint ids to remove in order to prevent to use them for reproduction
             removal_threshold_index = int(len(spec_bp_ids) * (1 - self.bp_spec_reprod_thres))
@@ -212,12 +212,12 @@ class CoDeepNEATSelectionBP:
             # Exclude the species representative from removal, in case the species representative does not clear the
             # removal threshold of the species
             spec_bp_ids_to_remove = [bp_id for bp_id in spec_bp_ids_to_remove
-                                     if bp_id != self.bp_species_repr[spec_id]]
+                                     if bp_id != self.pop.bp_species_repr[spec_id]]
 
             # Delete low performing blueprints that will not be considered for reproduction from species assignment
             for bp_id_to_remove in spec_bp_ids_to_remove:
-                self.bp_species[spec_id].remove(bp_id_to_remove)
-                del self.blueprints[bp_id_to_remove]
+                self.pop.bp_species[spec_id].remove(bp_id_to_remove)
+                del self.pop.blueprints[bp_id_to_remove]
 
         # Return the determined blueprint species offspring dict, the count of reinitialized offspring and the flag
         # indicating that the population did not go extinct

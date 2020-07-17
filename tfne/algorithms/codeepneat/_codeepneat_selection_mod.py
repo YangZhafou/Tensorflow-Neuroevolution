@@ -40,9 +40,9 @@ class CoDeepNEATSelectionMOD:
             current_total_size -= 1
 
         #### Module Selection ####
-        for spec_id, spec_mod_ids in self.mod_species.items():
+        for spec_id, spec_mod_ids in self.pop.mod_species.items():
             # Sort module ids in species according to their fitness
-            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.modules[x].get_fitness(), reverse=True)
+            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.pop.modules[x].get_fitness(), reverse=True)
 
             # Determine module ids to remove in order to prevent to use them for reproduction
             removal_threshold_index = int(len(spec_mod_ids) * (1 - self.mod_spec_reprod_thres))
@@ -53,8 +53,8 @@ class CoDeepNEATSelectionMOD:
 
             # Delete low performing modules that will not be considered for reproduction from species assignment
             for mod_id_to_remove in spec_mod_ids_to_remove:
-                self.mod_species[spec_id].remove(mod_id_to_remove)
-                del self.modules[mod_id_to_remove]
+                self.pop.mod_species[spec_id].remove(mod_id_to_remove)
+                del self.pop.modules[mod_id_to_remove]
 
         # Set reinit offspring to 0 and extinction to False, as no species can go extinct in basic selection
         reinit_offspring = 0
@@ -206,20 +206,20 @@ class CoDeepNEATSelectionMOD:
         #### Module Selection ####
         # Remove the species and their elements that were determined to go extinct.
         for spec_id in spec_ids_to_remove:
-            for mod_id in self.mod_species[spec_id]:
-                del self.modules[mod_id]
-            del self.mod_species[spec_id]
-            del self.mod_species_repr[spec_id]
-            del self.mod_species_fitness_history[spec_id]
+            for mod_id in self.pop.mod_species[spec_id]:
+                del self.pop.modules[mod_id]
+            del self.pop.mod_species[spec_id]
+            del self.pop.mod_species_repr[spec_id]
+            del self.pop.mod_species_fitness_history[spec_id]
 
         # If all species went extinct, return positive for pop_extinct
-        if len(self.mod_species) == 0:
+        if len(self.pop.mod_species) == 0:
             return None, None, True
 
         # Remove the elements from each surviving species that do not pass the reproduction threshold
-        for spec_id, spec_mod_ids in self.mod_species.items():
+        for spec_id, spec_mod_ids in self.pop.mod_species.items():
             # Sort module ids in species according to their fitness
-            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.modules[x].get_fitness(), reverse=True)
+            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.pop.modules[x].get_fitness(), reverse=True)
 
             # Determine module ids to remove in order to prevent to use them for reproduction
             removal_threshold_index = int(len(spec_mod_ids) * (1 - self.mod_spec_reprod_thres))
@@ -231,12 +231,12 @@ class CoDeepNEATSelectionMOD:
             # Exclude the species representative from removal, in case the species representative does not clear the
             # removal threshold of the species
             spec_mod_ids_to_remove = [mod_id for mod_id in spec_mod_ids_to_remove
-                                      if mod_id != self.mod_species_repr[spec_id]]
+                                      if mod_id != self.pop.mod_species_repr[spec_id]]
 
             # Delete low performing modules that will not be considered for reproduction from species assignment
             for mod_id_to_remove in spec_mod_ids_to_remove:
-                self.mod_species[spec_id].remove(mod_id_to_remove)
-                del self.modules[mod_id_to_remove]
+                self.pop.mod_species[spec_id].remove(mod_id_to_remove)
+                del self.pop.modules[mod_id_to_remove]
 
         # Return the determined module species offspring dict, the count of reinitialized offspring and the flag
         # indicating that the population did not go extinct
