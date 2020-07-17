@@ -35,6 +35,11 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_downsampling_layer()'")
 
     @abstractmethod
+    def serialize(self) -> dict:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'serialize()'")
+
+    @abstractmethod
     def get_module_type(self) -> str:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_module_name()'")
@@ -66,11 +71,6 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
                          max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_crossover()'")
-
-    @abstractmethod
-    def serialize(self) -> dict:
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'serialize()'")
 
     @abstractmethod
     def get_distance(self, other_module) -> float:
