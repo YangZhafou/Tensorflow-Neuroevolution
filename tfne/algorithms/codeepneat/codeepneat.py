@@ -305,6 +305,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         if pop_extinct:
             return True
 
+        print("FORCED EXIT")
+        exit()
+
         #### Evolve Modules ####
         new_module_ids = self._evolve_modules(mod_species_offspring, mod_reinit_offspring)
 
@@ -338,47 +341,25 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def save_state(self, save_dir_path):
         """"""
-
-        return
-
-        raise NotImplementedError("Change function to save the state of the whole evolution, including variables of"
-                                  "the encoding and the algorithm")
-
         # Set save file name as 'pop backup' and including the current generation
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        save_file_path = save_dir_path + f"tfne_run_backup_gen_{self.generation_counter}.json"
+        save_file_path = save_dir_path + f"tfne_backup_gen_{self.pop.generation_counter}.json"
 
-        # Serialize all modules for json output
-        serialized_modules = dict()
-        for mod_id, module in self.modules.items():
-            serialized_modules[mod_id] = module.serialize()
+        # Create serialized state of the evolutionary process. Set type of that serialized state.
+        serialized_state = dict()
+        serialized_state['type'] = 'CoDeepNEAT'
 
-        # Serialize all blueprints for json output
-        serialized_blueprints = dict()
-        for bp_id, blueprint in self.blueprints.items():
-            serialized_blueprints[bp_id] = blueprint.serialize()
+        # Create serialized population
+        serialized_state['population'] = self.pop.serialize()
 
-        # Use serialized module and blueprint population and extend it by algorithm internal evolution information
-        serialized_population = {
-            'generation_counter': self.generation_counter,
-            'modules': serialized_modules,
-            'mod_species': self.mod_species,
-            'mod_species_repr': self.mod_species_repr if self.mod_species_repr else None,
-            'mod_species_fitness_history': self.mod_species_fitness_history,
-            'mod_species_counter': self.mod_species_counter,
-            'blueprints': serialized_blueprints,
-            'bp_species': self.bp_species,
-            'bp_species_repr': self.bp_species_repr if self.bp_species_repr else None,
-            'bp_species_fitness_history': self.bp_species_fitness_history,
-            'bp_species_counter': self.bp_species_counter,
-            'best_genome': self.best_genome.serialize()
-        }
+        # Create serialized encoding state
+        serialized_state['encoding_state'] = self.encoding.serialize_state()
 
-        # Save the just serialzied population as a json file
+        # Save the just serialized state as a json file
         with open(save_file_path, 'w') as save_file:
-            json.dump(serialized_population, save_file, indent=4)
-        print(f"Backed up generation {self.generation_counter} of the CoDeepNEAT run to file: {save_file_path}")
+            json.dump(serialized_state, save_file, indent=4)
+        print(f"Backed up generation {self.generation_counter} of the CoDeepNEAT evolution to file: {save_file_path}")
 
     def _load_state(self, saved_state):
         """"""
@@ -386,4 +367,4 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def get_best_genome(self) -> CoDeepNEATGenome:
         """"""
-        return self.best_genome
+        return self.pop.best_genome

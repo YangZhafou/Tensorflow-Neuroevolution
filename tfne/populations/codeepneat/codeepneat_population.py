@@ -89,7 +89,34 @@ class CoDeepNEATPopulation(BasePopulation):
 
     def serialize(self) -> dict:
         """"""
-        raise NotImplementedError("Subclass of BasePopulation does not implement 'serialize()'")
+        # Serialize all modules
+        serialized_modules = dict()
+        for mod_id, module in self.modules.items():
+            serialized_modules[mod_id] = module.serialize()
+
+        # Serialize all blueprints
+        serialized_blueprints = dict()
+        for bp_id, blueprint in self.blueprints.items():
+            serialized_blueprints[bp_id] = blueprint.serialize()
+
+        # Use serialized module and blueprint population and extend it by population internal evolution information
+        serialized_population = {
+            'generation_counter': self.generation_counter,
+            'modules': serialized_modules,
+            'mod_species': self.mod_species,
+            'mod_species_repr': self.mod_species_repr if self.mod_species_repr else None,
+            'mod_species_fitness_history': self.mod_species_fitness_history,
+            'mod_species_counter': self.mod_species_counter,
+            'blueprints': serialized_blueprints,
+            'bp_species': self.bp_species,
+            'bp_species_repr': self.bp_species_repr if self.bp_species_repr else None,
+            'bp_species_fitness_history': self.bp_species_fitness_history,
+            'bp_species_counter': self.bp_species_counter,
+            'best_genome': self.best_genome.serialize(),
+            'best_fitness': self.best_fitness
+        }
+
+        return serialized_population
 
     def _load_population(self, saved_state):
         """"""

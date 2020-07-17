@@ -104,8 +104,18 @@ class CoDeepNEATEncoding(BaseEncoding):
 
     def serialize_state(self) -> dict:
         """"""
-        # TODO set return type
-        raise NotImplementedError()
+        # Create serialized state of the encoding consisting of encodings internal variables
+        serialized_state = {
+            'genome_id_counter': self.genome_id_counter,
+            'mod_id_counter': self.mod_id_counter,
+            'bp_id_counter': self.bp_id_counter,
+            'bp_gene_id_counter': self.bp_gene_id_counter,
+            'gene_to_gene_id': self.gene_to_gene_id,
+            'node_counter': self.node_counter,
+            'conn_split_history': self.conn_split_history
+        }
+
+        return serialized_state
 
     def _load_state(self, saved_state):
         """"""
