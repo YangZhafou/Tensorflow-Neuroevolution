@@ -96,6 +96,10 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         """"""
         raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
 
+    def get_module_type(self) -> str:
+        """"""
+        return 'DenseDropout'
+
     '''
     def create_mutation(self,
                         offspring_id,
@@ -245,8 +249,4 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
         # Return the distance as the distance of the average congruence to the perfecnt congruence of 1.0
         return 1.0 - statistics.mean(congruence_list)
-
-    def get_module_type(self) -> str:
-        """"""
-        return 'DenseDropout'
     '''

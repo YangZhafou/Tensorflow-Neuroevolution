@@ -110,6 +110,9 @@ class CoDeepNEATSelectionMOD:
                 spec_ids_to_remove.append(spec_id)
                 spec_type_frequency[species_mod_type] -= 1
 
+        print("FORCED EXIT")
+        exit()
+
         #### Offspring Size Calculation ####
         # Distinguish offspring size calculation depending on if extinct offspring will be reinitialized or not
         # (see config option 'mod_spec_reinit_extinct')
