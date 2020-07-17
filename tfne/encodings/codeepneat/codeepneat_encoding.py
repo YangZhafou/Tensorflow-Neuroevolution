@@ -104,14 +104,25 @@ class CoDeepNEATEncoding(BaseEncoding):
 
     def serialize_state(self) -> dict:
         """"""
+        # Convert keys of gene_to_gene_id and conn_split_history dicts to strings as tuples not elligible for json
+        # serialization
+        serialized_gene_to_gene_id = dict()
+        for key, value in self.gene_to_gene_id.items():
+            serializable_key = str(key)
+            serialized_gene_to_gene_id[serializable_key] = value
+        serialized_conn_split_history = dict()
+        for key, value in self.conn_split_history.items():
+            serializable_key = str(key)
+            serialized_conn_split_history[serializable_key] = value
+
         return {
             'genome_id_counter': self.genome_id_counter,
             'mod_id_counter': self.mod_id_counter,
             'bp_id_counter': self.bp_id_counter,
             'bp_gene_id_counter': self.bp_gene_id_counter,
-            'gene_to_gene_id': self.gene_to_gene_id,
+            'gene_to_gene_id': serialized_gene_to_gene_id,
             'node_counter': self.node_counter,
-            'conn_split_history': self.conn_split_history
+            'conn_split_history': serialized_conn_split_history
         }
 
     def _load_state(self, saved_state):

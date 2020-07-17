@@ -163,7 +163,7 @@ class CoDeepNEATSelectionBP:
 
                 # Determine offspring size and correct to minimal offspring size if needed
                 spec_fitness_share = spec_fitness_history[self.pop.generation_counter] / total_avg_fitness
-                spec_intended_size = math.floor(*self.bp_pop_size)
+                spec_intended_size = math.floor(spec_fitness_share * self.bp_pop_size)
                 offspring_size = spec_intended_size - self.bp_spec_bp_elitism
                 if offspring_size <= self.bp_spec_min_offspring:
                     offspring_size = self.bp_spec_min_offspring

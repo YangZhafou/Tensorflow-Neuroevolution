@@ -359,7 +359,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # Save the just serialized state as a json file
         with open(save_file_path, 'w') as save_file:
             json.dump(serialized_state, save_file, indent=4)
-        print(f"Backed up generation {self.generation_counter} of the CoDeepNEAT evolution to file: {save_file_path}")
+        print("Backed up generation {} of the CoDeepNEAT evolutionary run to file: {}"
+              .format(self.pop.generation_counter,
+                      save_file_path))
 
     def _load_state(self, saved_state):
         """"""
