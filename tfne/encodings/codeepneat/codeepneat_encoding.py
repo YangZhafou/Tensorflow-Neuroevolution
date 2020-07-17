@@ -102,7 +102,7 @@ class CoDeepNEATEncoding(BaseEncoding):
         """"""
         return OptimizerFactory(optimizer_parameters)
 
-    def save_state(self):
+    def serialize_state(self) -> dict:
         """"""
         # TODO set return type
         raise NotImplementedError()

@@ -87,9 +87,9 @@ class CoDeepNEATPopulation(BasePopulation):
         # Print summary footer
         print("\n\033[1m" + '#' * 142 + "\033[0m\n")
 
-    def save_population(self, save_dir_path):
+    def serialize(self) -> dict:
         """"""
-        raise NotImplementedError("Subclass of BasePopulation does not implement 'save_population()'")
+        raise NotImplementedError("Subclass of BasePopulation does not implement 'serialize()'")
 
     def _load_population(self, saved_state):
         """"""

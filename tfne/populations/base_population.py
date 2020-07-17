@@ -5,6 +5,6 @@ class BasePopulation(object, metaclass=ABCMeta):
     """"""
 
     @abstractmethod
-    def save_population(self, save_dir_path):
+    def serialize(self) -> dict:
         """"""
-        raise NotImplementedError("Subclass of BasePopulation does not implement 'save_population()'")
+        raise NotImplementedError("Subclass of BasePopulation does not implement 'serialize()'")

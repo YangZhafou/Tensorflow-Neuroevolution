@@ -10,3 +10,8 @@ class BaseEncoding(object, metaclass=ABCMeta):
     def create_genome(self, *args) -> (int, BaseGenome):
         """"""
         raise NotImplementedError("Subclass of BaseEncoding does not implement 'create_genome()'")
+
+    @abstractmethod
+    def serialize_state(self) -> dict:
+        """"""
+        raise NotImplementedError("Subclass of BaseEncoding does not implement 'serialize_state()'")
