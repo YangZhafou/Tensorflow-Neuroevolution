@@ -65,45 +65,47 @@ class CoDeepNEATSelectionMOD:
     def _select_modules_param_distance_fixed(self) -> ({int: int}, int, bool):
         """"""
         #### Determination of Species Extinction ####
-        # Determine average fitness of each current species and append it to the species avg fitness history
-        for spec_id, spec_mod_ids in self.mod_species.items():
-            spec_avg_fitness = statistics.mean([self.modules[mod_id].get_fitness() for mod_id in spec_mod_ids])
-            if spec_id in self.mod_species_fitness_history:
-                self.mod_species_fitness_history[spec_id].append(spec_avg_fitness)
-            else:
-                self.mod_species_fitness_history[spec_id] = [spec_avg_fitness]
-
         # Determine if species can be considered for extinction. Critera: Species existed long enough; species can be
         # removed according to species elitism; species is not the last of its module type. Then determine if species is
         # stagnating for the recent config specified time period (meaning that it had not improved at any time in the
         # recent time period). Preprocess current species by listing the frequency of module types as to not remove the
         # last species of a unique module type
         spec_type_frequency = dict()
-        for mod_id in self.mod_species_repr.values():
-            spec_mod_type = self.modules[mod_id].get_module_type()
+        for mod_id in self.pop.mod_species_repr.values():
+            spec_mod_type = self.pop.modules[mod_id].get_module_type()
             if spec_mod_type in spec_type_frequency:
                 spec_type_frequency[spec_mod_type] += 1
             else:
                 spec_type_frequency[spec_mod_type] = 1
 
+        # Create order in which to consider species for extinction in order to remove low performing species first.
+        # Consider species with the currently lowest avg fitness first
+        spec_select_order = sorted(self.pop.mod_species.keys(),
+                                   key=lambda x: self.pop.mod_species_fitness_history[x][self.pop.generation_counter])
+
+        # Determine species ids to remove according to the above stated criteria
         spec_ids_to_remove = list()
-        for spec_id in self.mod_species:
+        for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
-            if len(self.mod_species_fitness_history[spec_id]) < self.mod_spec_max_stagnation:
+            if len(self.pop.mod_species_fitness_history[spec_id]) < self.mod_spec_max_stagnation:
                 continue
             # Don't consider species for extinction if species elitism doesn't allow removal of further species
-            if len(self.mod_species) <= self.mod_spec_species_elitism:
+            if len(self.pop.mod_species) <= self.mod_spec_species_elitism:
                 continue
             # Don't consider species for extinction if it is the last of its module type and species elitism is set to
             # a value higher than all possible module types.
-            spec_mod_type = self.modules[self.mod_species_repr[spec_id]].get_module_type()
+            spec_mod_type = self.pop.modules[self.pop.mod_species_repr[spec_id]].get_module_type()
             if spec_type_frequency[spec_mod_type] == 1 and self.mod_spec_species_elitism >= len(self.available_modules):
                 continue
 
-            # Consider species for extinction and determine if it has been stagnating
-            distant_avg_fitness = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation]
-            recent_fitness_history = self.mod_species_fitness_history[spec_id][-self.mod_spec_max_stagnation:]
-            if distant_avg_fitness >= max(recent_fitness_history):
+            # Consider species for extinction and determine if it has been stagnating by checking if the distant avg
+            # fitness is higher than all recent avg fitnesses
+            distant_generation = self.pop.generation_counter - self.mod_spec_max_stagnation
+            distant_avg_fitness = self.pop.mod_species_fitness_history[spec_id][distant_generation]
+            recent_fitness = list()
+            for i in range(self.mod_spec_max_stagnation):
+                recent_fitness.append(self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter - i])
+            if distant_avg_fitness >= max(recent_fitness):
                 # Species is stagnating. Flag species to be removed later and decrement species type frequency
                 spec_ids_to_remove.append(spec_id)
                 spec_type_frequency[species_mod_type] -= 1

@@ -277,10 +277,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def evolve_population(self) -> bool:
         """"""
-
-        print("FORCED EXIT")
-        exit()
-
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
             mod_species_offspring, mod_reinit_offspring, pop_extinct = self._select_modules_basic()
@@ -337,7 +333,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
         #### Return ####
         # Adjust generation counter and return False, signalling that the population has not gone extinct
-        self.generation_counter += 1
+        self.pop.generation_counter += 1
         return False
 
     def save_state(self, save_dir_path):

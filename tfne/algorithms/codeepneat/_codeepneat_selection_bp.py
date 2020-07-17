@@ -65,30 +65,29 @@ class CoDeepNEATSelectionBP:
     def _select_blueprints_gene_overlap_fixed(self) -> ({int: int}, int, bool):
         """"""
         #### Determination of Species Extinction ####
-        # Determine average fitness of each current species and append it to the species avg fitness history
-        for spec_id, spec_bp_ids in self.bp_species.items():
-            spec_avg_fitness = statistics.mean([self.blueprints[bp_id].get_fitness() for bp_id in spec_bp_ids])
-            if spec_id in self.bp_species_fitness_history:
-                self.bp_species_fitness_history[spec_id].append(spec_avg_fitness)
-            else:
-                self.bp_species_fitness_history[spec_id] = [spec_avg_fitness]
-
         # Determine if species can be considered for extinction. Critera: Species existed long enough or species can be
         # removed according to species elitism. Then determine if species is stagnating for the recent config specified
-        # time period (meaning that it had not improved at any time in the recent time period).
+        # time period (meaning that it had not improved at any time in the recent time period). First create order in
+        # which to consider species for extinction in order to remove low performing species first. Consider species
+        # with the currently lowest avg fitness first
+        spec_select_order = sorted(self.pop.bp_species.keys(),
+                                   key=lambda x: self.pop.bp_species_fitness_history[x][self.pop.generation_counter])
         spec_ids_to_remove = list()
-        for spec_id in self.bp_species:
+        for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
-            if len(self.bp_species_fitness_history[spec_id]) < self.bp_spec_max_stagnation:
+            if len(self.pop.bp_species_fitness_history[spec_id]) < self.bp_spec_max_stagnation:
                 continue
             # Don't consider species for extinction if species elitism doesn't allow removal of further species
-            if len(self.bp_species) <= self.bp_spec_species_elitism:
+            if len(self.pop.bp_species) <= self.bp_spec_species_elitism:
                 continue
 
             # Consider species for extinction and determine if it has been stagnating
-            distant_avg_fitness = self.bp_species_fitness_history[spec_id][-self.bp_spec_max_stagnation]
-            recent_fitness_history = self.bp_species_fitness_history[spec_id][-self.bp_spec_max_stagnation:]
-            if distant_avg_fitness >= max(recent_fitness_history):
+            distant_generation = self.pop.generation_counter - self.bp_spec_max_stagnation
+            distant_avg_fitness = self.pop.bp_species_fitness_history[spec_id][distant_generation]
+            recent_fitness = list()
+            for i in range(self.bp_spec_max_stagnation):
+                recent_fitness.append(self.pop.bp_species_fitness_history[spec_id][self.pop.generation_counter - i])
+            if distant_avg_fitness >= max(recent_fitness):
                 # Species is stagnating. Flag species to be removed later.
                 spec_ids_to_remove.append(spec_id)
 
