@@ -74,48 +74,6 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                                   self.config_params['dropout_rate']['max'],
                                                   self.config_params['dropout_rate']['step']), 4)
 
-    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
-        """"""
-        # Create the basic keras Dense layer, needed in all variants of the module
-        dense_layer = tf.keras.layers.Dense(units=self.units,
-                                            activation=self.activation,
-                                            kernel_initializer=self.kernel_init,
-                                            bias_initializer=self.bias_init,
-                                            dtype=self.dtype)
-
-        # If no dropout flag present, return solely the created dense layer as iterable. If dropout flag present, return
-        # the dense layer and together with the dropout layer
-        if not self.dropout_flag:
-            return (dense_layer,)
-        else:
-            dropout_layer = tf.keras.layers.Dropout(rate=self.dropout_rate,
-                                                    dtype=self.dtype)
-            return dense_layer, dropout_layer
-
-    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
-        """"""
-        raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
-
-    def serialize(self) -> dict:
-        """"""
-        return {
-            'module_type': self.get_module_type(),
-            'module_id': self.module_id,
-            'parent_mutation': self.parent_mutation,
-            'merge_method': self.merge_method,
-            'units': self.units,
-            'activation': self.activation,
-            'kernel_init': self.kernel_init,
-            'bias_init': self.bias_init,
-            'dropout_flag': self.dropout_flag,
-            'dropout_rate': self.dropout_rate
-        }
-
-    def get_module_type(self) -> str:
-        """"""
-        return 'DenseDropout'
-
-    '''
     def create_mutation(self,
                         offspring_id,
                         max_degree_of_mutation) -> (int, CoDeepNEATModuleDenseDropout):
@@ -179,6 +137,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         return offspring_id, CoDeepNEATModuleDenseDropout(config_params=self.config_params,
                                                           module_id=offspring_id,
                                                           parent_mutation=parent_mutation,
+                                                          dtype=self.dtype,
                                                           **offspring_params)
 
     def create_crossover(self,
@@ -211,10 +170,50 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         return offspring_id, CoDeepNEATModuleDenseDropout(config_params=self.config_params,
                                                           module_id=offspring_id,
                                                           parent_mutation=parent_mutation,
+                                                          dtype=self.dtype,
                                                           **offspring_params)
+
+    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
+        """"""
+        # Create the basic keras Dense layer, needed in all variants of the module
+        dense_layer = tf.keras.layers.Dense(units=self.units,
+                                            activation=self.activation,
+                                            kernel_initializer=self.kernel_init,
+                                            bias_initializer=self.bias_init,
+                                            dtype=self.dtype)
+
+        # If no dropout flag present, return solely the created dense layer as iterable. If dropout flag present, return
+        # the dense layer and together with the dropout layer
+        if not self.dropout_flag:
+            return (dense_layer,)
+        else:
+            dropout_layer = tf.keras.layers.Dropout(rate=self.dropout_rate,
+                                                    dtype=self.dtype)
+            return dense_layer, dropout_layer
+
+    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
+        """"""
+        raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
+
+    def serialize(self) -> dict:
+        """"""
+        return {
+            'module_type': self.get_module_type(),
+            'module_id': self.module_id,
+            'parent_mutation': self.parent_mutation,
+            'merge_method': self.merge_method,
+            'units': self.units,
+            'activation': self.activation,
+            'kernel_init': self.kernel_init,
+            'bias_init': self.bias_init,
+            'dropout_flag': self.dropout_flag,
+            'dropout_rate': self.dropout_rate
+        }
 
     def get_distance(self, other_module) -> float:
         """"""
+        raise NotImplementedError()
+        '''
         # Calculate distance of modules by inspecting each parameter, calculating the congruence between each and
         # eventually averaging the out the congruence. The distance is returned as the average congruences distance to
         # 1.0. The congruence of continuous parameters is calculated by their relative distance. The congruence of
@@ -249,4 +248,8 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
         # Return the distance as the distance of the average congruence to the perfecnt congruence of 1.0
         return 1.0 - statistics.mean(congruence_list)
-    '''
+        '''
+
+    def get_module_type(self) -> str:
+        """"""
+        return 'DenseDropout'

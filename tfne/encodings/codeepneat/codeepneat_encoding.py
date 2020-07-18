@@ -51,6 +51,28 @@ class CoDeepNEATEncoding(BaseEncoding):
                                                       dtype=self.dtype,
                                                       self_initialization_flag=True)
 
+    def create_mutated_module(self, parent_module, max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+        """"""
+        self.mod_id_counter += 1
+        return self.mod_id_counter, parent_module.create_mutation(self.mod_id_counter,
+                                                                  max_degree_of_mutation)
+
+    def create_crossover_module(self,
+                                parent_module_1,
+                                parent_module_2,
+                                max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+        """"""
+        self.mod_id_counter += 1
+        # Determine fitter parent module and call internal crossover function of fitter parent
+        if parent_module_1.get_fitness() >= parent_module_2.get_fitness():
+            return self.mod_id_counter, parent_module_1.create_crossover(self.mod_id_counter,
+                                                                         parent_module_2,
+                                                                         max_degree_of_mutation)
+        else:
+            return self.mod_id_counter, parent_module_2.create_crossover(self.mod_id_counter,
+                                                                         parent_module_1,
+                                                                         max_degree_of_mutation)
+
     def create_blueprint_node(self, node, species) -> (int, CoDeepNEATBlueprintNode):
         """"""
         gene_key = (node,)
@@ -145,11 +167,6 @@ class CoDeepNEATEncoding(BaseEncoding):
         self.node_counter = saved_state['node_counter']
 
     '''
-    def get_next_module_id(self) -> int:
-        """"""
-        self.mod_id_counter += 1
-        return self.mod_id_counter
-
     def get_node_for_split(self, conn_start, conn_end) -> int:
         """"""
         conn_key = (conn_start, conn_end)

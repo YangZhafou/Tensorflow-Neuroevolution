@@ -305,11 +305,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         if pop_extinct:
             return True
 
-        print("FORCED EXIT")
-        exit()
-
         #### Evolve Modules ####
         new_module_ids = self._evolve_modules(mod_species_offspring, mod_reinit_offspring)
+
+        print("FORCED EXIT")
+        exit()
 
         #### Evolve Blueprints ####
         new_blueprint_ids = self._evolve_blueprints(bp_species_offspring, bp_reinit_offspring)

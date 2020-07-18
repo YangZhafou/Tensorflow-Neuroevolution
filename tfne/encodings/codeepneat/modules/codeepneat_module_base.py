@@ -25,6 +25,21 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'initialize()'")
 
     @abstractmethod
+    def create_mutation(self,
+                        offspring_id,
+                        max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_mutation()'")
+
+    @abstractmethod
+    def create_crossover(self,
+                         offspring_id,
+                         less_fit_module,
+                         max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_crossover()'")
+
+    @abstractmethod
     def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_module_layers()'")
@@ -38,6 +53,11 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
     def serialize(self) -> dict:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'serialize()'")
+
+    @abstractmethod
+    def get_distance(self, other_module) -> float:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_distance()'")
 
     @abstractmethod
     def get_module_type(self) -> str:
@@ -55,25 +75,3 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
 
     def get_merge_method(self) -> dict:
         return self.merge_method
-
-    '''
-    @abstractmethod
-    def create_mutation(self,
-                        offspring_id,
-                        max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_mutation()'")
-
-    @abstractmethod
-    def create_crossover(self,
-                         offspring_id,
-                         less_fit_module,
-                         max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_crossover()'")
-
-    @abstractmethod
-    def get_distance(self, other_module) -> float:
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'get_distance()'")
-    '''
