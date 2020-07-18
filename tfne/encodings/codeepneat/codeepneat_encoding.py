@@ -1,3 +1,5 @@
+import ast
+
 from .codeepneat_genome import CoDeepNEATGenome
 from .codeepneat_optimizer_factory import OptimizerFactory
 from .codeepneat_blueprint import CoDeepNEATBlueprint, CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
@@ -127,8 +129,20 @@ class CoDeepNEATEncoding(BaseEncoding):
 
     def _load_state(self, saved_state):
         """"""
-        # TODO set return type
-        raise NotImplementedError()
+        # Convert keys of serialized gene_to_gene_id and conn_split_history dicts back to tuples
+        for key, value in saved_state['gene_to_gene_id'].items():
+            deserialized_key = ast.literal_eval(key)
+            self.gene_to_gene_id[deserialized_key] = value
+        for key, value in saved_state['conn_split_history'].items():
+            deserialized_key = ast.literal_eval(key)
+            self.conn_split_history[deserialized_key] = value
+
+        # Deserialize rest of encoding state
+        self.genome_id_counter = saved_state['genome_id_counter']
+        self.mod_id_counter = saved_state['mod_id_counter']
+        self.bp_id_counter = saved_state['bp_id_counter']
+        self.bp_gene_id_counter = saved_state['bp_gene_id_counter']
+        self.node_counter = saved_state['node_counter']
 
     '''
     def get_next_module_id(self) -> int:
@@ -144,6 +158,4 @@ class CoDeepNEATEncoding(BaseEncoding):
             self.conn_split_history[conn_key] = self.node_counter
 
         return self.conn_split_history[conn_key]
-
-    
     '''

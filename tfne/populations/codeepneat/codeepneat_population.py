@@ -1,12 +1,20 @@
 import statistics
 
 from ..base_population import BasePopulation
+from ...encodings.codeepneat.codeepneat_genome import CoDeepNEATGenome
+from ...encodings.codeepneat.modules.codeepneat_module_base import CoDeepNEATModuleBase
+from ...encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprint
+from ...encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
+from ...encodings.codeepneat.codeepneat_optimizer_factory import OptimizerFactory
+
+# Import Association dict of the module string name to its implementation class, relevant for population deserialization
+from ...encodings.codeepneat.modules.codeepneat_module_association import MODULES
 
 
 class CoDeepNEATPopulation(BasePopulation):
     """"""
 
-    def __init__(self, saved_state=None):
+    def __init__(self, saved_state=None, dtype=None, module_config_params=None):
         """"""
         # Declare internal variables of the CoDeepNEAT population
         self.generation_counter = None
@@ -29,7 +37,7 @@ class CoDeepNEATPopulation(BasePopulation):
 
         # If a saved_state was supplied, load the population from that saved state and overwrite blank defaults
         if saved_state is not None:
-            self._load_population(saved_state)
+            self._load_population(saved_state, dtype, module_config_params)
 
     def summarize_population(self):
         """"""
@@ -118,6 +126,75 @@ class CoDeepNEATPopulation(BasePopulation):
 
         return serialized_population
 
-    def _load_population(self, saved_state):
+    def _load_population(self, saved_state, dtype, module_config_params):
         """"""
-        raise NotImplementedError()
+        # Deserialize all saved population internal evolution information except for the modules, blueprints and best
+        # genome, as they have to be deserialized
+        self.generation_counter = saved_state['generation_counter']
+        self.mod_species = {int(k): v for k, v in saved_state['mod_species'].items()}
+        self.mod_species_repr = {int(k): v for k, v in saved_state['mod_species_repr'].items()}
+        self.mod_species_fitness_history = {int(k1): {int(k2): v2 for k2, v2 in v1.items()}
+                                            for k1, v1 in saved_state['mod_species_fitness_history'].items()}
+        self.mod_species_counter = saved_state['mod_species_counter']
+        self.bp_species = {int(k): v for k, v in saved_state['bp_species'].items()}
+        self.bp_species_repr = {int(k): v for k, v in saved_state['bp_species_repr'].items()}
+        self.bp_species_fitness_history = {int(k1): {int(k2): v2 for k2, v2 in v1.items()}
+                                           for k1, v1 in saved_state['bp_species_fitness_history'].items()}
+        self.bp_species_counter = saved_state['bp_species_counter']
+        self.best_fitness = saved_state['best_fitness']
+
+        # Deserialize modules
+        for mod_id, mod_params in saved_state['modules'].items():
+            self.modules[int(mod_id)] = self._deserialize_module(mod_params, dtype, module_config_params)
+
+        # Deserialize blueprints
+        for bp_id, bp_params in saved_state['blueprints'].items():
+            self.blueprints[int(bp_id)] = self._deserialize_blueprint(bp_params)
+
+        # Deserialize best genome
+        # Deserialize bp_assigned_mods
+        bp_assigned_mods = dict()
+        for spec, assigned_mod in saved_state['best_genome']['bp_assigned_modules'].items():
+            bp_assigned_mods[int(spec)] = self._deserialize_module(assigned_mod, dtype, module_config_params)
+
+        # Deserialize underlying blueprint of best genome
+        best_genome_bp = self._deserialize_blueprint(saved_state['best_genome']['blueprint'])
+
+        self.best_genome = CoDeepNEATGenome(genome_id=saved_state['best_genome']['genome_id'],
+                                            blueprint=best_genome_bp,
+                                            bp_assigned_modules=bp_assigned_mods,
+                                            output_layers=saved_state['best_genome']['output_layers'],
+                                            input_shape=tuple(saved_state['best_genome']['input_shape']),
+                                            dtype=dtype,
+                                            origin_generation=saved_state['best_genome']['origin_generation'])
+
+    @staticmethod
+    def _deserialize_module(mod_params, dtype, module_config_params) -> CoDeepNEATModuleBase:
+        """"""
+        mod_type = mod_params['module_type']
+        del mod_params['module_type']
+        return MODULES[mod_type](config_params=module_config_params[mod_type],
+                                 dtype=dtype,
+                                 **mod_params)
+
+    @staticmethod
+    def _deserialize_blueprint(bp_params) -> CoDeepNEATBlueprint:
+        """"""
+        # Deserialize Blueprint graph
+        bp_graph = dict()
+        for gene_id, gene_params in bp_params['blueprint_graph'].items():
+            if 'node' in gene_params:
+                bp_graph[int(gene_id)] = CoDeepNEATBlueprintNode(gene_id, gene_params['node'], gene_params['species'])
+            else:
+                bp_graph[int(gene_id)] = CoDeepNEATBlueprintConn(gene_id,
+                                                                 gene_params['conn_start'],
+                                                                 gene_params['conn_end'],
+                                                                 gene_params['enabled'])
+        # Recreate optimizer factory
+        optimizer_factory = OptimizerFactory(bp_params['optimizer_factory'])
+
+        # Recreate deserialized Blueprint
+        return CoDeepNEATBlueprint(bp_params['blueprint_id'],
+                                   bp_params['parent_mutation'],
+                                   bp_graph,
+                                   optimizer_factory)

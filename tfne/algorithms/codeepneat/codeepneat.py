@@ -52,12 +52,12 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             with open(initial_state_file_path) as saved_state_file:
                 saved_state = json.load(saved_state_file)
 
-            # Load the initial state for the algorithm
-            self._load_state(saved_state)
-
             # Initialize and register an associated CoDeepNEAT encoding and population outfitted with the saved state
-            self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype, saved_state=saved_state)
-            self.pop = tfne.populations.CoDeepNEATPopulation(saved_state=saved_state)
+            self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype,
+                                                              saved_state=saved_state['encoding_state'])
+            self.pop = tfne.populations.CoDeepNEATPopulation(saved_state=saved_state['population'],
+                                                             dtype=self.dtype,
+                                                             module_config_params=self.available_mod_params)
         else:
             # Initialize and register a blank associated CoDeepNEAT encoding and population
             self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
@@ -362,10 +362,6 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         print("Backed up generation {} of the CoDeepNEAT evolutionary run to file: {}"
               .format(self.pop.generation_counter,
                       save_file_path))
-
-    def _load_state(self, saved_state):
-        """"""
-        raise NotImplementedError()
 
     def get_best_genome(self) -> CoDeepNEATGenome:
         """"""

@@ -58,7 +58,7 @@ class CoDeepNEATGenome(BaseGenome):
 
     def serialize(self) -> dict:
         """"""
-        # Serializethe assignmend of modules to the bp species for json output
+        # Serialize the assignment of modules to the bp species for json output
         serialized_bp_assigned_mods = dict()
         for spec, assigned_mod in self.bp_assigned_modules.items():
             serialized_bp_assigned_mods[spec] = assigned_mod.serialize()
