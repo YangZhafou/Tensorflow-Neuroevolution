@@ -83,6 +83,15 @@ class CoDeepNEATEncoding(BaseEncoding):
         bp_gene_id = self.gene_to_gene_id[gene_key]
         return bp_gene_id, CoDeepNEATBlueprintNode(bp_gene_id, node, species)
 
+    def create_node_for_split(self, conn_start, conn_end) -> int:
+        """"""
+        conn_key = (conn_start, conn_end)
+        if conn_key not in self.conn_split_history:
+            self.node_counter += 1
+            self.conn_split_history[conn_key] = self.node_counter
+
+        return self.conn_split_history[conn_key]
+
     def create_blueprint_conn(self, conn_start, conn_end) -> (int, CoDeepNEATBlueprintConn):
         """"""
         gene_key = (conn_start, conn_end)
@@ -165,14 +174,3 @@ class CoDeepNEATEncoding(BaseEncoding):
         self.bp_id_counter = saved_state['bp_id_counter']
         self.bp_gene_id_counter = saved_state['bp_gene_id_counter']
         self.node_counter = saved_state['node_counter']
-
-    '''
-    def get_node_for_split(self, conn_start, conn_end) -> int:
-        """"""
-        conn_key = (conn_start, conn_end)
-        if conn_key not in self.conn_split_history:
-            self.node_counter += 1
-            self.conn_split_history[conn_key] = self.node_counter
-
-        return self.conn_split_history[conn_key]
-    '''

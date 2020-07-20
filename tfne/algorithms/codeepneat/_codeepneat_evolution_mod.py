@@ -50,11 +50,9 @@ class CoDeepNEATEvolutionMOD:
 
         #### Reinitialize Modules ####
         # Initialize predetermined number of new modules as species went extinct and reinitialization is activated
-        available_modules_count = len(self.available_modules)
-
         for i in range(mod_reinit_offspring):
             # Decide on for which species a new module is added (uniformly distributed)
-            chosen_species = i % available_modules_count
+            chosen_species = i % len(self.available_modules)
 
             # Determine type and the associated config parameters of chosen species and initialize a module with it
             mod_type = self.available_modules[chosen_species]

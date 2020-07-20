@@ -279,40 +279,42 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         """"""
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
-            mod_species_offspring, mod_reinit_offspring, pop_extinct = self._select_modules_basic()
+            mod_species_offspring, mod_reinit_offspring, mod_extinct_species = self._select_modules_basic()
         elif self.mod_spec_type == 'param-distance-fixed':
-            mod_species_offspring, mod_reinit_offspring, pop_extinct = self._select_modules_param_distance_fixed()
+            mod_species_offspring, mod_reinit_offspring, mod_extinct_species = \
+                self._select_modules_param_distance_fixed()
         elif self.mod_spec_type == 'param-distance-dynamic':
-            mod_species_offspring, mod_reinit_offspring, pop_extinct = self._select_modules_param_distance_dynamic()
+            mod_species_offspring, mod_reinit_offspring, mod_extinct_species = \
+                self._select_modules_param_distance_dynamic()
         else:
             raise RuntimeError(f"Module speciation type '{self.mod_spec_type}' not yet implemented")
 
         # If population went extinct abort evolution and return True
-        if pop_extinct:
+        if len(self.pop.mod_species) == 0:
             return True
 
         #### Select Blueprints ####
         if self.bp_spec_type == 'basic':
-            bp_species_offspring, bp_reinit_offspring, pop_extinct = self._select_blueprints_basic()
+            bp_species_offspring, bp_reinit_offspring = self._select_blueprints_basic()
         elif self.bp_spec_type == 'gene-overlap-fixed':
-            bp_species_offspring, bp_reinit_offspring, pop_extinct = self._select_blueprints_gene_overlap_fixed()
+            bp_species_offspring, bp_reinit_offspring = self._select_blueprints_gene_overlap_fixed()
         elif self.bp_spec_type == 'gene-overlap-dynamic':
-            bp_species_offspring, bp_reinit_offspring, pop_extinct = self._select_blueprints_gene_overlap_dynamic()
+            bp_species_offspring, bp_reinit_offspring = self._select_blueprints_gene_overlap_dynamic()
         else:
             raise RuntimeError(f"Blueprint speciation type '{self.bp_spec_type}' not yet implemented")
 
         # If population went extinct abort evolution and return True
-        if pop_extinct:
+        if len(self.pop.bp_species) == 0:
             return True
 
         #### Evolve Modules ####
         new_module_ids = self._evolve_modules(mod_species_offspring, mod_reinit_offspring)
 
+        #### Evolve Blueprints ####
+        new_blueprint_ids = self._evolve_blueprints(bp_species_offspring, bp_reinit_offspring, mod_extinct_species)
+
         print("FORCED EXIT")
         exit()
-
-        #### Evolve Blueprints ####
-        new_blueprint_ids = self._evolve_blueprints(bp_species_offspring, bp_reinit_offspring)
 
         #### Speciate Modules ####
         if self.mod_spec_type == 'basic':

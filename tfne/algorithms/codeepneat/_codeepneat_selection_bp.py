@@ -2,7 +2,7 @@ import math
 
 
 class CoDeepNEATSelectionBP:
-    def _select_blueprints_basic(self) -> ({int: int}, int, bool):
+    def _select_blueprints_basic(self) -> ({int: int}, int):
         """"""
         #### Offspring Size Calculation ####
         # Determine the sum of each avg fitness
@@ -56,12 +56,11 @@ class CoDeepNEATSelectionBP:
                 self.pop.bp_species[spec_id].remove(bp_id_to_remove)
                 del self.pop.blueprints[bp_id_to_remove]
 
-        # Set reinit offspring to 0 and extinction to False, as no species can go extinct in basic selection
+        # Set reinit offspring to 0 as no species can go extinct in basic selection
         reinit_offspring = 0
-        pop_extinction = False
-        return bp_species_offspring, reinit_offspring, pop_extinction
+        return bp_species_offspring, reinit_offspring
 
-    def _select_blueprints_gene_overlap_fixed(self) -> ({int: int}, int, bool):
+    def _select_blueprints_gene_overlap_fixed(self) -> ({int: int}, int):
         """"""
         #### Determination of Species Extinction ####
         # Determine if species can be considered for extinction. Critera: Species existed long enough or species can be
@@ -71,7 +70,7 @@ class CoDeepNEATSelectionBP:
         # with the currently lowest avg fitness first
         spec_select_order = sorted(self.pop.bp_species.keys(),
                                    key=lambda x: self.pop.bp_species_fitness_history[x][self.pop.generation_counter])
-        spec_ids_to_remove = list()
+        bp_extinct_species = list()
         for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
             if len(self.pop.bp_species_fitness_history[spec_id]) < self.bp_spec_max_stagnation:
@@ -88,14 +87,14 @@ class CoDeepNEATSelectionBP:
                 recent_fitness.append(self.pop.bp_species_fitness_history[spec_id][self.pop.generation_counter - i])
             if distant_avg_fitness >= max(recent_fitness):
                 # Species is stagnating. Flag species to be removed later.
-                spec_ids_to_remove.append(spec_id)
+                bp_extinct_species.append(spec_id)
 
         #### Offspring Size Calculation ####
         # Distinguish offspring size calculation depending on if extinct offspring will be reinitialized or not
         # (see config option 'bp_spec_reinit_extinct')
         reinit_offspring = 0
         bp_species_offspring = dict()
-        if self.bp_spec_reinit_extinct and len(spec_ids_to_remove) > 0:
+        if self.bp_spec_reinit_extinct and len(bp_extinct_species) > 0:
             # Determine total average fitness of all species, including the species going extinct
             total_avg_fitness = 0
             for fitness_history in self.pop.bp_species_fitness_history.values():
@@ -112,7 +111,7 @@ class CoDeepNEATSelectionBP:
                 spec_fitness_share = spec_fitness_history[self.pop.generation_counter] / total_avg_fitness
                 spec_intended_size = math.floor(spec_fitness_share * self.bp_pop_size)
 
-                if spec_id in spec_ids_to_remove:
+                if spec_id in bp_extinct_species:
                     # Allocate species size that is about to go extinct to reinit_offspring counter
                     reinit_offspring += spec_intended_size
                     current_total_size += spec_intended_size
@@ -149,7 +148,7 @@ class CoDeepNEATSelectionBP:
             # Determine total average fitness of all species, excluding the species going extinct
             total_avg_fitness = 0
             for spec_id, fitness_history in self.pop.bp_species_fitness_history.items():
-                if spec_id not in spec_ids_to_remove:
+                if spec_id not in bp_extinct_species:
                     total_avg_fitness += fitness_history[self.pop.generation_counter]
 
             # Calculate the amount of assigned offspring for each species for evolution. This is based on the species
@@ -158,7 +157,7 @@ class CoDeepNEATSelectionBP:
             current_total_size = 0
             for spec_id, spec_fitness_history in self.pop.bp_species_fitness_history.items():
                 # Disregard offspring calculation for species going extinct. Their fitness is not included in the total
-                if spec_id in spec_ids_to_remove:
+                if spec_id in bp_extinct_species:
                     continue
 
                 # Determine offspring size and correct to minimal offspring size if needed
@@ -186,16 +185,16 @@ class CoDeepNEATSelectionBP:
 
         #### Blueprint Selection ####
         # Remove the species and their elements that were determined to go extinct.
-        for spec_id in spec_ids_to_remove:
+        for spec_id in bp_extinct_species:
             for bp_id in self.pop.bp_species[spec_id]:
                 del self.pop.blueprints[bp_id]
             del self.pop.bp_species[spec_id]
             del self.pop.bp_species_repr[spec_id]
             del self.pop.bp_species_fitness_history[spec_id]
 
-        # If all species went extinct, return positive for pop_extinct
+        # If all species went extinct, return as evolution will abort
         if len(self.pop.bp_species) == 0:
-            return None, None, True
+            return None, None
 
         # Remove the elements from each surviving species that do not pass the reproduction threshold
         for spec_id, spec_bp_ids in self.pop.bp_species.items():
@@ -219,12 +218,10 @@ class CoDeepNEATSelectionBP:
                 self.pop.bp_species[spec_id].remove(bp_id_to_remove)
                 del self.pop.blueprints[bp_id_to_remove]
 
-        # Return the determined blueprint species offspring dict, the count of reinitialized offspring and the flag
-        # indicating that the population did not go extinct
-        pop_extinction = False
-        return bp_species_offspring, reinit_offspring, pop_extinction
+        # Return the determined blueprint species offspring dict and the count of reinitialized offspring
+        return bp_species_offspring, reinit_offspring
 
-    def _select_blueprints_gene_overlap_dynamic(self) -> ({int: int}, int, bool):
+    def _select_blueprints_gene_overlap_dynamic(self) -> ({int: int}, int):
         """"""
         # selection process identical for both variants of blueprint speciation
         return self._select_blueprints_gene_overlap_fixed()

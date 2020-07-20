@@ -2,7 +2,7 @@ import math
 
 
 class CoDeepNEATSelectionMOD:
-    def _select_modules_basic(self) -> ({int: int}, int, bool):
+    def _select_modules_basic(self) -> ({int: int}, int, [int]):
         """"""
         #### Offspring Size Calculation ####
         # Determine the sum of each avg fitness
@@ -56,12 +56,12 @@ class CoDeepNEATSelectionMOD:
                 self.pop.mod_species[spec_id].remove(mod_id_to_remove)
                 del self.pop.modules[mod_id_to_remove]
 
-        # Set reinit offspring to 0 and extinction to False, as no species can go extinct in basic selection
+        # Set reinit offspring to 0 and extinct_species to an empty list as no species can go extinct in basic selection
         reinit_offspring = 0
-        pop_extinction = False
-        return mod_species_offspring, reinit_offspring, pop_extinction
+        extinct_species = []
+        return mod_species_offspring, reinit_offspring, extinct_species
 
-    def _select_modules_param_distance_fixed(self) -> ({int: int}, int, bool):
+    def _select_modules_param_distance_fixed(self) -> ({int: int}, int, [int]):
         """"""
         #### Determination of Species Extinction ####
         # Determine if species can be considered for extinction. Critera: Species existed long enough; species can be
@@ -83,7 +83,7 @@ class CoDeepNEATSelectionMOD:
                                    key=lambda x: self.pop.mod_species_fitness_history[x][self.pop.generation_counter])
 
         # Determine species ids to remove according to the above stated criteria
-        spec_ids_to_remove = list()
+        mod_extinct_species = list()
         for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
             if len(self.pop.mod_species_fitness_history[spec_id]) < self.mod_spec_max_stagnation:
@@ -106,7 +106,7 @@ class CoDeepNEATSelectionMOD:
                 recent_fitness.append(self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter - i])
             if distant_avg_fitness >= max(recent_fitness):
                 # Species is stagnating. Flag species to be removed later and decrement species type frequency
-                spec_ids_to_remove.append(spec_id)
+                mod_extinct_species.append(spec_id)
                 spec_type_frequency[species_mod_type] -= 1
 
         #### Offspring Size Calculation ####
@@ -114,7 +114,7 @@ class CoDeepNEATSelectionMOD:
         # (see config option 'mod_spec_reinit_extinct')
         reinit_offspring = 0
         mod_species_offspring = dict()
-        if self.mod_spec_reinit_extinct and len(spec_ids_to_remove) > 0:
+        if self.mod_spec_reinit_extinct and len(mod_extinct_species) > 0:
             # Determine total average fitness of all species, including the species going extinct
             total_avg_fitness = 0
             for fitness_history in self.pop.mod_species_fitness_history.values():
@@ -131,7 +131,7 @@ class CoDeepNEATSelectionMOD:
                 spec_fitness_share = spec_fitness_history[self.pop.generation_counter] / total_avg_fitness
                 spec_intended_size = math.floor(spec_fitness_share * self.mod_pop_size)
 
-                if spec_id in spec_ids_to_remove:
+                if spec_id in mod_extinct_species:
                     # Allocate species size that is about to go extinct to reinit_offspring counter
                     reinit_offspring += spec_intended_size
                     current_total_size += spec_intended_size
@@ -168,7 +168,7 @@ class CoDeepNEATSelectionMOD:
             # Determine total average fitness of all species, excluding the species going extinct
             total_avg_fitness = 0
             for spec_id, fitness_history in self.pop.mod_species_fitness_history.items():
-                if spec_id not in spec_ids_to_remove:
+                if spec_id not in mod_extinct_species:
                     total_avg_fitness += fitness_history[self.pop.generation_counter]
 
             # Calculate the amount of assigned offspring for each species for evolution. This is based on the species
@@ -177,7 +177,7 @@ class CoDeepNEATSelectionMOD:
             current_total_size = 0
             for spec_id, spec_fitness_history in self.pop.mod_species_fitness_history.items():
                 # Disregard offspring calculation for species going extinct. Their fitness is not included in the total
-                if spec_id in spec_ids_to_remove:
+                if spec_id in mod_extinct_species:
                     continue
 
                 # Determine offspring size and correct to minimal offspring size if needed
@@ -205,16 +205,16 @@ class CoDeepNEATSelectionMOD:
 
         #### Module Selection ####
         # Remove the species and their elements that were determined to go extinct.
-        for spec_id in spec_ids_to_remove:
+        for spec_id in mod_extinct_species:
             for mod_id in self.pop.mod_species[spec_id]:
                 del self.pop.modules[mod_id]
             del self.pop.mod_species[spec_id]
             del self.pop.mod_species_repr[spec_id]
             del self.pop.mod_species_fitness_history[spec_id]
 
-        # If all species went extinct, return positive for pop_extinct
+        # If all species went extinct, return as evolution will abort
         if len(self.pop.mod_species) == 0:
-            return None, None, True
+            return None, None, None
 
         # Remove the elements from each surviving species that do not pass the reproduction threshold
         for spec_id, spec_mod_ids in self.pop.mod_species.items():
@@ -238,12 +238,11 @@ class CoDeepNEATSelectionMOD:
                 self.pop.mod_species[spec_id].remove(mod_id_to_remove)
                 del self.pop.modules[mod_id_to_remove]
 
-        # Return the determined module species offspring dict, the count of reinitialized offspring and the flag
-        # indicating that the population did not go extinct
-        pop_extinction = False
-        return mod_species_offspring, reinit_offspring, pop_extinction
+        # Return the determined module species offspring dict, the count of reinitialized offspring and the list of
+        # module species that went extinct
+        return mod_species_offspring, reinit_offspring, mod_extinct_species
 
-    def _select_modules_param_distance_dynamic(self) -> ({int: int}, int, bool):
+    def _select_modules_param_distance_dynamic(self) -> ({int: int}, int, [int]):
         """"""
         # selection process identical for both variants of module speciation
         return self._select_modules_param_distance_fixed()

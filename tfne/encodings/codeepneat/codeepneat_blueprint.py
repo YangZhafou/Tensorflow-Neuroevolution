@@ -131,6 +131,15 @@ class CoDeepNEATBlueprint:
         """"""
         return deepcopy(self.blueprint_graph), self.optimizer_factory.duplicate()
 
+    def update_blueprint_graph(self):
+        """"""
+        # Reset graph related internal variables and reprocess graph. Necessary if bp_graph has been updated
+        self.species = set()
+        self.node_species = dict()
+        self.node_dependencies = dict()
+        self.graph_topology = list()
+        self._process_graph()
+
     def serialize(self) -> dict:
         """"""
         # Create serialization of the blueprint graph suitable for json output

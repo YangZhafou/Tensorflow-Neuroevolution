@@ -6,12 +6,23 @@ from ...encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode
 
 
 class CoDeepNEATEvolutionBP:
-    def _evolve_blueprints(self, bp_species_offspring, bp_reinit_offspring) -> list:
+    def _evolve_blueprints(self, bp_species_offspring, bp_reinit_offspring, mod_extinct_species) -> list:
         """"""
+        ### Update Blueprints ###
+        # Update blueprint graphs by replacing species in bp nodes that went extinct with random new module species
+        available_mod_species = tuple(self.pop.mod_species.keys())
+        for bp in self.pop.blueprints.values():
+            bp_graph = bp.get_blueprint_graph()
+            for gene in bp_graph.values():
+                if isinstance(gene, CoDeepNEATBlueprintNode) and gene.species in mod_extinct_species:
+                    # Replace gene species that went extinct with random new module species and update blueprint graph
+                    gene.species = random.choice(available_mod_species)
+                    bp.update_blueprint_graph()
+
+        #### Evolve Blueprints ####
         # Create container for new blueprints that will be speciated in a later function
         new_blueprint_ids = list()
 
-        #### Evolve Blueprints ####
         # Calculate the brackets for a random float to fall into in order to choose a specific evolutionary method
         bp_mutation_add_node_bracket = self.bp_mutation_add_conn_prob + self.bp_mutation_add_node_prob
         bp_mutation_rem_conn_bracket = bp_mutation_add_node_bracket + self.bp_mutation_rem_conn_prob
@@ -27,7 +38,7 @@ class CoDeepNEATEvolutionBP:
                 if random_choice < self.bp_mutation_add_conn_prob:
                     ## Create new blueprint by adding connection ##
                     # Randomly determine the parent blueprint from the current species and the degree of mutation.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_add_conn(parent_blueprint,
                                                                                 max_degree_of_mutation)
@@ -35,7 +46,7 @@ class CoDeepNEATEvolutionBP:
                 elif random_choice < bp_mutation_add_node_bracket:
                     ## Create new blueprint by adding node ##
                     # Randomly determine the parent blueprint from the current species and the degree of mutation.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_add_node(parent_blueprint,
                                                                                 max_degree_of_mutation)
@@ -43,7 +54,7 @@ class CoDeepNEATEvolutionBP:
                 elif random_choice < bp_mutation_rem_conn_bracket:
                     ## Create new blueprint by removing connection ##
                     # Randomly determine the parent blueprint from the current species and the degree of mutation.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_rem_conn(parent_blueprint,
                                                                                 max_degree_of_mutation)
@@ -51,7 +62,7 @@ class CoDeepNEATEvolutionBP:
                 elif random_choice < bp_mutation_rem_node_bracket:
                     ## Create new blueprint by removing node ##
                     # Randomly determine the parent blueprint from the current species and the degree of mutation.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_rem_node(parent_blueprint,
                                                                                 max_degree_of_mutation)
@@ -59,7 +70,7 @@ class CoDeepNEATEvolutionBP:
                 elif random_choice < bp_mutation_node_spec_bracket:
                     ## Create new blueprint by mutating species in nodes ##
                     # Randomly determine the parent blueprint from the current species and the degree of mutation.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_node_spec(parent_blueprint,
                                                                                  max_degree_of_mutation)
@@ -67,17 +78,17 @@ class CoDeepNEATEvolutionBP:
                 elif random_choice < bp_mutation_optimizer_bracket:
                     ## Create new blueprint by mutating the associated optimizer ##
                     # Randomly determine the parent blueprint from the current species.
-                    parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                    parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                     new_bp_id, new_bp = self._create_mutated_blueprint_optimizer(parent_blueprint)
 
                 else:  # random_choice < bp_crossover_bracket:
                     ## Create new blueprint through crossover ##
                     # Determine if species has at least 2 blueprints as required for crossover
-                    if len(self.bp_species[spec_id]) >= 2:
+                    if len(self.pop.bp_species[spec_id]) >= 2:
                         # Randomly determine both parents for the blueprint crossover
-                        parent_bp_1_id, parent_bp_2_id = random.sample(self.bp_species[spec_id], k=2)
-                        parent_bp_1 = self.blueprints[parent_bp_1_id]
-                        parent_bp_2 = self.blueprints[parent_bp_2_id]
+                        parent_bp_1_id, parent_bp_2_id = random.sample(self.pop.bp_species[spec_id], k=2)
+                        parent_bp_1 = self.pop.blueprints[parent_bp_1_id]
+                        parent_bp_2 = self.pop.blueprints[parent_bp_2_id]
                         new_bp_id, new_bp = self._create_crossed_over_blueprint(parent_bp_1,
                                                                                 parent_bp_2)
 
@@ -85,19 +96,17 @@ class CoDeepNEATEvolutionBP:
                         # As species does not have enough blueprints for crossover, perform a simple species
                         # perturbation in the blueprint nodes. Determine uniform randomly the parent blueprint from the
                         # current species and the degree of mutation.
-                        parent_blueprint = self.blueprints[random.choice(self.bp_species[spec_id])]
+                        parent_blueprint = self.pop.blueprints[random.choice(self.pop.bp_species[spec_id])]
                         max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                         new_bp_id, new_bp = self._create_mutated_blueprint_node_spec(parent_blueprint,
                                                                                      max_degree_of_mutation)
 
                 # Add newly created blueprint to the bp container and to the list of bps that have to be speciated
-                self.blueprints[new_bp_id] = new_bp
+                self.pop.blueprints[new_bp_id] = new_bp
                 new_blueprint_ids.append(new_bp_id)
 
         #### Reinitialize Blueprints ####
         # Initialize predetermined number of new blueprints as species went extinct and reinitialization is activated
-        available_mod_species = tuple(self.mod_species.keys())
-
         for _ in range(bp_reinit_offspring):
             # Determine the module species of the initial (and only) node
             initial_node_species = random.choice(available_mod_species)
@@ -106,7 +115,7 @@ class CoDeepNEATEvolutionBP:
             new_bp_id, new_bp = self._create_initial_blueprint(initial_node_species)
 
             # Add newly created blueprint to the bp container and to the list of bps that have to be speciated
-            self.blueprints[new_bp_id] = new_bp
+            self.pop.blueprints[new_bp_id] = new_bp
             new_blueprint_ids.append(new_bp_id)
 
         # Return the list of new blueprint ids for later speciation
@@ -124,14 +133,13 @@ class CoDeepNEATEvolutionBP:
                            'added_genes': list()}
 
         # Create collections of all nodes and present connections in the copied blueprint graph
-        bp_graph_conns = set()
+        bp_graph_conns = dict()
         bp_graph_nodes = list()
         for gene in blueprint_graph.values():
             if isinstance(gene, CoDeepNEATBlueprintNode):
                 bp_graph_nodes.append(gene.node)
-            elif gene.enabled:  # and isinstance(gene, CoDeepNEATBlueprintConn)
-                # Only consider a connection for bp_graph_conns if it is enabled
-                bp_graph_conns.add((gene.conn_start, gene.conn_end))
+            else:  # isinstance(gene, CoDeepNEATBlueprintConn)
+                bp_graph_conns[(gene.conn_start, gene.conn_end, gene.enabled)] = gene.gene_id
 
         # Remove end-node (node 2) from this list and shuffle it, as it later serves to randomly pop the start node of
         # the newly created connection
@@ -162,7 +170,20 @@ class CoDeepNEATEvolutionBP:
             # blueprint graph if the specific connection tuple is not yet present.
             while len(possible_end_nodes) > 0:
                 end_node = possible_end_nodes.pop()
-                if (start_node, end_node) not in bp_graph_conns:
+
+                # If connection already present and enabled in graph, move on to the next possible end node
+                if (start_node, end_node, True) in bp_graph_conns:
+                    continue
+
+                # If connection already present but disabled in graph, activate it
+                elif (start_node, end_node, False) in bp_graph_conns:
+                    gene_id = bp_graph_conns[(start_node, end_node, False)]
+                    blueprint_graph[gene_id].set_enabled(True)
+                    parent_mutation['added_genes'].append(gene_id)
+                    added_conns_counter += 1
+
+                # If connection not yet present in graph, create it
+                else:  # (start_node, end_node) not in bp_graph_conns:
                     gene_id, gene = self.encoding.create_blueprint_conn(conn_start=start_node,
                                                                         conn_end=end_node)
                     blueprint_graph[gene_id] = gene
@@ -200,7 +221,7 @@ class CoDeepNEATEvolutionBP:
         # species can be assigned to those new nodes
         number_of_nodes_to_add = math.ceil(max_degree_of_mutation * node_count)
         gene_ids_to_split = random.sample(bp_graph_conn_ids, k=number_of_nodes_to_add)
-        available_mod_species = tuple(self.mod_species.keys())
+        available_mod_species = tuple(self.pop.mod_species.keys())
 
         # Split all chosen connections by setting them to disabled, querying the new node id from the encoding and then
         # creating the new node and the associated 2 connections through the encoding.
@@ -212,7 +233,7 @@ class CoDeepNEATEvolutionBP:
 
             # Create a new unique node if connection has not yet been split by any other mutation. Otherwise create the
             # same node. Choose species for new node randomly.
-            new_node = self.encoding.get_node_for_split(conn_start, conn_end)
+            new_node = self.encoding.create_node_for_split(conn_start, conn_end)
             new_species = random.choice(available_mod_species)
 
             # Create the node and connections genes for the new node addition and add them to the blueprint graph
@@ -242,51 +263,56 @@ class CoDeepNEATEvolutionBP:
                            'mutation': 'rem_conn',
                            'removed_genes': list()}
 
-        # Analyze amount of connections already present in bp graph and collect all gene ids whose connection ends in
-        # certain nodes, allowing the algorithm to determine which connections can be removed as they are not the sole
-        # connection to a remaining node.
+        # Analyze blueprint graph for the amount of connections present as well as the amount of incoming and outgoing
+        # connections for each node. Add connections that are disabled automatically to the list of possibly removable
+        # genes
         conn_count = 0
-        bp_graph_incoming_conn_ids = dict()
+        enabled_conn_ids = list()
+        removable_gene_ids = list()
+        node_incoming_conns_count = dict()
+        node_outgoing_conns_count = dict()
         for gene in blueprint_graph.values():
-            if isinstance(gene, CoDeepNEATBlueprintConn) and gene.enabled:
+            if isinstance(gene, CoDeepNEATBlueprintConn):
                 conn_count += 1
-                if gene.conn_end in bp_graph_incoming_conn_ids:
-                    bp_graph_incoming_conn_ids[gene.conn_end].append(gene.gene_id)
+                if not gene.enabled:
+                    removable_gene_ids.append(gene.gene_id)
+                    continue
+                enabled_conn_ids.append(gene.gene_id)
+                # Create counter of incoming connections for each node
+                if gene.conn_end in node_incoming_conns_count:
+                    node_incoming_conns_count[gene.conn_end] += 1
                 else:
-                    bp_graph_incoming_conn_ids[gene.conn_end] = [gene.gene_id]
+                    node_incoming_conns_count[gene.conn_end] = 1
+                # Create counter of outgoing connections for each node
+                if gene.conn_start in node_outgoing_conns_count:
+                    node_outgoing_conns_count[gene.conn_start] += 1
+                else:
+                    node_outgoing_conns_count[gene.conn_start] = 1
 
-        # Remove all nodes from the 'bp_graph_incoming_conn_ids' dict that have only 1 incoming connection, as this
-        # connection is essential and can not be removed without also effectively removing nodes. If a node has more
-        # than 1 incoming connection then shuffle those, as they will later be popped.
-        bp_graph_incoming_conn_ids_to_remove = list()
-        for conn_end, incoming_conn_ids in bp_graph_incoming_conn_ids.items():
-            if len(incoming_conn_ids) == 1:
-                bp_graph_incoming_conn_ids_to_remove.append(conn_end)
-            else:
-                random.shuffle(bp_graph_incoming_conn_ids[conn_end])
-        for conn_id_to_remove in bp_graph_incoming_conn_ids_to_remove:
-            del bp_graph_incoming_conn_ids[conn_id_to_remove]
+        # Randomly check the enabled connections if they are the only incoming or outgoing connection of a node. If so,
+        # don't consider them as potentially removable as the removable of the connecction would also effectively remove
+        # a node. If the node has additional connections, consider the connection as removable.
+        random.shuffle(enabled_conn_ids)
+        for conn_id in enabled_conn_ids:
+            gene = blueprint_graph[conn_id]
+            if node_incoming_conns_count[gene.conn_end] > 1 and node_outgoing_conns_count[gene.conn_start] > 1:
+                removable_gene_ids.append(gene.gene_id)
+                node_incoming_conns_count[gene.conn_end] -= 1
+                node_outgoing_conns_count[gene.conn_start] -= 1
 
-        # Determine how many conns will be removed based on the total connection count
+        # Determine how many conns will be removed based on the total connection count, including disabled connections
         number_of_conns_to_rem = math.ceil(max_degree_of_mutation * conn_count)
+        if number_of_conns_to_rem > len(removable_gene_ids):
+            number_of_conns_to_rem = len(removable_gene_ids)
+        gene_ids_to_remove = random.sample(removable_gene_ids, k=number_of_conns_to_rem)
 
-        # Remove connections in loop until determined number of connections are removed or until no node has 2 incoming
-        # connections. Remove connections by randomly choosing a node with more than 1 incoming connections and then
-        # removing the associated gene id from the bp graph
-        rem_conns_counter = 0
-        while rem_conns_counter < number_of_conns_to_rem and len(bp_graph_incoming_conn_ids) > 0:
-            rem_conn_end_node = random.choice(tuple(bp_graph_incoming_conn_ids.keys()))
-            conn_id_to_remove = bp_graph_incoming_conn_ids[rem_conn_end_node].pop()
-            # If node has only 1 incoming connection, remove it from the possible end nodes for future iterations
-            if len(bp_graph_incoming_conn_ids[rem_conn_end_node]) == 1:
-                del bp_graph_incoming_conn_ids[rem_conn_end_node]
-
-            del blueprint_graph[conn_id_to_remove]
-            parent_mutation['removed_genes'].append(conn_id_to_remove)
-            rem_conns_counter += 1
+        # Remove determined genes from the offspring blueprint graph and note the mutation
+        for gene_id_to_remove in gene_ids_to_remove:
+            del blueprint_graph[gene_id_to_remove]
+            parent_mutation['removed_genes'].append(gene_id_to_remove)
 
         # Create and return the offspring blueprint with the edited blueprint graph having one or multiple connections
-        # removed though still having at least 1 connection to each node.
+        # removed though still having at least 1 connection to and from each node.
         return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
                                               optimizer_factory=optimizer_factory,
                                               parent_mutation=parent_mutation)
@@ -324,9 +350,8 @@ class CoDeepNEATEvolutionBP:
             node_to_remove = blueprint_graph[node_id_to_remove].node
 
             # Collect all gene ids with connections starting or ending in the chosen node, independent of if the node
-            # is enabled or not (as this operation basically reverses the disabling of connections happening when adding
-            # instead of removing a node), to be removed later. Also collect all end nodes of the outgoing connections
-            # as well as all start nodes of all incoming connections.
+            # is enabled or not to be removed later. Also collect all end nodes of the outgoing connections as well as
+            # all start nodes of all incoming connections.
             conn_ids_to_remove = list()
             conn_replacement_start_nodes = list()
             conn_replacement_end_nodes = list()
@@ -334,10 +359,12 @@ class CoDeepNEATEvolutionBP:
                 if isinstance(gene, CoDeepNEATBlueprintConn):
                     if gene.conn_start == node_to_remove:
                         conn_ids_to_remove.append(gene.gene_id)
-                        conn_replacement_end_nodes.append(gene.conn_end)
+                        if gene.enabled:
+                            conn_replacement_end_nodes.append(gene.conn_end)
                     elif gene.conn_end == node_to_remove:
                         conn_ids_to_remove.append(gene.gene_id)
-                        conn_replacement_start_nodes.append(gene.conn_start)
+                        if gene.enabled:
+                            conn_replacement_start_nodes.append(gene.conn_start)
 
             # Remove chosen node and all connections starting or ending in that node from blueprint graph
             del blueprint_graph[node_id_to_remove]
@@ -356,15 +383,20 @@ class CoDeepNEATEvolutionBP:
 
             # Recreate the connections of the removed node by connecting all start nodes of the incoming connections to
             # all end nodes of the outgoing connections. Only recreate the connection if the connection is not already
-            # present or if the connection present is disabled
+            # present or if the connection was disabled prior
             for new_start_node in conn_replacement_start_nodes:
                 for new_end_node in conn_replacement_end_nodes:
-                    # Check if a disabled variant of the connection to recreate is in the bp_graph. If so reenable it.
-                    if (new_start_node, new_end_node, False) in bp_graph_conns:
+                    # Check if enabled connection already present in bp graph. If so, skip creation and continue
+                    if (new_start_node, new_end_node, True) in bp_graph_conns:
+                        continue
+
+                    # Check if a disabled variant of the connection in bp_graph. If so reenable it.
+                    elif (new_start_node, new_end_node, False) in bp_graph_conns:
                         conn_id_to_reenable = bp_graph_conns[(new_start_node, new_end_node, False)]
                         blueprint_graph[conn_id_to_reenable].set_enabled(True)
+
                     # Check if a no variant of the connection to recreate is in the bp_graph. If so, create it.
-                    if (new_start_node, new_end_node, True) not in bp_graph_conns:
+                    else:  # (new_start_node, new_end_node, True) not in bp_graph_conns:
                         gene_id, gene = self.encoding.create_blueprint_conn(conn_start=new_start_node,
                                                                             conn_end=new_end_node)
                         blueprint_graph[gene_id] = gene
@@ -394,7 +426,7 @@ class CoDeepNEATEvolutionBP:
         # Determine the node ids that have their species changed and the available module species to change into
         number_of_node_species_to_change = math.ceil(max_degree_of_mutation * len(bp_graph_node_ids))
         node_ids_to_change_species = random.sample(bp_graph_node_ids, k=number_of_node_species_to_change)
-        available_mod_species = tuple(self.mod_species.keys())
+        available_mod_species = tuple(self.pop.mod_species.keys())
 
         # Traverse through all randomly chosen node ids and change their module species randomly to one of the available
         for node_id_to_change_species in node_ids_to_change_species:
@@ -534,12 +566,12 @@ class CoDeepNEATEvolutionBP:
         bp_graph_2_ids = set(bp_graph_2.keys())
         all_bp_graph_ids = bp_graph_1_ids.union(bp_graph_2_ids)
 
-        # Create offspring blueprint graph by traversing all blueprint graph ids an copying over all genes that are
+        # Create offspring blueprint graph by traversing all blueprint graph ids and copying over all genes that are
         # exclusive to either blueprint graph and randomly choosing the gene to copy over that is present in both graphs
         offspring_bp_graph = dict()
         for gene_id in all_bp_graph_ids:
             if gene_id in bp_graph_1_ids and gene_id in bp_graph_2_ids:
-                if random.randint(0, 1) == 0:
+                if random.choice((True, False)):
                     offspring_bp_graph[gene_id] = bp_graph_1[gene_id]
                     parent_mutation['gene_parent'][gene_id] = parent_bp_1.get_id()
                 else:
@@ -551,6 +583,125 @@ class CoDeepNEATEvolutionBP:
             else:  # if gene_id in bp_graph_2_ids
                 offspring_bp_graph[gene_id] = bp_graph_2[gene_id]
                 parent_mutation['gene_parent'][gene_id] = parent_bp_2.get_id()
+
+        ###############################################################################################################
+        # Disable recurrent connections created in crossover, as CoDeepNEAT currently only supports feedforward
+        # topologies
+
+        # TODO COMMENT
+        node_deps = dict()
+        for gene in offspring_bp_graph.values():
+            if isinstance(gene, CoDeepNEATBlueprintConn):
+                if gene.conn_end in node_deps:
+                    node_deps[gene.conn_end].add(gene.conn_start)
+                else:
+                    node_deps[gene.conn_end] = {gene.conn_start}
+        node_deps[1] = set()
+
+        # TODO COMMENT
+        circular_dep_flag = False
+        graph_topology = list()
+        orig_node_deps = node_deps.copy()
+        while True:
+            # Find all nodes in graph having no dependencies in current iteration
+            dependencyless = set()
+            for node, dep in node_deps.items():
+                if len(dep) == 0:
+                    dependencyless.add(node)
+
+            # If no dependencyless node was found but there are still node dependencies present, then the graph has a
+            # circular dependency. Find this circular dependent connection and remove it
+            if not dependencyless and node_deps:
+                circular_dep_flag = True
+                circular_dependent_conn = None
+                possibly_circ_dep_conns = {k: v for k, v in node_deps.items() if v != orig_node_deps[k]}
+
+                possibly_circ_dep_conn_ends = sorted(possibly_circ_dep_conns.keys(), reverse=True)
+                for possible_conn_end in possibly_circ_dep_conn_ends:
+                    for possible_conn_start in possibly_circ_dep_conns[possible_conn_end]:
+                        dep_chain = {possible_conn_start}
+                        dep_chain_checked_paths = list()
+                        while dep_chain:
+                            orig_dep_chain = dep_chain.copy()
+                            for i in orig_dep_chain:
+                                if i == possible_conn_end:
+                                    circular_dependent_conn = (possible_conn_start, possible_conn_end)
+                                    break
+                                dep_chain.remove(i)
+                                if i not in dep_chain_checked_paths:
+                                    dep_chain = dep_chain.union(node_deps[i])
+                                    dep_chain_checked_paths.append(i)
+                            if circular_dependent_conn is not None:
+                                break
+                        if circular_dependent_conn is not None:
+                            break
+                    if circular_dependent_conn is not None:
+                        break
+
+                # TODO Find gene id of circular dependent conn and remove it
+                gene_id_to_remove = None
+                for gene in offspring_bp_graph.values():
+                    if isinstance(gene, CoDeepNEATBlueprintConn) \
+                            and gene.conn_start == circular_dependent_conn[0] \
+                            and gene.conn_end == circular_dependent_conn[1]:
+                        gene_id_to_remove = gene.gene_id
+                        break
+                del offspring_bp_graph[gene_id_to_remove]
+                del parent_mutation['gene_parent'][gene_id_to_remove]
+
+                # Reset graph topology, adjust node dependencies and and restart loop in case there are more than 1
+                # circular dependencies
+                node_deps = orig_node_deps
+                node_deps[circular_dependent_conn[1]].remove(circular_dependent_conn[0])
+                orig_node_deps = node_deps.copy()
+                graph_topology = list()
+                continue
+
+            elif not dependencyless and not node_deps:
+                # TODO comment
+                break
+
+            # Add dependencyless nodes of current generation to list
+            graph_topology.append(dependencyless)
+
+            # Remove keys with empty dependencies and remove all nodes that are considered dependencyless from the
+            # dependencies of other nodes in order to create next iteration
+            for node in dependencyless:
+                del node_deps[node]
+            for node, dep in node_deps.items():
+                node_deps[node] = dep - dependencyless
+
+        # Check for orphaned nodes that don't have any incoming or outgoing connections as they could have possibly
+        # been removed when correcting for circular dependencies. Add incoming conns from the start node or add
+        # outgoing conns to the end node
+        if circular_dep_flag:
+            present_nodes = list()
+            outgoing_conns = list()
+            incoming_conns = list()
+            for gene in offspring_bp_graph.values():
+                if isinstance(gene, CoDeepNEATBlueprintNode):
+                    present_nodes.append(gene.node)
+                if isinstance(gene, CoDeepNEATBlueprintConn) and gene.enabled:
+                    incoming_conns.append(gene.conn_end)
+                    outgoing_conns.append(gene.conn_start)
+
+            missing_conns = list()
+            for node in present_nodes:
+                if node != 1 and node not in incoming_conns:
+                    # Node is missing an incoming connection. Create connection from input node.
+                    missing_conns.append((1, node))
+                if node != 2 and node not in outgoing_conns:
+                    # Node is missing an outgoing connection. Create connection to output node.
+                    missing_conns.append((node, 2))
+
+            # Create missing connections and add them to the offspring blueprint graph
+            for missing_conn in missing_conns:
+                gene_id, gene = self.encoding.create_blueprint_conn(conn_start=missing_conn[0],
+                                                                    conn_end=missing_conn[1])
+                offspring_bp_graph[gene_id] = gene
+                parent_mutation['gene_parent'][gene_id] = 'orphaned node correction'
+
+        ###############################################################################################################
 
         # For the optimizer factory choose the one from the fitter parent blueprint
         if parent_bp_1.get_fitness() > parent_bp_2.get_fitness():
