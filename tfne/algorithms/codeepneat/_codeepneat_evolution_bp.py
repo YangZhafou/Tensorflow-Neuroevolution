@@ -561,6 +561,7 @@ class CoDeepNEATEvolutionBP:
                            'gene_parent': dict(),
                            'optimizer_parent': None}
 
+        ### Crossover ###
         # Create quickly searchable sets of gene ids to know about the overlap of genes in both blueprint graphs
         bp_graph_1_ids = set(bp_graph_1.keys())
         bp_graph_2_ids = set(bp_graph_2.keys())
@@ -584,11 +585,9 @@ class CoDeepNEATEvolutionBP:
                 offspring_bp_graph[gene_id] = bp_graph_2[gene_id]
                 parent_mutation['gene_parent'][gene_id] = parent_bp_2.get_id()
 
-        ###############################################################################################################
+        ### Recurrent Correction ####
         # Disable recurrent connections created in crossover, as CoDeepNEAT currently only supports feedforward
-        # topologies
-
-        # TODO COMMENT
+        # topologies. First determine node dependencies as required for a circular dependency check
         node_deps = dict()
         for gene in offspring_bp_graph.values():
             if isinstance(gene, CoDeepNEATBlueprintConn):
@@ -598,9 +597,9 @@ class CoDeepNEATEvolutionBP:
                     node_deps[gene.conn_end] = {gene.conn_start}
         node_deps[1] = set()
 
-        # TODO COMMENT
+        # Perform a circular dependency check by iteratively removing the dependencyless nodes. If a circular dependency
+        # is detected, determine the nodes for this circular dependency and adjust the offspring bp graph
         circular_dep_flag = False
-        graph_topology = list()
         orig_node_deps = node_deps.copy()
         while True:
             # Find all nodes in graph having no dependencies in current iteration
@@ -616,6 +615,9 @@ class CoDeepNEATEvolutionBP:
                 circular_dependent_conn = None
                 possibly_circ_dep_conns = {k: v for k, v in node_deps.items() if v != orig_node_deps[k]}
 
+                # Determine potentially circular dependent connected nodes and determine which connections are involved
+                # in the circular dependency by creating for each connection a dependency chain and checking if
+                # eventually a node is dependent on itself
                 possibly_circ_dep_conn_ends = sorted(possibly_circ_dep_conns.keys(), reverse=True)
                 for possible_conn_end in possibly_circ_dep_conn_ends:
                     for possible_conn_start in possibly_circ_dep_conns[possible_conn_end]:
@@ -638,7 +640,7 @@ class CoDeepNEATEvolutionBP:
                     if circular_dependent_conn is not None:
                         break
 
-                # TODO Find gene id of circular dependent conn and remove it
+                # Find gene id belonging to the determined circular dependent connection and remove it
                 gene_id_to_remove = None
                 for gene in offspring_bp_graph.values():
                     if isinstance(gene, CoDeepNEATBlueprintConn) \
@@ -649,20 +651,15 @@ class CoDeepNEATEvolutionBP:
                 del offspring_bp_graph[gene_id_to_remove]
                 del parent_mutation['gene_parent'][gene_id_to_remove]
 
-                # Reset graph topology, adjust node dependencies and and restart loop in case there are more than 1
-                # circular dependencies
+                # Adjust node dependencies and and restart loop in case there are more than 1 circular dependencies
                 node_deps = orig_node_deps
                 node_deps[circular_dependent_conn[1]].remove(circular_dependent_conn[0])
                 orig_node_deps = node_deps.copy()
-                graph_topology = list()
                 continue
 
             elif not dependencyless and not node_deps:
-                # TODO comment
+                # No circular dependency occuring. Leave loop
                 break
-
-            # Add dependencyless nodes of current generation to list
-            graph_topology.append(dependencyless)
 
             # Remove keys with empty dependencies and remove all nodes that are considered dependencyless from the
             # dependencies of other nodes in order to create next iteration
@@ -672,8 +669,8 @@ class CoDeepNEATEvolutionBP:
                 node_deps[node] = dep - dependencyless
 
         # Check for orphaned nodes that don't have any incoming or outgoing connections as they could have possibly
-        # been removed when correcting for circular dependencies. Add incoming conns from the start node or add
-        # outgoing conns to the end node
+        # been removed when correcting for circular dependencies. Add incoming conns from the start node or add outgoing
+        # conns to the end node
         if circular_dep_flag:
             present_nodes = list()
             outgoing_conns = list()
@@ -701,8 +698,7 @@ class CoDeepNEATEvolutionBP:
                 offspring_bp_graph[gene_id] = gene
                 parent_mutation['gene_parent'][gene_id] = 'orphaned node correction'
 
-        ###############################################################################################################
-
+        ### Optimizer and Blueprint Creation ###
         # For the optimizer factory choose the one from the fitter parent blueprint
         if parent_bp_1.get_fitness() > parent_bp_2.get_fitness():
             offspring_opt_factory = opt_factory_1
