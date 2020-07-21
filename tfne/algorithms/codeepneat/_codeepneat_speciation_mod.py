@@ -163,7 +163,7 @@ class CoDeepNEATSpeciationMOD:
                 sorted_distances_to_other_specs = sorted([mod_repr.get_distance(self.pop.modules[other_mod_id])
                                                           for other_mod_id in other_spec_mod_repr_ids])
                 # Set optimal distance of current species repr such that it conforms to 'mod_spec_species_count'
-                optimal_spec_distance = sorted_distances_to_other_specs[-self.mod_spec_species_count - 1]
+                optimal_spec_distance = sorted_distances_to_other_specs[-self.mod_spec_species_count]
                 optimal_spec_distance_per_species.append(optimal_spec_distance)
 
             # Average out all optimal distances for each species repr to get the new distance

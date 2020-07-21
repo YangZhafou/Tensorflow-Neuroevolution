@@ -136,7 +136,7 @@ class CoDeepNEATSpeciationBP:
                                             for other_bp_id in other_spec_bp_repr_ids]
                 sorted_distances_to_other_specs = sorted(distances_to_other_specs)
                 # Set optimal distance of current species repr such that it conforms to 'bp_spec_species_count'
-                optimal_spec_distance = sorted_distances_to_other_specs[-self.bp_spec_species_count - 1]
+                optimal_spec_distance = sorted_distances_to_other_specs[-self.bp_spec_species_count]
                 optimal_spec_distance_per_species.append(optimal_spec_distance)
 
             # Average out all optimal distances for each species repr to get the new distance
