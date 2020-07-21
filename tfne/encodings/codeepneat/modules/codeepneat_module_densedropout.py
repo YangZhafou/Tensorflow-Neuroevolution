@@ -76,7 +76,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
     def create_mutation(self,
                         offspring_id,
-                        max_degree_of_mutation) -> (int, CoDeepNEATModuleDenseDropout):
+                        max_degree_of_mutation) -> CoDeepNEATModuleDenseDropout:
         """"""
         # Copy the parameters of this parent module for the parameters of the offspring
         offspring_params = {'merge_method': self.merge_method,
@@ -134,16 +134,16 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                                                          self.config_params['dropout_rate']['step']), 4)
                 parent_mutation['mutated_params']['dropout_rate'] = self.dropout_rate
 
-        return offspring_id, CoDeepNEATModuleDenseDropout(config_params=self.config_params,
-                                                          module_id=offspring_id,
-                                                          parent_mutation=parent_mutation,
-                                                          dtype=self.dtype,
-                                                          **offspring_params)
+        return CoDeepNEATModuleDenseDropout(config_params=self.config_params,
+                                            module_id=offspring_id,
+                                            parent_mutation=parent_mutation,
+                                            dtype=self.dtype,
+                                            **offspring_params)
 
     def create_crossover(self,
                          offspring_id,
                          less_fit_module,
-                         max_degree_of_mutation) -> (int, CoDeepNEATModuleDenseDropout):
+                         max_degree_of_mutation) -> CoDeepNEATModuleDenseDropout:
         """"""
         # Create offspring parameters by carrying over parameters of fitter parent for categorical parameters and
         # calculating parameter average between both modules for sortable parameters
@@ -167,11 +167,11 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                                                  self.config_params['dropout_rate']['max'],
                                                                  self.config_params['dropout_rate']['step'], ), 4)
 
-        return offspring_id, CoDeepNEATModuleDenseDropout(config_params=self.config_params,
-                                                          module_id=offspring_id,
-                                                          parent_mutation=parent_mutation,
-                                                          dtype=self.dtype,
-                                                          **offspring_params)
+        return CoDeepNEATModuleDenseDropout(config_params=self.config_params,
+                                            module_id=offspring_id,
+                                            parent_mutation=parent_mutation,
+                                            dtype=self.dtype,
+                                            **offspring_params)
 
     def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
         """"""
@@ -212,8 +212,6 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
     def get_distance(self, other_module) -> float:
         """"""
-        raise NotImplementedError()
-        '''
         # Calculate distance of modules by inspecting each parameter, calculating the congruence between each and
         # eventually averaging the out the congruence. The distance is returned as the average congruences distance to
         # 1.0. The congruence of continuous parameters is calculated by their relative distance. The congruence of
@@ -246,9 +244,8 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         else:
             congruence_list.append(self.dropout_rate / other_module.dropout_rate)
 
-        # Return the distance as the distance of the average congruence to the perfecnt congruence of 1.0
+        # Return the distance as the distance of the average congruence to the perfect congruence of 1.0
         return 1.0 - statistics.mean(congruence_list)
-        '''
 
     def get_module_type(self) -> str:
         """"""

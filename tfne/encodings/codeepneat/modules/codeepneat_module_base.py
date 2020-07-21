@@ -27,7 +27,7 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
     @abstractmethod
     def create_mutation(self,
                         offspring_id,
-                        max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+                        max_degree_of_mutation) -> CoDeepNEATModuleBase:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_mutation()'")
 
@@ -35,7 +35,7 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
     def create_crossover(self,
                          offspring_id,
                          less_fit_module,
-                         max_degree_of_mutation) -> (int, CoDeepNEATModuleBase):
+                         max_degree_of_mutation) -> CoDeepNEATModuleBase:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_crossover()'")
 
