@@ -113,15 +113,18 @@ class CoDeepNEATBlueprint:
                     self.species,
                     self.optimizer_factory.get_name())
 
-    def calculate_gene_overlap(self, other_bp) -> float:
+    def calculate_gene_distance(self, other_bp) -> float:
         """"""
-        # Calculate the gene overlap between 2 blueprints as the average of both blueprints node ids shared by the other
-        # blueprint
+        # Calculate the gene distance betweeen 2 blueprints by calculating the congruence of genes and subtracting it
+        # from the maximum distance of 1
         bp_node_ids = set(self.blueprint_graph.keys())
         other_bp_node_ids = set(other_bp.blueprint_graph.keys())
         node_id_intersection = bp_node_ids.intersection(other_bp_node_ids)
 
-        return (len(node_id_intersection) / len(bp_node_ids) + len(node_id_intersection) / len(other_bp_node_ids)) / 2.0
+        intersection_length = len(node_id_intersection)
+        gene_congruence = (intersection_length / len(bp_node_ids) + intersection_length / len(other_bp_node_ids)) / 2.0
+
+        return 1.0 - gene_congruence
 
     def create_optimizer(self) -> tf.keras.optimizers.Optimizer:
         """"""
