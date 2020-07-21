@@ -417,22 +417,27 @@ class CoDeepNEATEvolutionBP:
                            'mutation': 'node_spec',
                            'mutated_node_spec': dict()}
 
-        # Identify all non-Input nodes in the blueprint graph by gene ID as the species of those can be mutated
-        bp_graph_node_ids = set()
-        for gene in blueprint_graph.values():
-            if isinstance(gene, CoDeepNEATBlueprintNode) and gene.node != 1:
-                bp_graph_node_ids.add(gene.gene_id)
+        # Determine if node species mutation even sensible and there exists more than 1 module species. Otherwise,
+        # return the offspring identical to the parent blueprint
+        available_mod_species = set(self.pop.mod_species.keys())
+        if len(available_mod_species) >= 2:
+            # Identify all non-Input nodes in the blueprint graph by gene ID as the species of those can be mutated
+            bp_graph_node_ids = set()
+            for gene in blueprint_graph.values():
+                if isinstance(gene, CoDeepNEATBlueprintNode) and gene.node != 1:
+                    bp_graph_node_ids.add(gene.gene_id)
 
-        # Determine the node ids that have their species changed and the available module species to change into
-        number_of_node_species_to_change = math.ceil(max_degree_of_mutation * len(bp_graph_node_ids))
-        node_ids_to_change_species = random.sample(bp_graph_node_ids, k=number_of_node_species_to_change)
-        available_mod_species = tuple(self.pop.mod_species.keys())
+            # Determine the node ids that have their species changed and the available module species to change into
+            number_of_node_species_to_change = math.ceil(max_degree_of_mutation * len(bp_graph_node_ids))
+            node_ids_to_change_species = random.sample(bp_graph_node_ids, k=number_of_node_species_to_change)
 
-        # Traverse through all randomly chosen node ids and change their module species randomly to one of the available
-        for node_id_to_change_species in node_ids_to_change_species:
-            former_node_species = blueprint_graph[node_id_to_change_species].species
-            parent_mutation['mutated_node_spec'][node_id_to_change_species] = former_node_species
-            blueprint_graph[node_id_to_change_species].species = random.choice(available_mod_species)
+            # Traverse through all randomly chosen node ids and change their module species randomly to another module
+            # species, though not the original
+            for node_id_to_change_species in node_ids_to_change_species:
+                former_node_species = blueprint_graph[node_id_to_change_species].species
+                parent_mutation['mutated_node_spec'][node_id_to_change_species] = former_node_species
+                possible_new_node_species = tuple(available_mod_species - {former_node_species})
+                blueprint_graph[node_id_to_change_species].species = random.choice(possible_new_node_species)
 
         # Create and return the offspring blueprint with the edited blueprint graph having mutated species
         return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
