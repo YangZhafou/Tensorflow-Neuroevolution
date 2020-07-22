@@ -73,7 +73,7 @@ class CoDeepNEATSelectionBP:
         bp_extinct_species = list()
         for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
-            if len(self.pop.bp_species_fitness_history[spec_id]) + 1 < self.bp_spec_max_stagnation:
+            if len(self.pop.bp_species_fitness_history[spec_id]) - 1 < self.bp_spec_max_stagnation:
                 continue
             # Don't consider species for extinction if species elitism doesn't allow removal of further species
             if len(self.pop.bp_species) <= self.bp_spec_species_elitism:

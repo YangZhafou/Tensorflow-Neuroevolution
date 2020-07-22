@@ -86,7 +86,7 @@ class CoDeepNEATSelectionMOD:
         mod_extinct_species = list()
         for spec_id in spec_select_order:
             # Don't consider species for extinction if it hasn't existed long enough
-            if len(self.pop.mod_species_fitness_history[spec_id]) + 1 < self.mod_spec_max_stagnation:
+            if len(self.pop.mod_species_fitness_history[spec_id]) - 1 < self.mod_spec_max_stagnation:
                 continue
             # Don't consider species for extinction if species elitism doesn't allow removal of further species
             if len(self.pop.mod_species) <= self.mod_spec_species_elitism:
