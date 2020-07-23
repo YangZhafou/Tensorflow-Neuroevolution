@@ -224,7 +224,7 @@ class CoDeepNEATSelectionMOD:
             # Determine module ids to remove in order to prevent to use them for reproduction
             removal_threshold_index = int(len(spec_mod_ids) * (1 - self.mod_spec_reprod_thres))
             # Correct removal index threshold if reproduction threshold so high that elitism modules would be removed
-            if removal_threshold_index + self.mod_spec_mod_elitism < len(spec_mod_ids):
+            if removal_threshold_index < self.mod_spec_mod_elitism:
                 removal_threshold_index = self.mod_spec_mod_elitism
             spec_mod_ids_to_remove = spec_mod_ids_sorted[removal_threshold_index:]
 
