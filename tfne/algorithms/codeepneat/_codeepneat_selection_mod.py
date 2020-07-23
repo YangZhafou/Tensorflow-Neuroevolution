@@ -1,6 +1,171 @@
 import math
+from typing import Union
 
 
+class CoDeepNEATSelectionMOD:
+    def _select_modules_basic(self) -> ({Union[int, str]: int}, {int: int}, {int}):
+        """"""
+        raise NotImplementedError()
+
+        mod_spec_parents = dict()
+        for spec_id, spec_mod_ids in self.pop.mod_species.items():
+            # Sort module ids in species according to their fitness
+            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.pop.modules[x].get_fitness())
+
+            spec_elites = set(spec_mod_ids_sorted[-self.mod_spec_mod_elitism:])
+            spec_elites.add(self.pop.mod_species_repr[spec_id])
+
+            reprod_threshold_index = math.ceil(len(spec_mod_ids) * self.mod_spec_reprod_thres)
+            spec_parents = set(spec_mod_ids_sorted[reprod_threshold_index:])
+            spec_parents = spec_parents.union(spec_elites)
+
+            mod_ids_non_elite = set(spec_mod_ids) - spec_elites
+            mod_ids_non_parental = set(spec_mod_ids) - spec_parents
+            for mod_id in mod_ids_non_elite:
+                self.pop.mod_species[spec_id].remove(mod_id)
+            for mod_id in mod_ids_non_parental:
+                del self.pop.modules[mod_id]
+
+            mod_spec_parents[spec_id] = spec_parents
+
+        ################################################################################################################
+
+        # Determine the sum of all average fitness
+        total_avg_fitness = 0
+        for fitness_history in self.pop.mod_species_fitness_history.values():
+            total_avg_fitness += fitness_history[self.pop.generation_counter]
+
+        mod_spec_ordered = sorted(self.pop.mod_species.keys(),
+                                  key=lambda x: self.pop.mod_species_fitness_history[x][self.pop.generation_counter])
+
+        mod_spec_offspring = dict()
+        available_mod_pop = self.mod_pop_size
+        for spec_id in mod_spec_ordered:
+            spec_fitness = self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter]
+            spec_fitness_share = spec_fitness / total_avg_fitness
+            spec_intended_size = round(spec_fitness_share * available_mod_pop)
+
+            if len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring > spec_intended_size:
+                mod_spec_offspring[spec_id] = self.mod_spec_min_offspring
+                available_mod_pop -= len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring
+            else:
+                mod_spec_offspring[spec_id] = spec_intended_size - len(self.pop.mod_species[spec_id])
+                available_mod_pop -= spec_intended_size
+            total_avg_fitness -= spec_fitness
+
+        return mod_spec_offspring, mod_spec_parents, mod_spec_extinct
+
+    def _select_modules_param_distance_fixed(self) -> ({Union[int, str]: int}, {int: int}, {int}):
+        """"""
+        print("TEST IT")
+
+        spec_type_frequency = dict()
+        for mod_id in self.pop.mod_species_repr.values():
+            spec_mod_type = self.pop.modules[mod_id].get_module_type()
+            if spec_mod_type in spec_type_frequency:
+                spec_type_frequency[spec_mod_type] += 1
+            else:
+                spec_type_frequency[spec_mod_type] = 1
+
+        mod_species_ordered = sorted(self.pop.mod_species.keys(),
+                                     key=lambda x: self.pop.mod_species_fitness_history[x][self.pop.generation_counter])
+
+        extinct_fitness = 0
+        mod_spec_extinct = set()
+        for spec_id in mod_species_ordered:
+            # Don't consider species for extinction if it hasn't existed long enough
+            if len(self.pop.mod_species_fitness_history[spec_id]) < self.mod_spec_max_stagnation + 1:
+                continue
+            # Don't consider species for extinction if species elitism doesn't allow removal of further species
+            if len(self.pop.mod_species) <= self.mod_spec_species_elitism:
+                continue
+            # Don't consider species for extinction if it is the last of its module type and species elitism is set to
+            # a value higher than all possible module types.
+            spec_mod_type = self.pop.modules[self.pop.mod_species_repr[spec_id]].get_module_type()
+            if spec_type_frequency[spec_mod_type] == 1 and self.mod_spec_species_elitism >= len(self.available_modules):
+                continue
+
+            # Consider species for extinction and determine if it has been stagnating by checking if the distant avg
+            # fitness is higher than all recent avg fitnesses
+            distant_generation = self.pop.generation_counter - self.mod_spec_max_stagnation
+            distant_avg_fitness = self.pop.mod_species_fitness_history[spec_id][distant_generation]
+            recent_fitness = list()
+            for i in range(self.mod_spec_max_stagnation):
+                recent_fitness.append(self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter - i])
+            if distant_avg_fitness >= max(recent_fitness):
+                # Species is stagnating. Flag as removed species and actually remove it.
+                mod_spec_extinct.add(spec_id)
+                extinct_fitness += self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter]
+                for mod_id in self.pop.mod_species[spec_id]:
+                    del self.pop.modules[mod_id]
+                del self.pop.mod_species[spec_id]
+                del self.pop.mod_species_repr[spec_id]
+                del self.pop.mod_species_fitness_history[spec_id]
+                spec_type_frequency[spec_mod_type] -= 1
+
+        ################################################################################################################
+
+        mod_spec_parents = dict()
+        for spec_id, spec_mod_ids in self.pop.mod_species.items():
+            # Sort module ids in species according to their fitness
+            spec_mod_ids_sorted = sorted(spec_mod_ids, key=lambda x: self.pop.modules[x].get_fitness())
+
+            spec_elites = set(spec_mod_ids_sorted[-self.mod_spec_mod_elitism:])
+            spec_elites.add(self.pop.mod_species_repr[spec_id])
+
+            reprod_threshold_index = math.ceil(len(spec_mod_ids) * self.mod_spec_reprod_thres)
+            spec_parents = set(spec_mod_ids_sorted[reprod_threshold_index:])
+            spec_parents = spec_parents.union(spec_elites)
+
+            mod_ids_non_elite = set(spec_mod_ids) - spec_elites
+            mod_ids_non_parental = set(spec_mod_ids) - spec_parents
+            for mod_id in mod_ids_non_elite:
+                self.pop.mod_species[spec_id].remove(mod_id)
+            for mod_id in mod_ids_non_parental:
+                del self.pop.modules[mod_id]
+
+            mod_spec_parents[spec_id] = spec_parents
+
+        ################################################################################################################
+
+        # Determine the sum of all average fitness
+        total_avg_fitness = 0
+        for fitness_history in self.pop.mod_species_fitness_history.values():
+            total_avg_fitness += fitness_history[self.pop.generation_counter]
+
+        for spec_id in mod_spec_extinct:
+            mod_species_ordered.remove(spec_id)
+
+        mod_spec_offspring = dict()
+        available_mod_pop = self.mod_pop_size
+        if self.mod_spec_reinit_extinct and extinct_fitness > 0:
+            extinct_fitness_share = extinct_fitness / (total_avg_fitness + extinct_fitness)
+            reinit_offspring = int(extinct_fitness_share * available_mod_pop)
+            mod_spec_offspring['reinit'] = reinit_offspring
+            available_mod_pop -= reinit_offspring
+
+        for spec_id in mod_species_ordered:
+            spec_fitness = self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter]
+            spec_fitness_share = spec_fitness / total_avg_fitness
+            spec_intended_size = round(spec_fitness_share * available_mod_pop)
+
+            if len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring > spec_intended_size:
+                mod_spec_offspring[spec_id] = self.mod_spec_min_offspring
+                available_mod_pop -= len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring
+            else:
+                mod_spec_offspring[spec_id] = spec_intended_size - len(self.pop.mod_species[spec_id])
+                available_mod_pop -= spec_intended_size
+            total_avg_fitness -= spec_fitness
+
+        return mod_spec_offspring, mod_spec_parents, mod_spec_extinct
+
+    def _select_modules_param_distance_dynamic(self) -> ({Union[int, str]: int}, {int: int}, {int}):
+        """"""
+        # selection process identical for both variants of module speciation
+        return self._select_modules_param_distance_fixed()
+
+
+'''
 class CoDeepNEATSelectionMOD:
     def _select_modules_basic(self) -> ({int: int}, int, [int]):
         """"""
@@ -241,8 +406,4 @@ class CoDeepNEATSelectionMOD:
         # Return the determined module species offspring dict, the count of reinitialized offspring and the list of
         # module species that went extinct
         return mod_species_offspring, reinit_offspring, mod_extinct_species
-
-    def _select_modules_param_distance_dynamic(self) -> ({int: int}, int, [int]):
-        """"""
-        # selection process identical for both variants of module speciation
-        return self._select_modules_param_distance_fixed()
+'''

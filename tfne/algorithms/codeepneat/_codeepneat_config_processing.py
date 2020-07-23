@@ -269,7 +269,7 @@ class CoDeepNEATConfigProcessing:
         assert 1.0 >= self.bp_mutation_add_node_prob >= 0 and isinstance(self.bp_mutation_add_node_prob, float)
         assert 1.0 >= self.bp_mutation_rem_conn_prob >= 0 and isinstance(self.bp_mutation_rem_conn_prob, float)
         assert 1.0 >= self.bp_mutation_rem_node_prob >= 0 and isinstance(self.bp_mutation_rem_node_prob, float)
-        assert 1.0 >= self.bp_mutation_node_spec_prob >= 0 and isinstance(self.bp_mutation_node_spec_prob, float)
+        assert 1.0 >= self.bp_mutation_node_spec_prob > 0 and isinstance(self.bp_mutation_node_spec_prob, float)
         assert 1.0 >= self.bp_mutation_optimizer_prob >= 0 and isinstance(self.bp_mutation_optimizer_prob, float)
         assert 1.0 >= self.bp_crossover_prob >= 0 and isinstance(self.bp_crossover_prob, float)
         assert round(self.bp_mutation_add_conn_prob + self.bp_mutation_add_node_prob + self.bp_mutation_rem_conn_prob
