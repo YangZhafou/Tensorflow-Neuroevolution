@@ -81,7 +81,7 @@ CoDeepNEAT Configuration
 
 
 ``mod_spec_mod_elitism``
-  **Value Range**: int > 0
+  **Value Range**: int >= 0
 
   **Description**: Specifies the amount of best modules in each species that will be carried over unchanged into the next generation after the evolution. The module elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.
 
@@ -171,7 +171,7 @@ CoDeepNEAT Configuration
 
 
 ``bp_spec_bp_elitism``
-  **Value Range**: int > 0
+  **Value Range**: int >= 0
 
   **Description**: Specifies the amount of best blueprints in each species that will be carried over unchanged into the next generation after the evolution. The blueprint elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.
 
