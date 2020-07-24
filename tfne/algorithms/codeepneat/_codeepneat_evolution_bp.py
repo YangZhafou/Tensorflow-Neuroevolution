@@ -29,9 +29,9 @@ class CoDeepNEATEvolutionBP:
                 # association and then remove the old blueprint
                 self.pop.blueprints[new_bp_id] = new_bp
                 self.pop.bp_species[spec_id].remove(bp_id)
-                bp_spec_parents.remove(bp_id)
+                bp_spec_parents[spec_id].remove(bp_id)
                 self.pop.bp_species[spec_id].append(new_bp_id)
-                bp_spec_parents.append(new_bp_id)
+                bp_spec_parents[spec_id].append(new_bp_id)
                 if self.pop.bp_species_repr[spec_id] == bp_id:
                     self.pop.bp_species_repr[spec_id] = new_bp_id
                 del self.pop.blueprints[bp_id]
