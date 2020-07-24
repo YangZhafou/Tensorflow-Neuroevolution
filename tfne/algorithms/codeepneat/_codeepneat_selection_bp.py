@@ -131,7 +131,8 @@ class CoDeepNEATSelectionBP:
             for bp_id in bp_ids_non_parental:
                 del self.pop.blueprints[bp_id]
 
-            bp_spec_parents[spec_id] = spec_parents
+            # Cast potential parents to tuple, as randomly chosen from
+            bp_spec_parents[spec_id] = tuple(spec_parents)
 
         #### Offspring Size Calculation ####
         # Determine the amount of offspring for each species as well as the amount of reinitialized blueprints, in case

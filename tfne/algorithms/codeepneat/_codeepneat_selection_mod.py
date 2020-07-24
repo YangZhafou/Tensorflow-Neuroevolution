@@ -140,7 +140,8 @@ class CoDeepNEATSelectionMOD:
             for mod_id in mod_ids_non_parental:
                 del self.pop.modules[mod_id]
 
-            mod_spec_parents[spec_id] = spec_parents
+            # Cast potential parents to tuple, as randomly chosen from
+            mod_spec_parents[spec_id] = tuple(spec_parents)
 
         #### Offspring Size Calculation ####
         # Determine the amount of offspring for each species as well as the amount of reinitialized modules, in case

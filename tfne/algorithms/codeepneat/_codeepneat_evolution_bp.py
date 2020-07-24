@@ -46,7 +46,7 @@ class CoDeepNEATEvolutionBP:
         bp_mutation_optimizer_bracket = bp_mutation_node_spec_bracket + self.bp_mutation_optimizer_prob
 
         # Traverse through each species and create according amount of offspring as determined prior during selection
-        for spec_id, species_offspring in bp_species_offspring.items():
+        for spec_id, species_offspring in bp_spec_offspring.items():
             if spec_id == 'reinit':
                 continue
 
