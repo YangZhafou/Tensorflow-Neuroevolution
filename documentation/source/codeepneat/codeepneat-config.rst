@@ -249,7 +249,7 @@ CoDeepNEAT Configuration
 
 
 ``bp_mutation_node_spec_prob``
-  **Value Range**: 1.0 >= float >= 0
+  **Value Range**: 1.0 >= float > 0
 
   **Description**: Specifies the probability that a new blueprint is evolved by mutating the species of the blueprint nodes from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.
 

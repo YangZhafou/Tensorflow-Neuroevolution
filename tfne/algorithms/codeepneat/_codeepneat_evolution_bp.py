@@ -9,25 +9,30 @@ class CoDeepNEATEvolutionBP:
     def _evolve_blueprints(self, bp_spec_offspring, bp_spec_parents, mod_spec_extinct) -> [int]:
         """"""
         ### Evolve Species of Elite Blueprints ###
-        elite_bp_replacement = dict()
+        # Check if node module species of the elite blueprints belong to extinct module species. If so, create a
+        # node module species mutation of the elite blueprints and replace the elite blueprints.
         for spec_id, spec_bp_ids in self.pop.bp_species.items():
-            for bp_id in spec_bp_ids:
+            orig_spec_bp_ids = spec_bp_ids.copy()
+            for bp_id in orig_spec_bp_ids:
+                # Compare blueprint node module species with extinct module species. If no intersection, continue on
                 bp_mod_species = self.pop.blueprints[bp_id].get_species()
                 bp_mod_extinct_species = bp_mod_species.intersection(mod_spec_extinct)
                 if not bp_mod_extinct_species:
                     continue
 
+                # Create new mutated blueprint with elite blueprint as parent and only the extinct node module species
+                # changed.
                 new_bp_id, new_bp = self._create_mutated_blueprint_node_spec(self.pop.blueprints[bp_id],
                                                                              0,
                                                                              mod_spec_extinct)
+                # Add newly created blueprint to blueprint container, replace old bp id with new bp id in the species
+                # association and then remove the old blueprint
                 self.pop.blueprints[new_bp_id] = new_bp
-                elite_bp_replacement[spec_id] = (bp_id, new_bp_id)
-
-        for spec_id, bp_replacement in elite_bp_replacement.items():
-            self.pop.bp_species[spec_id].remove(bp_replacement[0])
-            self.pop.bp_species[spec_id].append(bp_replacement[1])
-            if self.pop.bp_species_repr[spec_id] == bp_replacement[0]:
-                self.pop.bp_species_repr[spec_id] = bp_replacement[1]
+                self.pop.bp_species[spec_id].remove(bp_id)
+                self.pop.bp_species[spec_id].append(new_bp_id)
+                if self.pop.bp_species_repr[spec_id] == bp_id:
+                    self.pop.bp_species_repr[spec_id] = new_bp_id
+                del self.pop.blueprints[bp_id]
 
         #### Evolve Blueprints ####
         # Create container for new blueprints that will be speciated in a later function
@@ -46,43 +51,41 @@ class CoDeepNEATEvolutionBP:
                 continue
 
             for _ in range(species_offspring):
-                # Choose random float vaue determining specific evolutionary method to evolve the chosen blueprint
+                # Choose random float vaue determining specific evolutionary method to evolve the chosen blueprint.
+                # Choose random parent from list of elligible parents for the species
                 random_choice = random.random()
                 parent_blueprint = self.pop.blueprints[random.choice(bp_spec_parents[spec_id])]
+
+                # If randomly chosen parent for mutation contains extinct species, force node module species mutation
                 if parent_blueprint.get_species().intersection(mod_spec_extinct):
                     random_choice = (bp_mutation_rem_node_bracket + bp_mutation_node_spec_bracket) / 2.0
 
                 if random_choice < self.bp_mutation_add_conn_prob:
                     ## Create new blueprint by adding connection ##
-                    # Randomly determine the parent blueprint from the current species and the degree of mutation.
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_add_conn(parent_blueprint,
                                                                                 max_degree_of_mutation)
 
                 elif random_choice < bp_mutation_add_node_bracket:
                     ## Create new blueprint by adding node ##
-                    # Randomly determine the parent blueprint from the current species and the degree of mutation.
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_add_node(parent_blueprint,
                                                                                 max_degree_of_mutation)
 
                 elif random_choice < bp_mutation_rem_conn_bracket:
                     ## Create new blueprint by removing connection ##
-                    # Randomly determine the parent blueprint from the current species and the degree of mutation.
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_rem_conn(parent_blueprint,
                                                                                 max_degree_of_mutation)
 
                 elif random_choice < bp_mutation_rem_node_bracket:
                     ## Create new blueprint by removing node ##
-                    # Randomly determine the parent blueprint from the current species and the degree of mutation.
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_rem_node(parent_blueprint,
                                                                                 max_degree_of_mutation)
 
                 elif random_choice < bp_mutation_node_spec_bracket:
                     ## Create new blueprint by mutating species in nodes ##
-                    # Randomly determine the parent blueprint from the current species and the degree of mutation.
                     max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
                     new_bp_id, new_bp = self._create_mutated_blueprint_node_spec(parent_blueprint,
                                                                                  max_degree_of_mutation,
@@ -90,12 +93,13 @@ class CoDeepNEATEvolutionBP:
 
                 elif random_choice < bp_mutation_optimizer_bracket:
                     ## Create new blueprint by mutating the associated optimizer ##
-                    # Randomly determine the parent blueprint from the current species.
                     new_bp_id, new_bp = self._create_mutated_blueprint_optimizer(parent_blueprint)
 
                 else:  # random_choice < bp_crossover_bracket:
                     ## Create new blueprint through crossover ##
-                    # Determine if species has at least 2 blueprints as required for crossover
+                    # Try randomly selecting another parent blueprint and checking that other parnet bp for extinct
+                    # node module species. If species has only 1 member or other blueprint has extinct node module
+                    # species fail and create a new blueprint by adding a node to the original parent blueprint.
                     try:
                         other_bp_id_pool = bp_spec_parents[spec_id].copy()
                         other_bp_id_pool.remove(parent_blueprint.get_id())
@@ -105,10 +109,10 @@ class CoDeepNEATEvolutionBP:
                             raise IndexError
                     except IndexError:
                         max_degree_of_mutation = random.uniform(1e-323, self.bp_max_mutation)
-                        new_bp_id, new_bp = self._create_mutated_blueprint_node_spec(parent_blueprint,
-                                                                                     max_degree_of_mutation,
-                                                                                     mod_spec_extinct)
+                        new_bp_id, new_bp = self._create_mutated_blueprint_add_node(parent_blueprint,
+                                                                                    max_degree_of_mutation)
                     else:
+                        # Create crossover blueprint if second valid blueprint was found
                         new_bp_id, new_bp = self._create_crossed_over_blueprint(parent_bp,
                                                                                 other_bp)
 
@@ -434,7 +438,8 @@ class CoDeepNEATEvolutionBP:
         # return the offspring identical to the parent blueprint
         available_mod_species = set(self.pop.mod_species.keys())
         if len(available_mod_species) >= 2:
-            # Identify all non-Input nodes in the blueprint graph by gene ID as the species of those can be mutated
+            # Identify all non-Input nodes in the blueprint graph by gene ID as the species of those can be mutated.
+            # Collect all gene ids with extinct node module species immediately
             bp_graph_node_ids = set()
             node_ids_to_change_species = set()
             for gene in blueprint_graph.values():
@@ -443,7 +448,8 @@ class CoDeepNEATEvolutionBP:
                     if gene.species in mod_spec_extinct:
                         node_ids_to_change_species.add(gene.gene_id)
 
-            # Determine the node ids that have their species changed and the available module species to change into
+            # Determine the amount and ids of node module species to change. Depending on if the forcibly changed node
+            # module species aren't already a big enough mutation to satisfy the degree of mutation.
             number_of_node_species_to_change = math.ceil(max_degree_of_mutation * len(bp_graph_node_ids))
             if number_of_node_species_to_change > len(node_ids_to_change_species):
                 additional_node_ids_count = number_of_node_species_to_change - len(node_ids_to_change_species)
