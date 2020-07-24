@@ -21,6 +21,8 @@ class CoDeepNEATSpeciationMOD:
             else:
                 species_type_to_id[species_type] = [spec_id]
 
+        raise NotImplementedError("Add consideration of a maximum species count")
+
         for mod_id in new_module_ids:
             module_type = self.pop.modules[mod_id].get_module_type()
 
