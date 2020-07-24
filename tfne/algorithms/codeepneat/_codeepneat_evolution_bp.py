@@ -29,7 +29,9 @@ class CoDeepNEATEvolutionBP:
                 # association and then remove the old blueprint
                 self.pop.blueprints[new_bp_id] = new_bp
                 self.pop.bp_species[spec_id].remove(bp_id)
+                bp_spec_parents.remove(bp_id)
                 self.pop.bp_species[spec_id].append(new_bp_id)
+                bp_spec_parents.append(new_bp_id)
                 if self.pop.bp_species_repr[spec_id] == bp_id:
                     self.pop.bp_species_repr[spec_id] = new_bp_id
                 del self.pop.blueprints[bp_id]
@@ -135,8 +137,9 @@ class CoDeepNEATEvolutionBP:
                 self.pop.blueprints[new_bp_id] = new_bp
                 new_blueprint_ids.append(new_bp_id)
 
-        # Return the list of new blueprint ids for later speciation
-        return new_blueprint_ids
+        # Return the list of new blueprint ids for later speciation as well as the updated list of blueprint parents
+        # for each species
+        return new_blueprint_ids, bp_spec_parents
 
     def _create_mutated_blueprint_add_conn(self, parent_blueprint, max_degree_of_mutation):
         """"""

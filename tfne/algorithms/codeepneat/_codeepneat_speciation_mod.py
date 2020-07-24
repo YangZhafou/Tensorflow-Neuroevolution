@@ -4,12 +4,11 @@ import statistics
 class CoDeepNEATSpeciationMOD:
     def _speciate_modules_basic(self, mod_spec_parents, new_module_ids):
         """"""
+        pass
 
     def _speciate_modules_param_distance_fixed(self, mod_spec_parents, new_module_ids):
         """"""
-        print("FORCED EXIT")
-        exit()
-
+        ### Removal of Parental But Not Elite Modules ###
 
         for spec_id, spec_parents in mod_spec_parents:
             spec_elites = self.pop.mod_species[spec_id]
