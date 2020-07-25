@@ -206,7 +206,7 @@ class CoDeepNEATConfigProcessing:
                self.mod_spec_type == 'param-distance-fixed' or \
                self.mod_spec_type == 'param-distance-dynamic'
         if self.mod_spec_type == 'basic':
-            assert self.mod_spec_mod_elitism > 0 and isinstance(self.mod_spec_mod_elitism, int)
+            assert self.mod_spec_mod_elitism >= 0 and isinstance(self.mod_spec_mod_elitism, int)
             assert self.mod_spec_min_offspring >= 0 and isinstance(self.mod_spec_min_offspring, int)
             assert 1.0 >= self.mod_spec_reprod_thres >= 0 and isinstance(self.mod_spec_reprod_thres, float)
         elif self.mod_spec_type == 'param-distance-fixed':
@@ -240,7 +240,7 @@ class CoDeepNEATConfigProcessing:
                self.bp_spec_type == 'gene-overlap-fixed' or \
                self.bp_spec_type == 'gene-overlap-dynamic'
         if self.bp_spec_type == 'basic':
-            assert self.bp_spec_bp_elitism > 0 and isinstance(self.bp_spec_bp_elitism, int)
+            assert self.bp_spec_bp_elitism >= 0 and isinstance(self.bp_spec_bp_elitism, int)
             assert self.bp_spec_min_offspring >= 0 and isinstance(self.bp_spec_min_offspring, int)
             assert 1.0 >= self.bp_spec_reprod_thres >= 0 and isinstance(self.bp_spec_reprod_thres, float)
         elif self.bp_spec_type == 'gene-overlap-fixed':
