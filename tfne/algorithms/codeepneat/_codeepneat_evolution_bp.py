@@ -115,7 +115,7 @@ class CoDeepNEATEvolutionBP:
                                                                                     max_degree_of_mutation)
                     else:
                         # Create crossover blueprint if second valid blueprint was found
-                        new_bp_id, new_bp = self._create_crossed_over_blueprint(parent_bp,
+                        new_bp_id, new_bp = self._create_crossed_over_blueprint(parent_blueprint,
                                                                                 other_bp)
 
                 # Add newly created blueprint to the bp container and to the list of bps that have to be speciated
@@ -465,7 +465,7 @@ class CoDeepNEATEvolutionBP:
             for node_id_to_change_species in node_ids_to_change_species:
                 former_node_species = blueprint_graph[node_id_to_change_species].species
                 parent_mutation['mutated_node_spec'][node_id_to_change_species] = former_node_species
-                possible_new_node_species = tuple(available_mod_species.difference(set(former_node_species)))
+                possible_new_node_species = tuple(available_mod_species - {former_node_species})
                 blueprint_graph[node_id_to_change_species].species = random.choice(possible_new_node_species)
 
         # Create and return the offspring blueprint with the edited blueprint graph having mutated species
