@@ -3,35 +3,41 @@ from __future__ import annotations
 import tensorflow as tf
 
 from .base_environment import BaseEnvironment
+from ..helper_functions import read_option_from_config
 
 
 class CIFAR10Environment(BaseEnvironment):
     """"""
 
-    def __init__(self, weight_training, verbosity, epochs=None, batch_size=None):
+    def __init__(self, config):
         """"""
-        raise NotImplementedError("CIFAR10 ENV Not Adjusted to new environment arch")
+        print("Setting up CIFAR10 environment...")
 
         # Load test data, unpack it and normalize the pixel values
-        print("Setting up CIFAR10 environment...")
         cifar10_dataset = tf.keras.datasets.cifar10.load_data()
         (self.train_images, self.train_labels), (self.test_images, self.test_labels) = cifar10_dataset
         self.train_images, self.test_images = self.train_images / 255.0, self.test_images / 255.0
 
+        # Register the supplied config, which will be evaluated once the method of evaluation is set up
+        self.config = config
+        self.verbosity = None
+
+    def set_up_evaluation(self, weight_training, verbosity):
+        """"""
         # Set the verbosity level
         self.verbosity = verbosity
 
         # If environment is set to be weight training then set eval_genome_function accordingly and save the supplied
         # weight training parameters
-        self.weight_training = weight_training
-        if self.weight_training:
+        if weight_training:
             # Register the weight training variant as the genome eval function
             self.eval_genome_fitness = self._eval_genome_fitness_weight_training
 
-            # Register parameters for the weight training variant of the genome eval function
-            self.epochs = epochs
-            self.batch_size = batch_size
+            # Read the required evaluation parameters for a weight training XOR environment
+            self.epochs = read_option_from_config(self.config, 'EVALUATION', 'epochs')
+            self.batch_size = read_option_from_config(self.config, 'EVALUATION', 'batch_size')
         else:
+            # Register the NON weight training variant as the genome eval function
             raise NotImplementedError("Non-Weight training evaluation not yet implemented for CIFAR10 Environment")
 
     def eval_genome_fitness(self, genome) -> float:
@@ -44,9 +50,6 @@ class CIFAR10Environment(BaseEnvironment):
         # Get model and optimizer required for compilation
         model = genome.get_model()
         optimizer = genome.get_optimizer()
-        if optimizer is None:
-            raise RuntimeError("Genome to evaluate ({}) does not supply an optimizer and no standard optimizer defined"
-                               "for CIFAR10 environment as of yet.")
 
         # Compile and train model
         model.compile(optimizer=optimizer,
@@ -74,14 +77,11 @@ class CIFAR10Environment(BaseEnvironment):
 
     def replay_genome(self, genome):
         """"""
-        raise NotImplementedError()
+        raise NotImplementedError("CIFAR10 genome replay not yet implemented")
 
     def duplicate(self) -> CIFAR10Environment:
         """"""
-        if self.weight_training:
-            return CIFAR10Environment(True, self.verbosity, self.epochs, self.batch_size)
-        else:
-            return CIFAR10Environment(False, self.verbosity)
+        return CIFAR10Environment(self.config)
 
     def get_input_shape(self) -> (int, int, int):
         """"""

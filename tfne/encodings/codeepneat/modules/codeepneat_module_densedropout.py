@@ -55,7 +55,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
     def initialize(self):
         """"""
-        # Uniformly randomly set module parameters
+        # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
         random_units = random.randint(self.config_params['units']['min'],
                                       self.config_params['units']['max'])
@@ -73,6 +73,28 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                                   self.config_params['dropout_rate']['min'],
                                                   self.config_params['dropout_rate']['max'],
                                                   self.config_params['dropout_rate']['step']), 4)
+
+    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
+        """"""
+        # Create the basic keras Dense layer, needed in all variants of the module
+        dense_layer = tf.keras.layers.Dense(units=self.units,
+                                            activation=self.activation,
+                                            kernel_initializer=self.kernel_init,
+                                            bias_initializer=self.bias_init,
+                                            dtype=self.dtype)
+
+        # If no dropout flag present, return solely the created dense layer as iterable. If dropout flag present, return
+        # the dense layer and together with the dropout layer
+        if not self.dropout_flag:
+            return (dense_layer,)
+        else:
+            dropout_layer = tf.keras.layers.Dropout(rate=self.dropout_rate,
+                                                    dtype=self.dtype)
+            return dense_layer, dropout_layer
+
+    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
+        """"""
+        raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
 
     def create_mutation(self,
                         offspring_id,
@@ -172,28 +194,6 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                             parent_mutation=parent_mutation,
                                             dtype=self.dtype,
                                             **offspring_params)
-
-    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
-        """"""
-        # Create the basic keras Dense layer, needed in all variants of the module
-        dense_layer = tf.keras.layers.Dense(units=self.units,
-                                            activation=self.activation,
-                                            kernel_initializer=self.kernel_init,
-                                            bias_initializer=self.bias_init,
-                                            dtype=self.dtype)
-
-        # If no dropout flag present, return solely the created dense layer as iterable. If dropout flag present, return
-        # the dense layer and together with the dropout layer
-        if not self.dropout_flag:
-            return (dense_layer,)
-        else:
-            dropout_layer = tf.keras.layers.Dropout(rate=self.dropout_rate,
-                                                    dtype=self.dtype)
-            return dense_layer, dropout_layer
-
-    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
-        """"""
-        raise NotImplementedError("Downsampling has not yet been implemented for DenseDropout Modules")
 
     def serialize(self) -> dict:
         """"""

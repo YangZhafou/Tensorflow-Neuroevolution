@@ -25,6 +25,16 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'initialize()'")
 
     @abstractmethod
+    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_module_layers()'")
+
+    @abstractmethod
+    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
+        """"""
+        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_downsampling_layer()'")
+
+    @abstractmethod
     def create_mutation(self,
                         offspring_id,
                         max_degree_of_mutation) -> CoDeepNEATModuleBase:
@@ -38,16 +48,6 @@ class CoDeepNEATModuleBase(object, metaclass=ABCMeta):
                          max_degree_of_mutation) -> CoDeepNEATModuleBase:
         """"""
         raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_crossover()'")
-
-    @abstractmethod
-    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_module_layers()'")
-
-    @abstractmethod
-    def create_downsampling_layer(self, in_shape, out_shape) -> tf.keras.layers.Layer:
-        """"""
-        raise NotImplementedError("Subclass of CoDeepNEATModuleBase does not implement 'create_downsampling_layer()'")
 
     @abstractmethod
     def serialize(self) -> dict:
