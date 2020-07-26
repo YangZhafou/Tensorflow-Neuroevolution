@@ -1,30 +1,22 @@
+import warnings
 import statistics
-from absl import logging
 
 
 class CoDeepNEATSpeciationBP:
     def _speciate_blueprints_basic(self, bp_spec_parents, new_blueprint_ids):
         """"""
-        raise NotImplementedError()
-        '''
-        ### Removal of parental but not elite Blueprints ###
-        # Remove blueprints that will not be carried over from blueprint container after evolution, though which were
-        # kept as potential parent. First sort blueprint ids in species according to their fitness
-        bp_ids_sorted = sorted(self.pop.bp_species[1], key=lambda x: self.pop.blueprints[x].get_fitness(), reverse=True)
-
-        # Determine blueprint ids that were kept but are not carried over
-        bp_ids_to_carry_over = bp_ids_sorted[:self.bp_spec_bp_elitism]
-        bp_ids_to_remove = [bp_id for bp_id in self.pop.bp_species[1] if bp_id not in bp_ids_to_carry_over]
-
-        # Delete just determined blueprint ids from blueprint container and blueprint species list
-        for bp_id_to_remove in bp_ids_to_remove:
-            self.pop.bp_species[1].remove(bp_id_to_remove)
-            del self.pop.blueprints[bp_id_to_remove]
+        ### Removal of Parental But Not Elite Blueprints ###
+        # Remove blueprints from blueprint container that served as parents and were kept, though do not belong to any
+        # species
+        for spec_id, spec_parents in bp_spec_parents.items():
+            spec_elites = self.pop.bp_species[spec_id]
+            for bp_id in spec_parents:
+                if bp_id not in spec_elites:
+                    del self.pop.blueprints[bp_id]
 
         ### Species Assignment ###
         # Basic speciation assigns each new blueprint to species 1, as the only existing species
         self.pop.bp_species[1] += new_blueprint_ids
-        '''
 
     def _speciate_blueprints_gene_overlap_fixed(self, bp_spec_parents, new_blueprint_ids):
         """"""
@@ -59,9 +51,9 @@ class CoDeepNEATSpeciationBP:
                 self.pop.bp_species[min_distance_spec].append(bp_id)
             elif bp_spec_distances[min_distance_spec] > self.bp_spec_distance \
                     and min_spec_size * len(self.pop.bp_species) >= self.bp_pop_size:
-                logging.warning(f"Warning: New Blueprint (#{bp_id}) has sufficient distance to other species"
-                                f"representatives but has been assigned to species {min_distance_spec} as the"
-                                f"population size does not allow for more species.")
+                warnings.warn(f"Warning: New Blueprint (#{bp_id}) has sufficient distance to other species"
+                              f"representatives but has been assigned to species {min_distance_spec} as the"
+                              f"population size does not allow for more species.", UserWarning)
                 self.pop.bp_species[min_distance_spec].append(bp_id)
             else:
                 # Create a new species with the new blueprint as the representative

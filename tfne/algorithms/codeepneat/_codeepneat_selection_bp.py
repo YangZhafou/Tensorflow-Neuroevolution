@@ -5,63 +5,43 @@ from typing import Union
 class CoDeepNEATSelectionBP:
     def _select_blueprints_basic(self) -> ({Union[int, str]: int}, {int: int}):
         """"""
-        raise NotImplementedError()
+        ### Generational Parent Determination ###
+        # Determine potential parents of the blueprint species for offspring creation. Blueprints are ordered by their
+        # fitness and the top x percent of those blueprints (as dictated via the reproduction threshold parameter) are
+        # chosen as generational parents. The species elite blueprints (best members) are added as potential parents.
+        # First sort blueprint ids in species according to their fitness
+        spec_bp_ids = self.pop.bp_species[1]
+        spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.pop.blueprints[x].get_fitness())
+
+        # Determine the species elite as the top x members
+        spec_elites = set(spec_bp_ids_sorted[-self.bp_spec_bp_elitism:])
+
+        # Determine the species parents as those clearing the reproduction threshold, plus the species elites
+        reprod_threshold_index = math.ceil(len(spec_bp_ids) * self.bp_spec_reprod_thres)
+        spec_parents = set(spec_bp_ids_sorted[reprod_threshold_index:])
+        spec_parents = spec_parents.union(spec_elites)
+
+        # Remove non elite blueprints from the species list, as they are not part of the species anymore. Remove non
+        # parental blueprints from the blueprint container as there is no use of those blueprints anymore.
+        bp_ids_non_elite = set(spec_bp_ids) - spec_elites
+        bp_ids_non_parental = set(spec_bp_ids) - spec_parents
+        for bp_id in bp_ids_non_elite:
+            self.pop.bp_species[1].remove(bp_id)
+        for bp_id in bp_ids_non_parental:
+            del self.pop.blueprints[bp_id]
+
+        # Cast potential parents to list, as potentially adjusted in BP evolution
+        bp_spec_parents = {1: list(spec_parents)}
 
         #### Offspring Size Calculation ####
-        # Determine the sum of each avg fitness
-        total_avg_fitness = 0
-        for fitness_history in self.pop.bp_species_fitness_history.values():
-            total_avg_fitness += fitness_history[self.pop.generation_counter]
+        # Determine the amount of offspring for the blueprint species as the difference between the intended population
+        # size and the amount of elite blueprints carried over to the next generation.
+        bp_spec_offspring = {1: self.bp_pop_size - len(self.pop.bp_species[1])}
 
-        # Calculate the amount of offspring assigned to each species based on the species share of the total avg fitness
-        bp_species_offspring = dict()
-        current_total_size = 0
-        for spec_id, spec_fitness_history in self.pop.bp_species_fitness_history.items():
-            # The intended future size of the species is its share of the total avg fitness
-            spec_fitness_share = spec_fitness_history[self.pop.generation_counter] / total_avg_fitness
-            spec_intended_size = math.floor(spec_fitness_share * self.bp_pop_size)
-
-            # Determine the assigned offspring size of the species, which is its determined size minus the blueprints
-            # which will be preserved
-            offspring_size = spec_intended_size - self.bp_spec_bp_elitism
-            if offspring_size <= self.bp_spec_min_offspring:
-                offspring_size = self.bp_spec_min_offspring
-
-            bp_species_offspring[spec_id] = offspring_size
-            current_total_size += (offspring_size + self.bp_spec_bp_elitism)
-
-        # If during math flooring operations and minimal offspring calculations the total size of the future species
-        # deviates from the intended bp size, adjust the offspring by removing offspring from the species with the
-        # most assigned offspring or adding offspring by adding offspring to the species with least assigned offspring
-        while current_total_size < self.bp_pop_size:
-            min_spec_id = min(bp_species_offspring.keys(), key=bp_species_offspring.get)
-            bp_species_offspring[min_spec_id] += 1
-            current_total_size += 1
-        while current_total_size > self.bp_pop_size:
-            max_spec_id = max(bp_species_offspring.keys(), key=bp_species_offspring.get)
-            bp_species_offspring[max_spec_id] -= 1
-            current_total_size -= 1
-
-        #### Blueprint Selection ####
-        for spec_id, spec_bp_ids in self.pop.bp_species.items():
-            # Sort blueprint ids in species according to their fitness
-            spec_bp_ids_sorted = sorted(spec_bp_ids, key=lambda x: self.pop.blueprints[x].get_fitness(), reverse=True)
-
-            # Determine blueprint ids to remove in order to prevent to use them for reproduction
-            removal_threshold_index = int(len(spec_bp_ids) * (1 - self.bp_spec_reprod_thres))
-            # Correct removal index threshold if reproduction threshold so high that elitism blueprints would be removed
-            if removal_threshold_index + self.bp_spec_bp_elitism < len(spec_bp_ids):
-                removal_threshold_index = self.bp_spec_bp_elitism
-            spec_bp_ids_to_remove = spec_bp_ids_sorted[removal_threshold_index:]
-
-            # Delete low performing blueprints that will not be considered for reproduction from species assignment
-            for bp_id_to_remove in spec_bp_ids_to_remove:
-                self.pop.bp_species[spec_id].remove(bp_id_to_remove)
-                del self.pop.blueprints[bp_id_to_remove]
-
-        # Set reinit offspring to 0 as no species can go extinct in basic selection
-        reinit_offspring = 0
-        return bp_species_offspring, reinit_offspring
+        # Return
+        # bp_spec_offspring {int: int} associating species id with amount of offspring
+        # bp_spec_parents {int: [int]} associating species id with list of potential parent ids for species
+        return bp_spec_offspring, bp_spec_parents
 
     def _select_blueprints_gene_overlap_fixed(self) -> ({Union[int, str]: int}, {int: int}):
         """"""
@@ -131,7 +111,7 @@ class CoDeepNEATSelectionBP:
             for bp_id in bp_ids_non_parental:
                 del self.pop.blueprints[bp_id]
 
-            # Cast potential parents to list, as randomly chosen from
+            # Cast potential parents to list, as potentially adjusted in BP evolution
             bp_spec_parents[spec_id] = list(spec_parents)
 
         #### Offspring Size Calculation ####
