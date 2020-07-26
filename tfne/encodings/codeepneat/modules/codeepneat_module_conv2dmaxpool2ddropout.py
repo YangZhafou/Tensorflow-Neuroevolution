@@ -295,8 +295,8 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         return CoDeepNEATModuleConv2DMaxPool2DDropout(config_params=self.config_params,
                                                       module_id=offspring_id,
                                                       parent_mutation=parent_mutation,
-                                                      dtype=self.dtype
-                                                            ** offspring_params)
+                                                      dtype=self.dtype,
+                                                      **offspring_params)
 
     def serialize(self) -> dict:
         """"""

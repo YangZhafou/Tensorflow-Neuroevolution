@@ -51,6 +51,7 @@ class CIFAR10Environment(BaseEnvironment):
         model = genome.get_model()
         optimizer = genome.get_optimizer()
 
+        '''
         # Compile and train model
         model.compile(optimizer=optimizer,
                       loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
@@ -68,6 +69,10 @@ class CIFAR10Environment(BaseEnvironment):
         _, evaluated_fitness = model.evaluate(x=self.test_images,
                                               y=self.test_labels,
                                               verbose=self.verbosity)
+        '''
+        # During algorithm development, randomize genome training results for faster testing
+        import random
+        evaluated_fitness = random.random() * 100
 
         return round(evaluated_fitness * 100, 4)
 
