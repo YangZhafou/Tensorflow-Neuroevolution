@@ -245,7 +245,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
             congruence_list.append(self.dropout_rate / other_module.dropout_rate)
 
         # Return the distance as the distance of the average congruence to the perfect congruence of 1.0
-        return 1.0 - statistics.mean(congruence_list)
+        return round(1.0 - statistics.mean(congruence_list), 4)
 
     def get_module_type(self) -> str:
         """"""

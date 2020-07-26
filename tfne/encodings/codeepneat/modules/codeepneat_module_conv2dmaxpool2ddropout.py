@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import random
+import statistics
 
 import numpy as np
 import tensorflow as tf
@@ -319,7 +320,57 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
 
     def get_distance(self, other_module) -> float:
         """"""
-        raise NotImplementedError()
+        # Calculate distance of modules by inspecting each parameter, calculating the congruence between each and
+        # eventually averaging the out the congruence. The distance is returned as the average congruences distance to
+        # 1.0. The congruence of continuous parameters is calculated by their relative distance. The congruence of
+        # categorical parameters is either 1.0 in case they are the same or it's 1 divided to the amount of possible
+        # values for that specific parameter
+        congruence_list = list()
+        if self.merge_method == other_module.merge_method:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['merge_method']))
+        if self.filters >= other_module.filters:
+            congruence_list.append(other_module.filters / self.filters)
+        else:
+            congruence_list.append(self.filters / other_module.filters)
+        if self.kernel_size == other_module.kernel_size:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['kernel_size']))
+        if self.strides == other_module.strides:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['strides']))
+        if self.padding == other_module.padding:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['padding']))
+        if self.activation == other_module.activation:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['activation']))
+        if self.kernel_init == other_module.kernel_init:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['kernel_init']))
+        if self.bias_init == other_module.bias_init:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['bias_init']))
+        congruence_list.append(abs(self.max_pool_flag - other_module.max_pool_flag))
+        if self.max_pool_size == other_module.max_pool_size:
+            congruence_list.append(1.0)
+        else:
+            congruence_list.append(1 / len(self.config_params['max_pool_size']))
+        congruence_list.append(abs(self.dropout_flag - other_module.dropout_flag))
+        if self.dropout_rate >= other_module.dropout_rate:
+            congruence_list.append(other_module.dropout_rate / self.dropout_rate)
+        else:
+            congruence_list.append(self.dropout_rate / other_module.dropout_rate)
+
+        # Return the distance as the distance of the average congruence to the perfect congruence of 1.0
+        return round(1.0 - statistics.mean(congruence_list), 4)
 
     def get_module_type(self) -> str:
         """"""
