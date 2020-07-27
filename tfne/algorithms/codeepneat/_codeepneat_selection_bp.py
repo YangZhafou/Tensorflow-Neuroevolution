@@ -83,6 +83,36 @@ class CoDeepNEATSelectionBP:
                 del self.pop.bp_species_repr[spec_id]
                 del self.pop.bp_species_fitness_history[spec_id]
 
+        ### Rebase Species Representative ###
+        # If Rebase representative config flag set to true, rechoose the representative of each species as the best
+        # blueprint of the species that also holds the minimum set distance ('bp_spec_distance') to all other species
+        # representatives. Begin the rebasing of species representatives from the oldest to the newest species.
+        if self.bp_spec_rebase_repr:
+            all_spec_repr_ids = set(self.pop.bp_species_repr.values())
+            for spec_id, spec_repr_id in self.pop.bp_species_repr.items():
+                # Determine the blueprint ids of all other species representatives and create a sorted list of the
+                # blueprints in the current species according to their fitness
+                other_spec_repr_ids = all_spec_repr_ids - {spec_repr_id}
+
+                # Traverse each blueprint id in the sorted blueprint id list beginning with the best. Determine the
+                # distance to other species representative blueprint ids and if the distance to all other species
+                # representatives is higher than the specified minimum distance for a new species, set the blueprint
+                # as the new representative.
+                spec_bp_ids_sorted = sorted(self.pop.bp_species[spec_id],
+                                            key=lambda x: self.pop.blueprints[x].get_fitness(),
+                                            reverse=True)
+                for bp_id in spec_bp_ids_sorted:
+                    if bp_id == spec_repr_id:
+                        # Best species blueprint already representative. Abort search.
+                        break
+                    blueprint = self.pop.blueprints[bp_id]
+                    distance_to_other_spec_repr = [blueprint.calculate_gene_distance(self.pop.blueprints[other_bp_id])
+                                                   for other_bp_id in other_spec_repr_ids]
+                    if all(distance >= self.bp_spec_distance for distance in distance_to_other_spec_repr):
+                        # New best species representative found. Set as representative and abort search
+                        self.pop.bp_species_repr[spec_id] = bp_id
+                        break
+
         ### Generational Parent Determination ###
         # Determine potential parents of the blueprint species for offspring creation. Blueprints are ordered by their
         # fitness and the top x percent of those blueprints (as dictated via the reproduction threshold parameter) are

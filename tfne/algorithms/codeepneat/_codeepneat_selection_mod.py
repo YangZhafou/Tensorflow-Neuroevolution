@@ -127,6 +127,36 @@ class CoDeepNEATSelectionMOD:
                 del self.pop.mod_species_repr[spec_id]
                 del self.pop.mod_species_fitness_history[spec_id]
 
+        ### Rebase Species Representative ###
+        # If Rebase representative config flag set to true, rechoose the representative of each species as the best
+        # module of the species that also holds the minimum set distance ('mod_spec_distance') to all other species
+        # representatives. Begin the rebasing of species representatives from the oldest to the newest species.
+        if self.mod_spec_rebase_repr:
+            all_spec_repr_ids = set(self.pop.mod_species_repr.values())
+            for spec_id, spec_repr_id in self.pop.mod_species_repr.items():
+                # Determine the module ids of all other species representatives and create a sorted list of the modules
+                # in the current species according to their fitness
+                other_spec_repr_ids = all_spec_repr_ids - {spec_repr_id}
+
+                # Traverse each module id in the sorted module id list beginning with the best. Determine the distance
+                # to other species representative module ids and if the distance to all other species representatives is
+                # higher than the specified minimum distance for a new species, set the module as the new
+                # representative.
+                spec_mod_ids_sorted = sorted(self.pop.mod_species[spec_id],
+                                             key=lambda x: self.pop.modules[x].get_fitness(),
+                                             reverse=True)
+                for mod_id in spec_mod_ids_sorted:
+                    if mod_id == spec_repr_id:
+                        # Best species module already representative. Abort search.
+                        break
+                    module = self.pop.modules[mod_id]
+                    distance_to_other_spec_repr = [module.get_distance(self.pop.modules[other_mod_id])
+                                                   for other_mod_id in other_spec_repr_ids]
+                    if all(distance >= self.mod_spec_distance for distance in distance_to_other_spec_repr):
+                        # New best species representative found. Set as representative and abort search
+                        self.pop.mod_species_repr[spec_id] = mod_id
+                        break
+
         ### Generational Parent Determination ###
         # Determine potential parents of the module species for offspring creation. Modules are ordered by their fitness
         # and the top x percent of those modules (as dictated via the reproduction threshold parameter) are chosen as

@@ -61,40 +61,6 @@ class CoDeepNEATSpeciationBP:
                 self.pop.bp_species[self.pop.bp_species_counter] = [bp_id]
                 self.pop.bp_species_repr[self.pop.bp_species_counter] = bp_id
 
-        ### Rebase Species Representative ###
-        # If Rebase representative config flag set to true, rechoose the representative of each species as the best
-        # blueprint of the species that also holds the minimum set distance ('bp_spec_distance') to all other species
-        # representatives
-        if self.bp_spec_rebase_repr:
-            for spec_id, spec_bp_repr_id in self.pop.bp_species_repr.items():
-                # Determine the blueprint ids of all other species representatives and create a sorted list of the
-                # blueprints in the current species according to their fitness
-                other_spec_bp_repr_ids = [bp_id for bp_id in self.pop.bp_species_repr.values()
-                                          if bp_id != spec_bp_repr_id]
-
-                # Only consider members of the species that have been evaluated before as potential new species
-                # representatives
-                evaluated_bp_ids = [bp_id for bp_id in self.pop.bp_species[spec_id]
-                                    if self.pop.blueprints[bp_id].get_fitness() != 0]
-                spec_bp_ids_sorted = sorted(evaluated_bp_ids,
-                                            key=lambda x: self.pop.blueprints[x].get_fitness(),
-                                            reverse=True)
-                # Traverse each blueprint id in the sorted blueprint id list beginning with the best. Determine the
-                # distance to other species representative blueprint ids and if the distance to all other species
-                # representatives is higher than the specified minimum distance for a new species, set the blueprint as
-                # the new representative.
-                for bp_id in spec_bp_ids_sorted:
-                    if bp_id == spec_bp_repr_id:
-                        # Best species blueprint already representative. Abort search
-                        break
-                    blueprint = self.pop.blueprints[bp_id]
-                    distance_to_other_spec_repr = [blueprint.calculate_gene_distance(self.pop.blueprints[other_bp_id])
-                                                   for other_bp_id in other_spec_bp_repr_ids]
-                    if all(distance >= self.bp_spec_distance for distance in distance_to_other_spec_repr):
-                        # New best species representative found. Set as representative and abort search
-                        self.pop.bp_species_repr[spec_id] = bp_id
-                        break
-
     def _speciate_blueprints_gene_overlap_dynamic(self, bp_spec_parents, new_blueprint_ids):
         """"""
         # Perform gene-overlap-dynamic speciation as identical to dynamic variant and subsequently adjust distance
