@@ -18,7 +18,7 @@ def codeepneat_xor_example(_):
     """"""
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
-    config_file_path = './codeepneat_xor_example_fixed_config.cfg'
+    config_file_path = './codeepneat_xor_fixed_example_config.cfg'
     backup_dir_path = './tfne_backups/'
     max_generations = 100
     max_fitness = None
