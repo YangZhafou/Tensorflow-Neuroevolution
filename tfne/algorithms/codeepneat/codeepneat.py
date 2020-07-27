@@ -4,6 +4,7 @@ import random
 import statistics
 
 from absl import logging
+import tensorflow as tf
 
 import tfne
 from ..base_algorithm import BaseNeuroevolutionAlgorithm
@@ -239,6 +240,10 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 if self.pop.best_fitness is None or genome_fitness > self.pop.best_fitness:
                     self.pop.best_genome = genome
                     self.pop.best_fitness = genome_fitness
+
+                # Reset models, counters, layers, etc including in the GPU to avoid memory clutter from old models as
+                # most likely only limited gpu memory is available
+                tf.keras.backend.clear_session()
 
             # Average out collected fitness of genomes the blueprint was invovled in. Then assign that average fitness
             # to the blueprint
