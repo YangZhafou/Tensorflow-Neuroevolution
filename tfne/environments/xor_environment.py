@@ -82,8 +82,8 @@ class XOREnvironment(BaseEnvironment):
 
     def replay_genome(self, genome):
         """"""
-        evaluated_fitness = round(float(100 * (1 - self.loss_function(self.y, genome(self.x)))), 4)
         print("Replaying Genome #{}:".format(genome.get_id()))
+        evaluated_fitness = round(float(100 * (1 - self.loss_function(self.y, genome(self.x)))), 4)
         print("Solution Values: \t{}\n".format(self.y))
         print("Predicted Values:\t{}\n".format(genome(self.x)))
         print("Achieved Fitness:\t{}\n".format(evaluated_fitness))

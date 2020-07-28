@@ -54,8 +54,7 @@ class CIFAR10Environment(BaseEnvironment):
 
         '''
         # Compile and train model
-        model.compile(optimizer=optimizer,
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
+        model.compile(optimizer=optimizer, loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
         model.fit(x=self.train_images,
                   y=self.train_labels,
                   epochs=self.epochs,
@@ -67,10 +66,9 @@ class CIFAR10Environment(BaseEnvironment):
         model.compile(optimizer=optimizer,
                       loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                       metrics=['accuracy'])
-        _, evaluated_fitness = model.evaluate(x=self.test_images,
-                                              y=self.test_labels,
-                                              verbose=self.verbosity)
+        _, evaluated_fitness = model.evaluate(x=self.test_images, y=self.test_labels, verbose=self.verbosity)
         '''
+
         # During algorithm development, randomize genome training results for faster testing
         import random
         evaluated_fitness = random.random() * 100
@@ -83,7 +81,17 @@ class CIFAR10Environment(BaseEnvironment):
 
     def replay_genome(self, genome):
         """"""
-        raise NotImplementedError("CIFAR10 genome replay not yet implemented")
+        print("Replaying Genome #{}:".format(genome.get_id()))
+
+        # Recompile genome model again, considering the accuracy metric in case model is currently compiled without it
+        # for training purposes
+        model = genome.get_model()
+        optimizer = genome.get_optimizer()
+        model.compile(optimizer=optimizer,
+                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                      metrics=['accuracy'])
+        _, evaluated_fitness = model.evaluate(x=self.test_images, y=self.test_labels, verbose=self.verbosity)
+        print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
 
     def duplicate(self) -> CIFAR10Environment:
         """"""
