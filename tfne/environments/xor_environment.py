@@ -21,9 +21,10 @@ class XOREnvironment(BaseEnvironment):
         # Register the supplied config, which will be evaluated once the method of evaluation is set up
         self.config = config
 
-        # Initialize loss function to evaluate performance on either evaluation method and declare verbosity
+        # Initialize loss function to evaluate performance on either evaluation method and set verbosity to TF standard
+        # value
         self.loss_function = tf.keras.losses.BinaryCrossentropy()
-        self.verbosity = None
+        self.verbosity = 1
 
     def set_up_evaluation(self, weight_training, verbosity):
         """"""

@@ -18,9 +18,10 @@ class CIFAR10Environment(BaseEnvironment):
         (self.train_images, self.train_labels), (self.test_images, self.test_labels) = cifar10_dataset
         self.train_images, self.test_images = self.train_images / 255.0, self.test_images / 255.0
 
-        # Register the supplied config, which will be evaluated once the method of evaluation is set up
+        # Register the supplied config, which will be evaluated once the method of evaluation is set up and set
+        # verbosity to TF standard value
         self.config = config
-        self.verbosity = None
+        self.verbosity = 1
 
     def set_up_evaluation(self, weight_training, verbosity):
         """"""
