@@ -149,6 +149,7 @@ class CoDeepNEATEncoding(BaseEncoding):
             serialized_conn_split_history[serializable_key] = value
 
         return {
+            'encoding_type': 'CoDeepNEAT',
             'genome_id_counter': self.genome_id_counter,
             'mod_id_counter': self.mod_id_counter,
             'bp_id_counter': self.bp_id_counter,

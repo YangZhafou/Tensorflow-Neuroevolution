@@ -65,6 +65,7 @@ class CoDeepNEATGenome(BaseGenome):
 
         # Use the serialized mod to bp assignment to create a serialization of the whole genome
         serialized_genome = {
+            'genome_type': 'CoDeepNEAT',
             'genome_id': self.genome_id,
             'blueprint': self.blueprint.serialize(),
             'bp_assigned_modules': serialized_bp_assigned_mods,

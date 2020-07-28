@@ -159,6 +159,7 @@ class CoDeepNEATBlueprint:
             serialized_blueprint_graph[gene_id] = serialized_gene
 
         return {
+            'blueprint_type': 'CoDeepNEAT',
             'blueprint_id': self.blueprint_id,
             'parent_mutation': self.parent_mutation,
             'blueprint_graph': serialized_blueprint_graph,
