@@ -91,9 +91,9 @@ class CoDeepNEATGenome(BaseGenome):
             json.dump(serialized_genome, save_file, indent=4)
         print(f"Saved CoDeepNEAT genome (ID: {self.genome_id}) to file: {save_file_path}")
 
-    def save_model(self, save_dir_path):
+    def save_model(self, file_path, **kwargs):
         """"""
-        raise NotImplementedError()
+        self.model.save(filepath=file_path, **kwargs)
 
     def set_fitness(self, fitness):
         self.fitness = fitness

@@ -24,7 +24,7 @@ class BaseGenome(object, metaclass=ABCMeta):
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement 'save_genotype()'")
 
-    def save_model(self, save_dir_path):
+    def save_model(self, file_path, **kwargs):
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement 'save_model()'")
 
