@@ -56,9 +56,9 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             # Initialize and register an associated CoDeepNEAT encoding and population outfitted with the saved state
             self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype,
                                                               saved_state=saved_state['encoding_state'])
-            self.pop = tfne.populations.CoDeepNEATPopulation(saved_state=saved_state['population'],
-                                                             dtype=self.dtype,
-                                                             module_config_params=self.available_mod_params)
+            self.pop = tfne.deserialization.load_population(serialized_state=saved_state['population'],
+                                                            dtype=self.dtype,
+                                                            module_config_params=self.available_mod_params)
         else:
             # Initialize and register a blank associated CoDeepNEAT encoding and population
             self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
