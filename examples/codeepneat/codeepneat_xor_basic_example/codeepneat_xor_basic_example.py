@@ -57,7 +57,7 @@ def codeepneat_xor_example(_):
 
     # Serialize and save genotype and Tensorflow model to demonstrate serialization/deserialization
     genome_file_path = best_genome.save_genotype(save_dir_path='./')
-    best_genome.save_model(save_dir_path='./')
+    best_genome.save_model(file_path='./')
 
     # Load and deserialize the saved genotype and apply it again to the chosen environment
     print("Best Genome returned by evolution:\n")
