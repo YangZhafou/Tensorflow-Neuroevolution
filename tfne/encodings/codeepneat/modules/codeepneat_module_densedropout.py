@@ -57,6 +57,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         """"""
         # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
+        self.merge_method['config']['dtype'] = self.dtype
         random_units = random.randint(self.config_params['units']['min'],
                                       self.config_params['units']['max'])
         self.units = round_with_step(random_units,

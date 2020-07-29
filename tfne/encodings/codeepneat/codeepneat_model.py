@@ -28,10 +28,8 @@ def create_model(blueprint, bp_assigned_modules, output_layers, input_shape, dty
             # Determine if the node has multiple inputs and requires a merge. If so, configure it accordingly and create
             # merge input for the current node
             if len(current_node_dependencies) > 1:
-                # Get current merge method, add dtype to its config and deserialize it
-                merge_method_config = current_node_module.get_merge_method()
-                merge_method_config['config']['dtype'] = dtype
-                merge_method = tf.keras.layers.deserialize(merge_method_config)
+                # Get current merge method and deserialize it
+                merge_method = tf.keras.layers.deserialize(current_node_module.get_merge_method())
 
                 # Create list of all the nodes serving as input to the current node as well as their shapes. If a merge
                 # method with an axis has been supplied, disregard the values of that axis for potential downsampling

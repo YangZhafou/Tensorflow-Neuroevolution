@@ -208,31 +208,31 @@ class CoDeepNEATConfigProcessing:
         if self.mod_spec_type == 'basic':
             assert self.mod_spec_mod_elitism > 0 and isinstance(self.mod_spec_mod_elitism, int)
             assert self.mod_spec_min_offspring >= 0 and isinstance(self.mod_spec_min_offspring, int)
-            assert 1.0 >= self.mod_spec_reprod_thres >= 0 and isinstance(self.mod_spec_reprod_thres, float)
+            assert 1.0 >= self.mod_spec_reprod_thres >= 0
         elif self.mod_spec_type == 'param-distance-fixed':
-            assert 1.0 >= self.mod_spec_distance >= 0 and isinstance(self.mod_spec_distance, float)
+            assert 1.0 >= self.mod_spec_distance >= 0
             assert self.mod_spec_mod_elitism >= 0 and isinstance(self.mod_spec_mod_elitism, int)
             assert self.mod_spec_min_offspring >= 0 and isinstance(self.mod_spec_min_offspring, int)
-            assert 1.0 >= self.mod_spec_reprod_thres >= 0 and isinstance(self.mod_spec_reprod_thres, float)
+            assert 1.0 >= self.mod_spec_reprod_thres >= 0
             assert self.mod_spec_max_stagnation > 0 and isinstance(self.mod_spec_max_stagnation, int)
             assert self.mod_spec_species_elitism >= 0 and isinstance(self.mod_spec_species_elitism, int)
             assert isinstance(self.mod_spec_rebase_repr, bool)
             assert isinstance(self.mod_spec_reinit_extinct, bool)
         elif self.mod_spec_type == 'param-distance-dynamic':
             assert self.mod_spec_species_count > 0 and isinstance(self.mod_spec_species_count, int)
-            assert 1.0 >= self.mod_spec_distance >= 0 and isinstance(self.mod_spec_distance, float)
+            assert 1.0 >= self.mod_spec_distance >= 0
             assert self.mod_spec_mod_elitism >= 0 and isinstance(self.mod_spec_mod_elitism, int)
             assert self.mod_spec_min_offspring >= 0 and isinstance(self.mod_spec_min_offspring, int)
-            assert 1.0 >= self.mod_spec_reprod_thres >= 0 and isinstance(self.mod_spec_reprod_thres, float)
+            assert 1.0 >= self.mod_spec_reprod_thres >= 0
             assert self.mod_spec_max_stagnation > 0 and isinstance(self.mod_spec_max_stagnation, int)
             assert self.mod_spec_species_elitism >= 0 and isinstance(self.mod_spec_species_elitism, int)
             assert isinstance(self.mod_spec_rebase_repr, bool)
             assert isinstance(self.mod_spec_reinit_extinct, bool)
 
         # Sanity check [MODULE_EVOLUTION] section
-        assert 1.0 >= self.mod_max_mutation >= 0 and isinstance(self.mod_max_mutation, float)
-        assert 1.0 >= self.mod_mutation_prob >= 0 and isinstance(self.mod_mutation_prob, float)
-        assert 1.0 >= self.mod_crossover_prob >= 0 and isinstance(self.mod_crossover_prob, float)
+        assert 1.0 >= self.mod_max_mutation >= 0
+        assert 1.0 >= self.mod_mutation_prob >= 0
+        assert 1.0 >= self.mod_crossover_prob >= 0
         assert round(self.mod_mutation_prob + self.mod_crossover_prob, 4) == 1.0
 
         # Sanity check [BP_SPECIATION] section
@@ -242,36 +242,36 @@ class CoDeepNEATConfigProcessing:
         if self.bp_spec_type == 'basic':
             assert self.bp_spec_bp_elitism > 0 and isinstance(self.bp_spec_bp_elitism, int)
             assert self.bp_spec_min_offspring >= 0 and isinstance(self.bp_spec_min_offspring, int)
-            assert 1.0 >= self.bp_spec_reprod_thres >= 0 and isinstance(self.bp_spec_reprod_thres, float)
+            assert 1.0 >= self.bp_spec_reprod_thres >= 0
         elif self.bp_spec_type == 'gene-overlap-fixed':
-            assert 1.0 >= self.bp_spec_distance >= 0 and isinstance(self.bp_spec_distance, float)
+            assert 1.0 >= self.bp_spec_distance >= 0
             assert self.bp_spec_bp_elitism >= 0 and isinstance(self.bp_spec_bp_elitism, int)
             assert self.bp_spec_min_offspring >= 0 and isinstance(self.bp_spec_min_offspring, int)
-            assert 1.0 >= self.bp_spec_reprod_thres >= 0 and isinstance(self.bp_spec_reprod_thres, float)
+            assert 1.0 >= self.bp_spec_reprod_thres >= 0
             assert self.bp_spec_max_stagnation > 0 and isinstance(self.bp_spec_max_stagnation, int)
             assert self.bp_spec_species_elitism >= 0 and isinstance(self.bp_spec_species_elitism, int)
             assert isinstance(self.bp_spec_rebase_repr, bool)
             assert isinstance(self.bp_spec_reinit_extinct, bool)
         elif self.bp_spec_type == 'gene-overlap-dynamic':
             assert self.bp_spec_species_count > 0 and isinstance(self.bp_spec_species_count, int)
-            assert 1.0 >= self.bp_spec_distance >= 0 and isinstance(self.bp_spec_distance, float)
+            assert 1.0 >= self.bp_spec_distance >= 0
             assert self.bp_spec_bp_elitism >= 0 and isinstance(self.bp_spec_bp_elitism, int)
             assert self.bp_spec_min_offspring >= 0 and isinstance(self.bp_spec_min_offspring, int)
-            assert 1.0 >= self.bp_spec_reprod_thres >= 0 and isinstance(self.bp_spec_reprod_thres, float)
+            assert 1.0 >= self.bp_spec_reprod_thres >= 0
             assert self.bp_spec_max_stagnation > 0 and isinstance(self.bp_spec_max_stagnation, int)
             assert self.bp_spec_species_elitism >= 0 and isinstance(self.bp_spec_species_elitism, int)
             assert isinstance(self.bp_spec_rebase_repr, bool)
             assert isinstance(self.bp_spec_reinit_extinct, bool)
 
         # Sanity check [BP_EVOLUTION] section
-        assert 1.0 >= self.bp_max_mutation >= 0 and isinstance(self.bp_max_mutation, float)
-        assert 1.0 >= self.bp_mutation_add_conn_prob >= 0 and isinstance(self.bp_mutation_add_conn_prob, float)
-        assert 1.0 >= self.bp_mutation_add_node_prob >= 0 and isinstance(self.bp_mutation_add_node_prob, float)
-        assert 1.0 >= self.bp_mutation_rem_conn_prob >= 0 and isinstance(self.bp_mutation_rem_conn_prob, float)
-        assert 1.0 >= self.bp_mutation_rem_node_prob >= 0 and isinstance(self.bp_mutation_rem_node_prob, float)
-        assert 1.0 >= self.bp_mutation_node_spec_prob > 0 and isinstance(self.bp_mutation_node_spec_prob, float)
-        assert 1.0 >= self.bp_mutation_optimizer_prob >= 0 and isinstance(self.bp_mutation_optimizer_prob, float)
-        assert 1.0 >= self.bp_crossover_prob >= 0 and isinstance(self.bp_crossover_prob, float)
+        assert 1.0 >= self.bp_max_mutation >= 0
+        assert 1.0 >= self.bp_mutation_add_conn_prob >= 0
+        assert 1.0 >= self.bp_mutation_add_node_prob >= 0
+        assert 1.0 >= self.bp_mutation_rem_conn_prob >= 0
+        assert 1.0 >= self.bp_mutation_rem_node_prob >= 0
+        assert 1.0 >= self.bp_mutation_node_spec_prob > 0
+        assert 1.0 >= self.bp_mutation_optimizer_prob >= 0
+        assert 1.0 >= self.bp_crossover_prob >= 0
         assert round(self.bp_mutation_add_conn_prob + self.bp_mutation_add_node_prob + self.bp_mutation_rem_conn_prob
                      + self.bp_mutation_rem_node_prob + self.bp_mutation_node_spec_prob + self.bp_crossover_prob
                      + self.bp_mutation_optimizer_prob, 4) == 1.0

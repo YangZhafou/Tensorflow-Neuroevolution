@@ -120,9 +120,9 @@ def deserialize_codeepneat_blueprint(bp_params) -> CoDeepNEATBlueprint:
     bp_graph = dict()
     for gene_id, gene_params in bp_params['blueprint_graph'].items():
         if 'node' in gene_params:
-            bp_graph[int(gene_id)] = CoDeepNEATBlueprintNode(gene_id, gene_params['node'], gene_params['species'])
+            bp_graph[int(gene_id)] = CoDeepNEATBlueprintNode(int(gene_id), gene_params['node'], gene_params['species'])
         else:
-            bp_graph[int(gene_id)] = CoDeepNEATBlueprintConn(gene_id,
+            bp_graph[int(gene_id)] = CoDeepNEATBlueprintConn(int(gene_id),
                                                              gene_params['conn_start'],
                                                              gene_params['conn_end'],
                                                              gene_params['enabled'])

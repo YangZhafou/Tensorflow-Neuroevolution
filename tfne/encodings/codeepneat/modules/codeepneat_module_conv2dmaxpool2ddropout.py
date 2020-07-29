@@ -70,6 +70,7 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         """"""
         # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
+        self.merge_method['config']['dtype'] = self.dtype
         random_filters = random.randint(self.config_params['filters']['min'],
                                         self.config_params['filters']['max'])
         self.filters = round_with_step(random_filters,
