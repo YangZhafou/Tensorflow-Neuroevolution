@@ -1,5 +1,5 @@
 import json
-from typing import Union
+from typing import Optional
 
 import tensorflow as tf
 
@@ -85,7 +85,7 @@ def load_state(state_file_path=None,
                serialized_state=None,
                dtype=None,
                population_only=False,
-               **kwargs) -> Union[BasePopulation, (BasePopulation, BaseEncoding)]:
+               **kwargs) -> (BasePopulation, Optional[BaseEncoding]):
     """"""
     if state_file_path is not None and serialized_state is not None:
         # Either a file path or an already loaded state are to be supplied. Not both.
@@ -104,7 +104,7 @@ def load_state(state_file_path=None,
         # Deserialize population. Return population only if flag accordingly set.
         deserialized_pop = load_population(serialized_population=serialized_pop, dtype=dtype, **kwargs)
         if population_only:
-            return deserialized_pop
+            return deserialized_pop, None
 
         # Deserialize encoding as well and return both deserialized pop and encoding
         deserialized_enc = load_encoding(serialized_encoding=serialized_enc, dtype=dtype, **kwargs)

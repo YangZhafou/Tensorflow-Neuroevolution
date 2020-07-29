@@ -19,7 +19,7 @@ def codeepneat_cifar10_example(_):
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
     config_file_path = './codeepneat_cifar10_example_config.cfg'
-    backup_dir_path = './tfne_backups/'
+    backup_dir_path = './tfne_state_backups/'
     max_generations = 72
     max_fitness = None
 

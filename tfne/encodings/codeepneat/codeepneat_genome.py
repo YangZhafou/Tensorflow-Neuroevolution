@@ -50,7 +50,7 @@ class CoDeepNEATGenome(BaseGenome):
         """"""
         return "CoDeepNEAT Genome | ID: {:>6} | Fitness: {:>6} | Blueprint ID: {:>6} | Module Species: {} | " \
                "Optimizer: {:>6} | Origin Gen: {:>4}".format(self.genome_id,
-                                                             self.fitness,
+                                                             'None' if self.fitness is None else self.fitness,
                                                              self.blueprint.get_id(),
                                                              self.blueprint.get_species(),
                                                              self.blueprint.optimizer_factory.get_name(),
@@ -67,6 +67,7 @@ class CoDeepNEATGenome(BaseGenome):
         serialized_genome = {
             'genome_type': 'CoDeepNEAT',
             'genome_id': self.genome_id,
+            'fitness': self.fitness,
             'blueprint': self.blueprint.serialize(),
             'bp_assigned_modules': serialized_bp_assigned_mods,
             'output_layers': self.output_layers,

@@ -56,7 +56,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             # Initialize and register an associated CoDeepNEAT encoding and population outfitted with the saved state
             self.enc = tfne.deserialization.load_encoding(serialized_encoding=saved_state['encoding'],
                                                           dtype=self.dtype)
-            self.pop = tfne.deserialization.load_population(serialized_state=saved_state['population'],
+            self.pop = tfne.deserialization.load_population(serialized_population=saved_state['population'],
                                                             dtype=self.dtype,
                                                             module_config_params=self.available_mod_params)
         else:
@@ -346,7 +346,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # Set save file name as 'pop backup' and including the current generation
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        save_file_path = save_dir_path + f"tfne_backup_gen_{self.pop.generation_counter}.json"
+        save_file_path = save_dir_path + f"tfne_state_backup_gen_{self.pop.generation_counter}.json"
 
         # Create serialized state of the evolutionary process. Set type of that serialized state.
         serialized_state = dict()

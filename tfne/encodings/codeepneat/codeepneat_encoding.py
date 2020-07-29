@@ -38,7 +38,7 @@ class CoDeepNEATEncoding(BaseEncoding):
             self.mod_id_counter = initial_state['mod_id_counter']
             self.bp_id_counter = initial_state['bp_id_counter']
             self.bp_gene_id_counter = initial_state['bp_gene_id_counter']
-            self.gene_to_gene_id = initial_state['gene_to_gene_id_counter']
+            self.gene_to_gene_id = initial_state['gene_to_gene_id']
             self.node_counter = initial_state['node_counter']
             self.conn_split_history = initial_state['conn_split_history']
 
