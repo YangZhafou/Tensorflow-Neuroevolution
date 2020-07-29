@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import numpy as np
 import tensorflow as tf
 
 from .base_environment import BaseEnvironment
@@ -15,8 +16,12 @@ class CIFAR10Environment(BaseEnvironment):
 
         # Load test data, unpack it and normalize the pixel values
         cifar10_dataset = tf.keras.datasets.cifar10.load_data()
-        (self.train_images, self.train_labels), (self.test_images, self.test_labels) = cifar10_dataset
+        (self.train_images, self.train_labels), (self.test_images, test_labels) = cifar10_dataset
         self.train_images, self.test_images = self.train_images / 255.0, self.test_images / 255.0
+        self.squeezed_test_labels = np.squeeze(test_labels)
+
+        # Initialize the accuracy metric, responsible for fitness determination
+        self.accuracy_metric = tf.keras.metrics.Accuracy()
 
         # Register the supplied config, which will be evaluated once the method of evaluation is set up and set
         # verbosity to TF standard value
@@ -52,7 +57,6 @@ class CIFAR10Environment(BaseEnvironment):
         model = genome.get_model()
         optimizer = genome.get_optimizer()
 
-        '''
         # Compile and train model
         model.compile(optimizer=optimizer, loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
         model.fit(x=self.train_images,
@@ -61,19 +65,12 @@ class CIFAR10Environment(BaseEnvironment):
                   batch_size=self.batch_size,
                   verbose=self.verbosity)
 
-        # Compile model again, this time considering accuracy, and evaluate and return its fitness being the accuracy
-        # in percent
-        model.compile(optimizer=optimizer,
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                      metrics=['accuracy'])
-        _, evaluated_fitness = model.evaluate(x=self.test_images, y=self.test_labels, verbose=self.verbosity)
-        '''
-
-        # During algorithm development, randomize genome training results for faster testing
-        import random
-        evaluated_fitness = random.random() * 100
-
-        return round(evaluated_fitness * 100, 4)
+        # Determine fitness by creating model predictions with test images and then judging the fitness based on the
+        # achieved model accuracy. Return this fitness
+        predictions = model.predict(self.test_images)
+        self.accuracy_metric.reset_states()
+        self.accuracy_metric.update_state(self.squeezed_test_labels, np.argmax(predictions, axis=-1))
+        return round(self.accuracy_metric.result().numpy() * 100, 4)
 
     def _eval_genome_fitness_non_weight_training(self, genome) -> float:
         """"""
@@ -83,14 +80,13 @@ class CIFAR10Environment(BaseEnvironment):
         """"""
         print("Replaying Genome #{}:".format(genome.get_id()))
 
-        # Recompile genome model again, considering the accuracy metric in case model is currently compiled without it
-        # for training purposes
+        # Determine fitness by creating model predictions with test images and then judging the fitness based on the
+        # achieved model accuracy.
         model = genome.get_model()
-        optimizer = genome.get_optimizer()
-        model.compile(optimizer=optimizer,
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                      metrics=['accuracy'])
-        _, evaluated_fitness = model.evaluate(x=self.test_images, y=self.test_labels, verbose=self.verbosity)
+        predictions = model.predict(self.test_images)
+        self.accuracy_metric.reset_states()
+        self.accuracy_metric.update_state(self.squeezed_test_labels, np.argmax(predictions, axis=-1))
+        evaluated_fitness = round(self.accuracy_metric.result().numpy() * 100, 4)
         print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
 
     def duplicate(self) -> CIFAR10Environment:

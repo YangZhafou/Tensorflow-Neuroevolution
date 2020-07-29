@@ -55,7 +55,6 @@ class XOREnvironment(BaseEnvironment):
         model = genome.get_model()
         optimizer = genome.get_optimizer()
 
-        '''
         # Compile and train model
         model.compile(optimizer=optimizer, loss=self.loss_function)
         model.fit(x=self.x, y=self.y, epochs=self.epochs, batch_size=self.batch_size, verbose=self.verbosity)
@@ -67,10 +66,6 @@ class XOREnvironment(BaseEnvironment):
         # Github TF issue: https://github.com/tensorflow/tensorflow/issues/38457
         if tf.math.is_nan(evaluated_fitness):
             evaluated_fitness = 0
-        '''
-        # During algorithm development, randomize genome training results for faster testing
-        import random
-        evaluated_fitness = random.random() * 100
 
         return round(evaluated_fitness, 4)
 
