@@ -2,7 +2,7 @@ from .codeepneat_genome import CoDeepNEATGenome
 from .codeepneat_optimizer_factory import OptimizerFactory
 from .codeepneat_blueprint import CoDeepNEATBlueprint, CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
 from .modules.codeepneat_module_base import CoDeepNEATModuleBase
-from ..base_encoding import BaseEncoding
+from tfne.encodings.base_encoding import BaseEncoding
 
 # Import Association dict of the module string name to its implementation class
 from .modules.codeepneat_module_association import MODULES

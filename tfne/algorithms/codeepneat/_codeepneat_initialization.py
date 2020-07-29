@@ -1,7 +1,7 @@
 import random
 
-from ...encodings.codeepneat import CoDeepNEATBlueprint
-from ...helper_functions import round_with_step
+from tfne.encodings.codeepneat import CoDeepNEATBlueprint
+from tfne.helper_functions import round_with_step
 
 
 class CoDeepNEATInitialization:

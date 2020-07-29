@@ -1,8 +1,8 @@
 import math
 import random
 
-from ...helper_functions import round_with_step
-from ...encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
+from tfne.helper_functions import round_with_step
+from tfne.encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
 
 
 class CoDeepNEATEvolutionBP:

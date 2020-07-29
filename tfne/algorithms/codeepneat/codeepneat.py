@@ -7,8 +7,8 @@ from absl import logging
 import tensorflow as tf
 
 import tfne
-from ..base_algorithm import BaseNeuroevolutionAlgorithm
-from ...encodings.codeepneat import CoDeepNEATGenome
+from tfne.algorithms.base_algorithm import BaseNeuroevolutionAlgorithm
+from tfne.encodings.codeepneat import CoDeepNEATGenome
 
 from ._codeepneat_config_processing import CoDeepNEATConfigProcessing
 from ._codeepneat_initialization import CoDeepNEATInitialization

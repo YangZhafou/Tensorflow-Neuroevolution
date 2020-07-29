@@ -5,7 +5,7 @@ import tensorflow as tf
 from .codeepneat_model import create_model
 from .codeepneat_blueprint import CoDeepNEATBlueprint
 from .modules.codeepneat_module_base import CoDeepNEATModuleBase
-from ..base_genome import BaseGenome
+from tfne.encodings.base_genome import BaseGenome
 
 
 class CoDeepNEATGenome(BaseGenome):

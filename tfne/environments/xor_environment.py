@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 from .base_environment import BaseEnvironment
-from ..helper_functions import read_option_from_config
+from tfne.helper_functions import read_option_from_config
 
 
 class XOREnvironment(BaseEnvironment):

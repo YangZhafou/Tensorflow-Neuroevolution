@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from ..encodings.base_genome import BaseGenome
+from tfne.encodings.base_genome import BaseGenome
 
 
 class BaseNeuroevolutionAlgorithm(object, metaclass=ABCMeta):

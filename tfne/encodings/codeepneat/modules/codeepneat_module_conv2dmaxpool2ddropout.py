@@ -8,7 +8,7 @@ import numpy as np
 import tensorflow as tf
 
 from .codeepneat_module_base import CoDeepNEATModuleBase
-from ....helper_functions import round_with_step
+from tfne.helper_functions import round_with_step
 
 
 class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
