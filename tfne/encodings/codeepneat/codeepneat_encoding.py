@@ -1,5 +1,3 @@
-import ast
-
 from .codeepneat_genome import CoDeepNEATGenome
 from .codeepneat_optimizer_factory import OptimizerFactory
 from .codeepneat_blueprint import CoDeepNEATBlueprint, CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
@@ -13,7 +11,7 @@ from .modules.codeepneat_module_association import MODULES
 class CoDeepNEATEncoding(BaseEncoding):
     """"""
 
-    def __init__(self, dtype, saved_state=None):
+    def __init__(self, dtype, initial_state=None):
         """"""
         # Register parameters
         self.dtype = dtype
@@ -34,9 +32,15 @@ class CoDeepNEATEncoding(BaseEncoding):
         self.node_counter = 2
         self.conn_split_history = dict()
 
-        # If saved_state provided, load the parameters
-        if saved_state is not None:
-            self._load_state(saved_state)
+        # If an initial state is supplied, then the encoding was deserialized. Recreate this initial state.
+        if initial_state is not None:
+            self.genome_id_counter = initial_state['genome_id_counter']
+            self.mod_id_counter = initial_state['mod_id_counter']
+            self.bp_id_counter = initial_state['bp_id_counter']
+            self.bp_gene_id_counter = initial_state['bp_gene_id_counter']
+            self.gene_to_gene_id = initial_state['gene_to_gene_id_counter']
+            self.node_counter = initial_state['node_counter']
+            self.conn_split_history = initial_state['conn_split_history']
 
     def create_initial_module(self, mod_type, config_params) -> (int, CoDeepNEATModuleBase):
         """"""
@@ -135,7 +139,7 @@ class CoDeepNEATEncoding(BaseEncoding):
         """"""
         return OptimizerFactory(optimizer_parameters)
 
-    def serialize_state(self) -> dict:
+    def serialize(self) -> dict:
         """"""
         # Convert keys of gene_to_gene_id and conn_split_history dicts to strings as tuples not elligible for json
         # serialization
@@ -158,20 +162,3 @@ class CoDeepNEATEncoding(BaseEncoding):
             'node_counter': self.node_counter,
             'conn_split_history': serialized_conn_split_history
         }
-
-    def _load_state(self, saved_state):
-        """"""
-        # Convert keys of serialized gene_to_gene_id and conn_split_history dicts back to tuples
-        for key, value in saved_state['gene_to_gene_id'].items():
-            deserialized_key = ast.literal_eval(key)
-            self.gene_to_gene_id[deserialized_key] = value
-        for key, value in saved_state['conn_split_history'].items():
-            deserialized_key = ast.literal_eval(key)
-            self.conn_split_history[deserialized_key] = value
-
-        # Deserialize rest of encoding state
-        self.genome_id_counter = saved_state['genome_id_counter']
-        self.mod_id_counter = saved_state['mod_id_counter']
-        self.bp_id_counter = saved_state['bp_id_counter']
-        self.bp_gene_id_counter = saved_state['bp_gene_id_counter']
-        self.node_counter = saved_state['node_counter']

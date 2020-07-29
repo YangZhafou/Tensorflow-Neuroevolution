@@ -1,4 +1,5 @@
 # Import functions
 from tfne.deserialization.deserialization import load_genome
 from tfne.deserialization.deserialization import load_population
-from tfne.deserialization.deserialization import load_population_from_state
+from tfne.deserialization.deserialization import load_encoding
+from tfne.deserialization.deserialization import load_state

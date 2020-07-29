@@ -54,14 +54,14 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 saved_state = json.load(saved_state_file)
 
             # Initialize and register an associated CoDeepNEAT encoding and population outfitted with the saved state
-            self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype,
-                                                              saved_state=saved_state['encoding_state'])
+            self.enc = tfne.deserialization.load_encoding(serialized_encoding=saved_state['encoding'],
+                                                          dtype=self.dtype)
             self.pop = tfne.deserialization.load_population(serialized_state=saved_state['population'],
                                                             dtype=self.dtype,
                                                             module_config_params=self.available_mod_params)
         else:
             # Initialize and register a blank associated CoDeepNEAT encoding and population
-            self.encoding = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
+            self.enc = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
             self.pop = tfne.populations.CoDeepNEATPopulation()
 
     def initialize_environments(self, num_cpus, num_gpus, verbosity):
@@ -114,8 +114,8 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             # Determine type and the associated config parameters of chosen species and initialize a module with it
             mod_type = self.available_modules[chosen_species]
             mod_config_params = self.available_mod_params[mod_type]
-            module_id, module = self.encoding.create_initial_module(mod_type=mod_type,
-                                                                    config_params=mod_config_params)
+            module_id, module = self.enc.create_initial_module(mod_type=mod_type,
+                                                               config_params=mod_config_params)
 
             # Append newly created initial module to module container and to according species
             chosen_species_id = chosen_species + 1
@@ -187,11 +187,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 try:
                     # Create genome, using the specific blueprint, a dict of modules for each species, the configured
                     # output layers and input shape as well as the current generation
-                    genome_id, genome = self.encoding.create_genome(blueprint,
-                                                                    bp_assigned_modules,
-                                                                    self.output_layers,
-                                                                    self.input_shape,
-                                                                    self.pop.generation_counter)
+                    genome_id, genome = self.enc.create_genome(blueprint,
+                                                               bp_assigned_modules,
+                                                               self.output_layers,
+                                                               self.input_shape,
+                                                               self.pop.generation_counter)
 
                 except ValueError:
                     # Catching build value error, occuring when the supplied layers and parameters do not result in a
@@ -356,7 +356,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         serialized_state['population'] = self.pop.serialize()
 
         # Create serialized encoding state
-        serialized_state['encoding_state'] = self.encoding.serialize_state()
+        serialized_state['encoding'] = self.enc.serialize()
 
         # Save the just serialized state as a json file
         with open(save_file_path, 'w') as save_file:

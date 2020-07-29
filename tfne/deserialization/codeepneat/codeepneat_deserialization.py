@@ -1,5 +1,8 @@
+import ast
+
 from tfne.encodings.codeepneat import CoDeepNEATGenome
 from tfne.encodings.codeepneat import CoDeepNEATBlueprint
+from tfne.encodings.codeepneat.codeepneat_encoding import CoDeepNEATEncoding
 from tfne.encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
 from tfne.encodings.codeepneat.codeepneat_optimizer_factory import OptimizerFactory
 from tfne.encodings.codeepneat.modules.codeepneat_module_base import CoDeepNEATModuleBase
@@ -44,6 +47,32 @@ def deserialize_codeepneat_population(serialized_population, dtype, module_confi
                                                                  module_config_params)
 
     return CoDeepNEATPopulation(initial_state=initial_state)
+
+
+def deserialize_codeepneat_encoding(serialized_encoding, dtype) -> CoDeepNEATEncoding:
+    """"""
+    # Deserialize all saved population internal evolution information, including the gene_to_gene_id associations and
+    # connection split history. Save all in the initial state dict of the CoDeepNEAT encoding.
+    inital_state = dict()
+
+    # Convert keys of serialized gene_to_gene_id and conn_split_history dicts back to tuples
+    inital_state['gene_to_gene_id'] = dict()
+    for key, value in serialized_encoding['gene_to_gene_id'].items():
+        deserialized_key = ast.literal_eval(key)
+        inital_state['gene_to_gene_id'][deserialized_key] = value
+    inital_state['conn_split_history'] = dict()
+    for key, value in serialized_encoding['conn_split_history'].items():
+        deserialized_key = ast.literal_eval(key)
+        inital_state['conn_split_history'][deserialized_key] = value
+
+    # Deserialize rest of encoding state
+    inital_state['genome_id_counter'] = serialized_encoding['genome_id_counter']
+    inital_state['mod_id_counter'] = serialized_encoding['mod_id_counter']
+    inital_state['bp_id_counter'] = serialized_encoding['bp_id_counter']
+    inital_state['bp_gene_id_counter'] = serialized_encoding['bp_gene_id_counter']
+    inital_state['node_counter'] = serialized_encoding['node_counter']
+
+    return CoDeepNEATEncoding(dtype=dtype, initial_state=inital_state)
 
 
 def deserialize_codeepneat_genome(serialized_genome, dtype, module_config_params=None) -> CoDeepNEATGenome:

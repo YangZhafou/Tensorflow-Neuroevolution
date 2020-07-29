@@ -22,7 +22,7 @@ class CoDeepNEATEvolutionMOD:
                     # function take care of this.
                     max_degree_of_mutation = random.uniform(1e-323, self.mod_max_mutation)
                     parent_module = self.pop.modules[random.choice(mod_spec_parents[spec_id])]
-                    new_mod_id, new_mod = self.encoding.create_mutated_module(parent_module, max_degree_of_mutation)
+                    new_mod_id, new_mod = self.enc.create_mutated_module(parent_module, max_degree_of_mutation)
 
                 else:  # random.random() < self.mod_mutation_prob + self.mod_crossover_prob
                     ## Create new module through crossover ##
@@ -36,16 +36,16 @@ class CoDeepNEATEvolutionMOD:
                         # Randomly determine the maximum degree of mutation > 0 and let the modules internal function
                         # create a crossover
                         max_degree_of_mutation = random.uniform(1e-323, self.mod_max_mutation)
-                        new_mod_id, new_mod = self.encoding.create_crossover_module(parent_module_1,
-                                                                                    parent_module_2,
-                                                                                    max_degree_of_mutation)
+                        new_mod_id, new_mod = self.enc.create_crossover_module(parent_module_1,
+                                                                               parent_module_2,
+                                                                               max_degree_of_mutation)
 
                     else:
                         # As species does not have enough modules for crossover, perform a mutation on the remaining
                         # module
                         max_degree_of_mutation = random.uniform(1e-323, self.mod_max_mutation)
                         parent_module = self.pop.modules[random.choice(mod_spec_parents[spec_id])]
-                        new_mod_id, new_mod = self.encoding.create_mutated_module(parent_module, max_degree_of_mutation)
+                        new_mod_id, new_mod = self.enc.create_mutated_module(parent_module, max_degree_of_mutation)
 
                 # Add newly created module to the module container and to the list of modules that have to be speciated
                 self.pop.modules[new_mod_id] = new_mod
@@ -61,8 +61,8 @@ class CoDeepNEATEvolutionMOD:
                 # Determine type and the associated config parameters of chosen species and initialize a module with it
                 mod_type = self.available_modules[chosen_species]
                 mod_config_params = self.available_mod_params[mod_type]
-                new_mod_id, new_mod = self.encoding.create_initial_module(mod_type=mod_type,
-                                                                          config_params=mod_config_params)
+                new_mod_id, new_mod = self.enc.create_initial_module(mod_type=mod_type,
+                                                                     config_params=mod_config_params)
 
                 # Add newly created module to the module container and to the list of modules that have to be speciated
                 self.modules[new_mod_id] = new_mod

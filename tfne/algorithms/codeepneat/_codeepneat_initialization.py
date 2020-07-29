@@ -14,11 +14,11 @@ class CoDeepNEATInitialization:
         # Create a minimal blueprint graph with node 1 being the input node (having no species) and node 2 being the
         # random initial node species
         blueprint_graph = dict()
-        gene_id, gene = self.encoding.create_blueprint_node(node=1, species=None)
+        gene_id, gene = self.enc.create_blueprint_node(node=1, species=None)
         blueprint_graph[gene_id] = gene
-        gene_id, gene = self.encoding.create_blueprint_node(node=2, species=initial_node_species)
+        gene_id, gene = self.enc.create_blueprint_node(node=2, species=initial_node_species)
         blueprint_graph[gene_id] = gene
-        gene_id, gene = self.encoding.create_blueprint_conn(conn_start=1, conn_end=2)
+        gene_id, gene = self.enc.create_blueprint_conn(conn_start=1, conn_end=2)
         blueprint_graph[gene_id] = gene
 
         # Randomly choose an optimizer from the available optimizers and create the parameter config dict of it
@@ -68,9 +68,9 @@ class CoDeepNEATInitialization:
                                           f"is not one of the valid types of list, dict or float")
 
         # Create new optimizer through encoding
-        optimizer_factory = self.encoding.create_optimizer_factory(optimizer_parameters=chosen_optimizer_params)
+        optimizer_factory = self.enc.create_optimizer_factory(optimizer_parameters=chosen_optimizer_params)
 
         # Create just defined initial blueprint through encoding
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)

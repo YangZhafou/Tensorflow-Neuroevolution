@@ -204,17 +204,17 @@ class CoDeepNEATEvolutionBP:
 
                 # If connection not yet present in graph, create it
                 else:  # (start_node, end_node) not in bp_graph_conns:
-                    gene_id, gene = self.encoding.create_blueprint_conn(conn_start=start_node,
-                                                                        conn_end=end_node)
+                    gene_id, gene = self.enc.create_blueprint_conn(conn_start=start_node,
+                                                                   conn_end=end_node)
                     blueprint_graph[gene_id] = gene
                     parent_mutation['added_genes'].append(gene_id)
                     added_conns_counter += 1
 
         # Create and return the offspring blueprint with the edited blueprint graph having additional connections as
         # well as the parent duplicated optimizer factory.
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_mutated_blueprint_add_node(self, parent_blueprint, max_degree_of_mutation):
         """"""
@@ -253,25 +253,25 @@ class CoDeepNEATEvolutionBP:
 
             # Create a new unique node if connection has not yet been split by any other mutation. Otherwise create the
             # same node. Choose species for new node randomly.
-            new_node = self.encoding.create_node_for_split(conn_start, conn_end)
+            new_node = self.enc.create_node_for_split(conn_start, conn_end)
             new_species = random.choice(available_mod_species)
 
             # Create the node and connections genes for the new node addition and add them to the blueprint graph
-            gene_id, gene = self.encoding.create_blueprint_node(node=new_node, species=new_species)
+            gene_id, gene = self.enc.create_blueprint_node(node=new_node, species=new_species)
             blueprint_graph[gene_id] = gene
             parent_mutation['added_genes'].append(gene_id)
-            gene_id, gene = self.encoding.create_blueprint_conn(conn_start=conn_start, conn_end=new_node)
+            gene_id, gene = self.enc.create_blueprint_conn(conn_start=conn_start, conn_end=new_node)
             blueprint_graph[gene_id] = gene
             parent_mutation['added_genes'].append(gene_id)
-            gene_id, gene = self.encoding.create_blueprint_conn(conn_start=new_node, conn_end=conn_end)
+            gene_id, gene = self.enc.create_blueprint_conn(conn_start=new_node, conn_end=conn_end)
             blueprint_graph[gene_id] = gene
             parent_mutation['added_genes'].append(gene_id)
 
         # Create and return the offspring blueprint with the edited blueprint graph having a new node through a split
         # connection as well as the parent duplicated optimizer factory.
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_mutated_blueprint_rem_conn(self, parent_blueprint, max_degree_of_mutation):
         """"""
@@ -333,9 +333,9 @@ class CoDeepNEATEvolutionBP:
 
         # Create and return the offspring blueprint with the edited blueprint graph having one or multiple connections
         # removed though still having at least 1 connection to and from each node.
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_mutated_blueprint_rem_node(self, parent_blueprint, max_degree_of_mutation):
         """"""
@@ -417,15 +417,15 @@ class CoDeepNEATEvolutionBP:
 
                     # Check if a no variant of the connection to recreate is in the bp_graph. If so, create it.
                     else:  # (new_start_node, new_end_node, True) not in bp_graph_conns:
-                        gene_id, gene = self.encoding.create_blueprint_conn(conn_start=new_start_node,
-                                                                            conn_end=new_end_node)
+                        gene_id, gene = self.enc.create_blueprint_conn(conn_start=new_start_node,
+                                                                       conn_end=new_end_node)
                         blueprint_graph[gene_id] = gene
 
         # Create and return the offspring blueprint with the edited blueprint graph having removed nodes which were
         # replaced by a full connection between all incoming and all outgoing nodes.
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_mutated_blueprint_node_spec(self, parent_blueprint, max_degree_of_mutation, mod_spec_extinct):
         """"""
@@ -469,9 +469,9 @@ class CoDeepNEATEvolutionBP:
                 blueprint_graph[node_id_to_change_species].species = random.choice(possible_new_node_species)
 
         # Create and return the offspring blueprint with the edited blueprint graph having mutated species
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_mutated_blueprint_optimizer(self, parent_blueprint):
         """"""
@@ -576,12 +576,12 @@ class CoDeepNEATEvolutionBP:
 
         # Create new optimizer through encoding, having either the parent perturbed offspring parameters or randomly
         # new created parameters
-        optimizer_factory = self.encoding.create_optimizer_factory(optimizer_parameters=offspring_opt_params)
+        optimizer_factory = self.enc.create_optimizer_factory(optimizer_parameters=offspring_opt_params)
 
         # Create and return the offspring blueprint with identical blueprint graph and modified optimizer_factory
-        return self.encoding.create_blueprint(blueprint_graph=blueprint_graph,
-                                              optimizer_factory=optimizer_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=blueprint_graph,
+                                         optimizer_factory=optimizer_factory,
+                                         parent_mutation=parent_mutation)
 
     def _create_crossed_over_blueprint(self, parent_bp_1, parent_bp_2):
         """"""
@@ -727,8 +727,8 @@ class CoDeepNEATEvolutionBP:
 
             # Create missing connections and add them to the offspring blueprint graph
             for missing_conn in missing_conns:
-                gene_id, gene = self.encoding.create_blueprint_conn(conn_start=missing_conn[0],
-                                                                    conn_end=missing_conn[1])
+                gene_id, gene = self.enc.create_blueprint_conn(conn_start=missing_conn[0],
+                                                               conn_end=missing_conn[1])
                 offspring_bp_graph[gene_id] = gene
                 parent_mutation['gene_parent'][gene_id] = 'orphaned node correction'
 
@@ -743,6 +743,6 @@ class CoDeepNEATEvolutionBP:
 
         # Create and return the offspring blueprint with crossed over blueprint graph and optimizer_factory of the
         # fitter parent
-        return self.encoding.create_blueprint(blueprint_graph=offspring_bp_graph,
-                                              optimizer_factory=offspring_opt_factory,
-                                              parent_mutation=parent_mutation)
+        return self.enc.create_blueprint(blueprint_graph=offspring_bp_graph,
+                                         optimizer_factory=offspring_opt_factory,
+                                         parent_mutation=parent_mutation)
