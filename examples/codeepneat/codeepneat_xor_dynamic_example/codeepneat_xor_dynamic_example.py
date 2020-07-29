@@ -61,7 +61,7 @@ def codeepneat_xor_example(_):
 
     # Load and deserialize the saved genotype and apply it again to the chosen environment
     print("Best Genome returned by evolution:\n")
-    deserialized_genome = tfne.load_genome(genome_file_path=genome_file_path)
+    deserialized_genome = tfne.deserialization.load_genome(genome_file_path=genome_file_path)
     print(deserialized_genome)
     environment.replay_genome(deserialized_genome)
 
