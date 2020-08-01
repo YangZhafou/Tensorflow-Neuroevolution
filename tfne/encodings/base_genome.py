@@ -20,7 +20,7 @@ class BaseGenome(object, metaclass=ABCMeta):
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement 'serialize()'")
 
-    def save_genotype(self, save_dir_path):
+    def save_genotype(self, save_dir_path) -> str:
         """"""
         raise NotImplementedError("Subclass of BaseGenome does not implement 'save_genotype()'")
 
