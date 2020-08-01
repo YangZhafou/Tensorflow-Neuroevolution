@@ -1,3 +1,0 @@
-# Import general modules
-from tfne_visualizer.tfnev_mainwindow import TFNEVMainWindow
-from tfne_visualizer.tfnev_welcomewindow import TFNEVWelcomeWindow

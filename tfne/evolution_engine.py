@@ -96,3 +96,7 @@ class EvolutionEngine:
         # Get best genome from evolutionary process and return it. This should return the best genome of the
         # evolutionary process, even if the population went extinct.
         return self.ne_algorithm.get_best_genome()
+
+    def get_backup_dir(self) -> str:
+        """"""
+        return self.backup_dir_path

@@ -1,17 +1,44 @@
-import os
-import json
 import webbrowser
 
 from PyQt5 import QtCore, QtWidgets, QtGui, QtSvg
 
-from .tfnev_mainwindow_ui import Ui_MainWindow
+from .tfnev_codeepneat_mainwindow_ui import Ui_MainWindow
 
 
-class TFNEVMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self, backup_dir_path, parent_window, *args, **kwargs):
-        super(TFNEVMainWindow, self).__init__(*args, **kwargs)
+class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    """"""
+
+    def __init__(self, tfne_state_backups, parent_window, *args, **kwargs):
+        """"""
+        super(TFNEVCoDeepNEATMainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
+        # Register parameters
+        self.tfne_state_backups = tfne_state_backups
+        self.parent_window = parent_window
+
+        # Connect Signals
+        self.action_documentation.triggered.connect(self.action_documentation_triggered)
+        self.action_close.triggered.connect(self.action_close_triggered)
+        self.action_exit.triggered.connect(self.action_exit_triggered)
+
+    def action_close_triggered(self):
+        """"""
+        self.parent_window.show()
+        self.destroy()
+
+    def action_exit_triggered(self):
+        """"""
+        self.parent_window.destroy()
+        self.destroy()
+        exit()
+
+    @staticmethod
+    def action_documentation_triggered():
+        """"""
+        webbrowser.open('https://tfne.readthedocs.io')
+
+    '''
         # Set up buttons for the type of analysis (genome or species analysis) and activate genome analysis mode
         self.svg_btn_genomes = QtSvg.QSvgWidget(self)
         self.svg_btn_genomes.load('./tfnev_mainwindow/genome_analysis_icon.svg')
@@ -126,14 +153,4 @@ class TFNEVMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Activate Species Analysis Mode
         self.centralwidget_genome.hide()
-
-    def action_close_triggered(self):
-        self.parent_window.show()
-        self.destroy()
-
-    def action_exit_triggered(self):
-        exit()
-
-    @staticmethod
-    def action_documentation_triggered():
-        webbrowser.open('https://tfne.readthedocs.io')
+    '''

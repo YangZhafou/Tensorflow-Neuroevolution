@@ -78,7 +78,7 @@ class CoDeepNEATGenome(BaseGenome):
 
         return serialized_genome
 
-    def save_genotype(self, save_dir_path):
+    def save_genotype(self, save_dir_path) -> str:
         """"""
         # Set save file name as the genome id and indicate that its the genotype that is being saved
         if save_dir_path[-1] != '/':
@@ -92,6 +92,9 @@ class CoDeepNEATGenome(BaseGenome):
         with open(save_file_path, 'w') as save_file:
             json.dump(serialized_genome, save_file, indent=4)
         print(f"Saved CoDeepNEAT genome (ID: {self.genome_id}) to file: {save_file_path}")
+
+        # Return the file path to which the genome was saved
+        return save_file_path
 
     def save_model(self, file_path, **kwargs):
         """"""
