@@ -1,6 +1,8 @@
 import os
+import tempfile
 import webbrowser
 
+import matplotlib.pyplot as plt
 from PyQt5 import QtCore, QtWidgets, QtGui, QtSvg
 
 from .tfnev_codeepneat_mainwindow_ui import Ui_MainWindow
@@ -17,6 +19,9 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Register parameters
         self.tfne_state_backups = tfne_state_backups
         self.parent_window = parent_window
+
+        # Get local temporary directory to save matplotlib created files into
+        self.temp_dir = tempfile.gettempdir()
 
         # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
         self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self.centralwidget)
@@ -61,6 +66,23 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Activate genome analysis mode, deactivate other modes
         self.widget_genome_analysis.show()
+
+        # Create graph showing the best genome fitness over the generations and display it
+        x_axis_generations = sorted(self.tfne_state_backups.keys())
+        y_axis_fitness = list()
+        for gen in x_axis_generations:
+            y_axis_fitness.append(self.tfne_state_backups[gen].best_fitness)
+        plt.plot(x_axis_generations, y_axis_fitness)
+        plt.ylabel('best fitness')
+        plt.xlabel('generation')
+        plt.savefig(self.temp_dir + '/best_genome_fitness_analysis.svg')
+        self.svg_best_genome_analysis = QtSvg.QSvgWidget(self.widget_genome_analysis)
+        self.svg_best_genome_analysis.load(self.temp_dir + '/best_genome_fitness_analysis.svg')
+        self.svg_best_genome_analysis.setGeometry(QtCore.QRect(10, 0, 440, 320))
+
+
+
+
 
     def action_close_triggered(self):
         """"""
