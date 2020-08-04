@@ -65,7 +65,7 @@
       <enum>Qt::ScrollBarAlwaysOn</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="ga_lbl_list_heading">
      <property name="geometry">
       <rect>
        <x>60</x>
@@ -81,6 +81,32 @@
      </property>
      <property name="text">
       <string>List of generations and their best genome</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="ga_widget_genome_visualization" native="true">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>0</y>
+       <width>460</width>
+       <height>460</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="ga_lbl_genome_id">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>470</y>
+       <width>460</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Genome ID </string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>

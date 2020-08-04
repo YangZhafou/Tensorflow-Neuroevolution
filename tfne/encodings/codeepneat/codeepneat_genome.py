@@ -1,4 +1,8 @@
+import os
 import json
+import tempfile
+import platform
+import subprocess
 
 import tensorflow as tf
 
@@ -55,6 +59,33 @@ class CoDeepNEATGenome(BaseGenome):
                                                              self.blueprint.get_species(),
                                                              self.blueprint.optimizer_factory.get_name(),
                                                              self.origin_generation)
+
+    def visualize(self, show=True, save_dir_path=None, **kwargs) -> str:
+        """"""
+        # Check if save_dir_path is supplied and if it is supplied in the correct format. If not correct format or
+        # create a new save_dir_path
+        if save_dir_path is None:
+            save_dir_path = tempfile.gettempdir()
+        if save_dir_path[-1] != '/':
+            save_dir_path += '/'
+
+        # Set save file name as the genome id and indicate that its the model being plotted
+        save_file_path = save_dir_path + f"genome_{self.genome_id}_model.svg"
+
+        # Create plot of model through keras util. Set DPI to None until keras utils API fixed the 'dpi for svg' bug.
+        # See Tensorflow issue: TODO LINK ISSUE
+        kwargs['dpi'] = None
+        tf.keras.utils.plot_model(model=self.model, to_file=save_file_path, **kwargs)
+
+        # If visualization is set to show, open it in the default image program
+        if show and platform.system() == 'Windows':
+            save_file_normpath = os.path.normpath(save_file_path)
+            os.startfile(save_file_normpath)
+        elif show:
+            subprocess.Popen(['xdg-open', save_file_path])
+
+        # Return the file path to which the genome plot was saved
+        return save_file_path
 
     def serialize(self) -> dict:
         """"""

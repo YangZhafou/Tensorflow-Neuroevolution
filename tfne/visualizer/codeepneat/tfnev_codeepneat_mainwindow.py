@@ -23,6 +23,12 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Get local temporary directory to save matplotlib created files into
         self.temp_dir = tempfile.gettempdir()
 
+        # Initialize image widgets of all views to refer to them when changing views in order not to create new widgets
+        # each time and stack them infinitely
+        self.ga_widget_genome_visualization_image = QtSvg.QSvgWidget(self.ga_widget_genome_visualization)
+        self.ga_widget_genome_visualization_image.setMaximumHeight(460)
+        self.ga_widget_genome_visualization_image.setMaximumWidth(460)
+
         # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
         self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self.centralwidget)
         self.svg_btn_mod_bp_analysis = QtSvg.QSvgWidget(self.centralwidget)
@@ -39,10 +45,16 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.svg_btn_bp_spec_analysis.setGeometry(QtCore.QRect(0, 510, 60, 170))
         self.event_svg_btn_genome_analysis()
 
+        # Set layouts
+        ga_widget_genome_visualization_layout = QtWidgets.QVBoxLayout(self.ga_widget_genome_visualization)
+        ga_widget_genome_visualization_layout.setAlignment(QtCore.Qt.AlignCenter)
+        ga_widget_genome_visualization_layout.addWidget(self.ga_widget_genome_visualization_image)
+
         # Connect Signals
         self.action_documentation.triggered.connect(self.action_documentation_triggered)
         self.action_close.triggered.connect(self.action_close_triggered)
         self.action_exit.triggered.connect(self.action_exit_triggered)
+        self.ga_list_generations.itemClicked.connect(self.click_ga_list_generations)
 
     def event_svg_btn_genome_analysis(self, *args, **kwargs):
         """"""
@@ -85,7 +97,28 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for gen in x_axis_generations:
             best_genome_id = self.tfne_state_backups[gen].best_genome.get_id()
             best_genome_in_gen_list.append(f'Generation {gen} - Genome #{best_genome_id}')
+        self.ga_list_generations.clear()
         self.ga_list_generations.addItems(best_genome_in_gen_list)
+
+    def click_ga_list_generations(self, item):
+        """"""
+        # Determine selected best genome
+        item_text = item.text()
+        chosen_gen = int(item_text[11:(item_text.find('-', 13) - 1)])
+        best_genome = self.tfne_state_backups[chosen_gen].best_genome
+
+        # create visualization of best genome and show in image widget
+        best_genome_plot_path = best_genome.visualize(show=False,
+                                                      save_dir_path=self.temp_dir,
+                                                      show_shapes=True,
+                                                      show_layer_names=False)
+        self.ga_widget_genome_visualization_image.close()
+        self.ga_widget_genome_visualization_image.load(best_genome_plot_path)
+        self.ga_widget_genome_visualization_image.show()
+
+        # Update genome info labels to show genome information
+        # TODO
+        print("TODO")
 
     def action_close_triggered(self):
         """"""
