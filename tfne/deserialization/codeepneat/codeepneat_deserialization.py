@@ -43,7 +43,6 @@ def deserialize_codeepneat_population(serialized_population, dtype, module_confi
 
     # Deserialize best genome
     initial_state['best_genome'] = deserialize_codeepneat_genome(serialized_population['best_genome'],
-                                                                 dtype,
                                                                  module_config_params)
 
     return CoDeepNEATPopulation(initial_state=initial_state)
@@ -75,7 +74,7 @@ def deserialize_codeepneat_encoding(serialized_encoding, dtype) -> CoDeepNEATEnc
     return CoDeepNEATEncoding(dtype=dtype, initial_state=inital_state)
 
 
-def deserialize_codeepneat_genome(serialized_genome, dtype, module_config_params=None) -> CoDeepNEATGenome:
+def deserialize_codeepneat_genome(serialized_genome, module_config_params=None) -> CoDeepNEATGenome:
     """"""
     # Deserialize underlying blueprint of genome
     blueprint = deserialize_codeepneat_blueprint(serialized_genome['blueprint'])
@@ -83,7 +82,9 @@ def deserialize_codeepneat_genome(serialized_genome, dtype, module_config_params
     # Deserialize bp_assigned_mods
     bp_assigned_mods = dict()
     for spec, assigned_mod in serialized_genome['bp_assigned_modules'].items():
-        bp_assigned_mods[int(spec)] = deserialize_codeepneat_module(assigned_mod, dtype, module_config_params)
+        bp_assigned_mods[int(spec)] = deserialize_codeepneat_module(assigned_mod,
+                                                                    serialized_genome['dtype'],
+                                                                    module_config_params)
 
     # Create genome from deserialized genome parameters and return it
     deserialized_genome = CoDeepNEATGenome(genome_id=serialized_genome['genome_id'],
@@ -91,7 +92,7 @@ def deserialize_codeepneat_genome(serialized_genome, dtype, module_config_params
                                            bp_assigned_modules=bp_assigned_mods,
                                            output_layers=serialized_genome['output_layers'],
                                            input_shape=tuple(serialized_genome['input_shape']),
-                                           dtype=dtype,
+                                           dtype=serialized_genome['dtype'],
                                            origin_generation=serialized_genome['origin_generation'])
     deserialized_genome.set_fitness(serialized_genome['fitness'])
     return deserialized_genome

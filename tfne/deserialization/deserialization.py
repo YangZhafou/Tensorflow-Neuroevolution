@@ -1,8 +1,6 @@
 import json
 from typing import Optional
 
-import tensorflow as tf
-
 from tfne.encodings.base_genome import BaseGenome
 from tfne.encodings.base_encoding import BaseEncoding
 from tfne.populations.base_population import BasePopulation
@@ -12,7 +10,7 @@ from tfne.deserialization.codeepneat.codeepneat_deserialization import deseriali
 from tfne.deserialization.codeepneat.codeepneat_deserialization import deserialize_codeepneat_population
 
 
-def load_genome(genome_file_path=None, serialized_genome=None, dtype=None, **kwargs) -> BaseGenome:
+def load_genome(genome_file_path=None, serialized_genome=None, **kwargs) -> BaseGenome:
     """"""
     if genome_file_path is not None and serialized_genome is not None:
         # Either a file path or an already loaded genome are to be supplied. Not both.
@@ -24,12 +22,8 @@ def load_genome(genome_file_path=None, serialized_genome=None, dtype=None, **kwa
         with open(genome_file_path) as genome_file:
             serialized_genome = json.load(genome_file)
 
-    # If no dtype supplied, use default one
-    if dtype is None:
-        dtype = tf.keras.backend.floatx()
-
     if serialized_genome['genome_type'] == 'CoDeepNEAT':
-        return deserialize_codeepneat_genome(serialized_genome, dtype, **kwargs)
+        return deserialize_codeepneat_genome(serialized_genome, **kwargs)
     else:
         raise NotImplementedError("Deserialization of a TFNE genome of type '{}' not yet implemented"
                                   .format(serialized_genome['genome_type']))
@@ -46,10 +40,6 @@ def load_population(population_file_path=None, serialized_population=None, dtype
         # Load file, determine the type of population, then deserialize and return it
         with open(population_file_path) as population_file:
             serialized_population = json.load(population_file)
-
-    # If no dtype supplied, use default one
-    if dtype is None:
-        dtype = tf.keras.backend.floatx()
 
     if serialized_population['population_type'] == 'CoDeepNEAT':
         return deserialize_codeepneat_population(serialized_population, dtype, **kwargs)
@@ -69,10 +59,6 @@ def load_encoding(encoding_file_path=None, serialized_encoding=None, dtype=None,
         # Load file, determine the type of encoding, then deserialize and return it
         with open(encoding_file_path) as encoding_file:
             serialized_encoding = json.load(encoding_file)
-
-    # If no dtype supplied, use default one
-    if dtype is None:
-        dtype = tf.keras.backend.floatx()
 
     if serialized_encoding['encoding_type'] == 'CoDeepNEAT':
         return deserialize_codeepneat_encoding(serialized_encoding, dtype)

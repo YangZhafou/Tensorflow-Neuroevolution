@@ -117,8 +117,17 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ga_widget_genome_visualization_image.show()
 
         # Update genome info labels to show genome information
-        # TODO
-        print("TODO")
+        mod_spec_to_mod_id = dict()
+        for mod_spec, mod in best_genome.bp_assigned_modules.items():
+            mod_spec_to_mod_id[mod_spec] = mod.module_id
+        self.ga_lbl_genome_id.setText(f'Genome ID {best_genome.genome_id}')
+        self.ga_lbl_genome_fitness_value.setText(str(best_genome.fitness))
+        self.ga_lbl_genome_bp_id_value.setText(str(best_genome.blueprint.blueprint_id))
+        self.ga_lbl_genome_assign_mod_value.setText(str(mod_spec_to_mod_id))
+        self.ga_lbl_genome_out_layers_value.setText(str(best_genome.output_layers))
+        self.ga_lbl_genome_input_shape_value.setText(str(best_genome.input_shape))
+        self.ga_lbl_genome_dtype_value.setText(str(best_genome.dtype))
+        self.ga_lbl_genome_orig_gen_value.setText(str(best_genome.origin_generation))
 
     def action_close_triggered(self):
         """"""
