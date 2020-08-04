@@ -40,6 +40,7 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.action_exit.triggered.connect(self.action_exit_triggered)
 
     def event_svg_btn_genome_analysis(self, *args, **kwargs):
+        """"""
         # Set Color focus on Genome Analysis (set to gray, set others to darkGray)
         svg_btn_genome_analysis_bg = QtGui.QPalette(self.svg_btn_genome_analysis.palette())
         svg_btn_genome_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
