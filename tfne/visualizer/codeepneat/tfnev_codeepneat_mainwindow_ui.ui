@@ -13,14 +13,14 @@
   <property name="windowTitle">
    <string>Tensorflow-Neuroevolution Visualizer</string>
   </property>
-  <widget class="QWidget" name="centralwidget_genome">
+  <widget class="QWidget" name="cw_genome_analysis">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <widget class="Line" name="vline_1">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>250</x>
       <y>10</y>
       <width>20</width>
       <height>310</height>
@@ -33,7 +33,7 @@
    <widget class="Line" name="vline_2">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>450</x>
       <y>10</y>
       <width>20</width>
       <height>660</height>
@@ -46,7 +46,7 @@
    <widget class="QListWidget" name="list_generations">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>70</x>
       <y>10</y>
       <width>180</width>
       <height>300</height>
@@ -59,7 +59,7 @@
    <widget class="QListWidget" name="list_genomes">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>270</x>
       <y>10</y>
       <width>180</width>
       <height>300</height>
@@ -72,7 +72,7 @@
    <widget class="Line" name="hline_1">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>60</x>
       <y>310</y>
       <width>400</width>
       <height>20</height>
@@ -85,9 +85,9 @@
    <widget class="Line" name="hline_2">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>460</x>
       <y>410</y>
-      <width>540</width>
+      <width>530</width>
       <height>20</height>
      </rect>
     </property>
@@ -98,7 +98,7 @@
    <widget class="QLabel" name="lbl_generation_info">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>70</x>
       <y>330</y>
       <width>380</width>
       <height>20</height>
@@ -111,7 +111,7 @@
    <widget class="QLabel" name="lbl_genome_info">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>470</x>
       <y>430</y>
       <width>530</width>
       <height>20</height>

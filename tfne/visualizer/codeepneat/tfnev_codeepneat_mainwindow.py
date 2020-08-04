@@ -1,3 +1,4 @@
+import os
 import webbrowser
 
 from PyQt5 import QtCore, QtWidgets, QtGui, QtSvg
@@ -17,10 +18,48 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tfne_state_backups = tfne_state_backups
         self.parent_window = parent_window
 
+        # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
+        self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self)
+        self.svg_btn_mod_bp_analysis = QtSvg.QSvgWidget(self)
+        self.svg_btn_mod_spec_analysis = QtSvg.QSvgWidget(self)
+        self.svg_btn_bp_spec_analysis = QtSvg.QSvgWidget(self)
+        image_base_dir = os.path.dirname(__file__)
+        self.svg_btn_genome_analysis.load(image_base_dir + '/genome_analysis_icon.svg')
+        self.svg_btn_mod_bp_analysis.load(image_base_dir + '/module_blueprint_analysis_icon.svg')
+        self.svg_btn_mod_spec_analysis.load(image_base_dir + '/module_species_analysis_icon.svg')
+        self.svg_btn_bp_spec_analysis.load(image_base_dir + '/blueprint_species_analysis_icon.svg')
+        self.svg_btn_genome_analysis.setGeometry(QtCore.QRect(0, 20, 60, 170))
+        self.svg_btn_mod_bp_analysis.setGeometry(QtCore.QRect(0, 190, 60, 170))
+        self.svg_btn_mod_spec_analysis.setGeometry(QtCore.QRect(0, 360, 60, 170))
+        self.svg_btn_bp_spec_analysis.setGeometry(QtCore.QRect(0, 530, 60, 170))
+        self.event_svg_btn_genome_analysis()
+
         # Connect Signals
         self.action_documentation.triggered.connect(self.action_documentation_triggered)
         self.action_close.triggered.connect(self.action_close_triggered)
         self.action_exit.triggered.connect(self.action_exit_triggered)
+
+    def event_svg_btn_genome_analysis(self, *args, **kwargs):
+        # Set Color focus on Genome Analysis (set to gray, set others to darkGray)
+        svg_btn_genome_analysis_bg = QtGui.QPalette(self.svg_btn_genome_analysis.palette())
+        svg_btn_genome_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
+        self.svg_btn_genome_analysis.setPalette(svg_btn_genome_analysis_bg)
+        self.svg_btn_genome_analysis.setAutoFillBackground(True)
+        svg_btn_mod_bp_analysis_bg = QtGui.QPalette(self.svg_btn_mod_bp_analysis.palette())
+        svg_btn_mod_bp_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_mod_bp_analysis.setPalette(svg_btn_mod_bp_analysis_bg)
+        self.svg_btn_mod_bp_analysis.setAutoFillBackground(True)
+        svg_btn_mod_spec_analysis_bg = QtGui.QPalette(self.svg_btn_mod_spec_analysis.palette())
+        svg_btn_mod_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_mod_spec_analysis.setPalette(svg_btn_mod_spec_analysis_bg)
+        self.svg_btn_mod_spec_analysis.setAutoFillBackground(True)
+        svg_btn_bp_spec_analysis_bg = QtGui.QPalette(self.svg_btn_bp_spec_analysis.palette())
+        svg_btn_bp_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_bp_spec_analysis.setPalette(svg_btn_bp_spec_analysis_bg)
+        self.svg_btn_bp_spec_analysis.setAutoFillBackground(True)
+
+        # Activate Genome Analysis Mode
+        self.cw_genome_analysis.show()
 
     def action_close_triggered(self):
         """"""
@@ -125,20 +164,6 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             chosen_id = self.present_blueprints_dict[item.text()]
             lbl_info = "Blueprint Genotype: " + str(self.run_data[self.chosen_gen]['blueprints'][chosen_id])
             self.lbl_genome_info.setText(lbl_info)
-
-    def svg_btn_genomes_event(self, *args, **kwargs):
-        # Set Color focus on Genome Analysis
-        svg_btn_genomes_bg = QtGui.QPalette(self.svg_btn_genomes.palette())
-        svg_btn_genomes_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
-        self.svg_btn_genomes.setPalette(svg_btn_genomes_bg)
-        self.svg_btn_genomes.setAutoFillBackground(True)
-        svg_btn_species_bg = QtGui.QPalette(self.svg_btn_species.palette())
-        svg_btn_species_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
-        self.svg_btn_species.setPalette(svg_btn_species_bg)
-        self.svg_btn_species.setAutoFillBackground(True)
-
-        # Activate Genome Analysis Mode
-        self.centralwidget_genome.show()
 
     def svg_btn_species_event(self, *args, **kwargs):
         # Set Color focus on Species Analysis
