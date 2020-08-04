@@ -19,19 +19,19 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.parent_window = parent_window
 
         # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
-        self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self)
-        self.svg_btn_mod_bp_analysis = QtSvg.QSvgWidget(self)
-        self.svg_btn_mod_spec_analysis = QtSvg.QSvgWidget(self)
-        self.svg_btn_bp_spec_analysis = QtSvg.QSvgWidget(self)
+        self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self.centralwidget)
+        self.svg_btn_mod_bp_analysis = QtSvg.QSvgWidget(self.centralwidget)
+        self.svg_btn_mod_spec_analysis = QtSvg.QSvgWidget(self.centralwidget)
+        self.svg_btn_bp_spec_analysis = QtSvg.QSvgWidget(self.centralwidget)
         image_base_dir = os.path.dirname(__file__)
         self.svg_btn_genome_analysis.load(image_base_dir + '/genome_analysis_icon.svg')
         self.svg_btn_mod_bp_analysis.load(image_base_dir + '/module_blueprint_analysis_icon.svg')
         self.svg_btn_mod_spec_analysis.load(image_base_dir + '/module_species_analysis_icon.svg')
         self.svg_btn_bp_spec_analysis.load(image_base_dir + '/blueprint_species_analysis_icon.svg')
-        self.svg_btn_genome_analysis.setGeometry(QtCore.QRect(0, 20, 60, 170))
-        self.svg_btn_mod_bp_analysis.setGeometry(QtCore.QRect(0, 190, 60, 170))
-        self.svg_btn_mod_spec_analysis.setGeometry(QtCore.QRect(0, 360, 60, 170))
-        self.svg_btn_bp_spec_analysis.setGeometry(QtCore.QRect(0, 530, 60, 170))
+        self.svg_btn_genome_analysis.setGeometry(QtCore.QRect(0, 0, 60, 170))
+        self.svg_btn_mod_bp_analysis.setGeometry(QtCore.QRect(0, 170, 60, 170))
+        self.svg_btn_mod_spec_analysis.setGeometry(QtCore.QRect(0, 340, 60, 170))
+        self.svg_btn_bp_spec_analysis.setGeometry(QtCore.QRect(0, 510, 60, 170))
         self.event_svg_btn_genome_analysis()
 
         # Connect Signals
@@ -41,7 +41,7 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def event_svg_btn_genome_analysis(self, *args, **kwargs):
         """"""
-        # Set Color focus on Genome Analysis (set to gray, set others to darkGray)
+        # Set Color focus on Genome Analysis
         svg_btn_genome_analysis_bg = QtGui.QPalette(self.svg_btn_genome_analysis.palette())
         svg_btn_genome_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
         self.svg_btn_genome_analysis.setPalette(svg_btn_genome_analysis_bg)
@@ -59,8 +59,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.svg_btn_bp_spec_analysis.setPalette(svg_btn_bp_spec_analysis_bg)
         self.svg_btn_bp_spec_analysis.setAutoFillBackground(True)
 
-        # Activate Genome Analysis Mode
-        self.cw_genome_analysis.show()
+        # Activate genome analysis mode, deactivate other modes
+        self.widget_genome_analysis.show()
 
     def action_close_triggered(self):
         """"""
