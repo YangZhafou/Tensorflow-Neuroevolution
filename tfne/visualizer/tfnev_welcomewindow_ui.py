@@ -28,4 +28,4 @@ class Ui_WelcomeWindow(object):
     def retranslateUi(self, WelcomeWindow):
         _translate = QtCore.QCoreApplication.translate
         WelcomeWindow.setWindowTitle(_translate("WelcomeWindow", "WelcomeWindow"))
-        self.button_open_backup_dir.setText(_translate("WelcomeWindow", "Open TFNE Backup"))
+        self.button_open_backup_dir.setText(_translate("WelcomeWindow", "Open TFNE State Backup"))
