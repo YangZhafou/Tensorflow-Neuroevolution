@@ -80,9 +80,12 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.svg_best_genome_analysis.load(self.temp_dir + '/best_genome_fitness_analysis.svg')
         self.svg_best_genome_analysis.setGeometry(QtCore.QRect(10, 0, 440, 320))
 
-
-
-
+        # Create strings that are displayed in the list of best genomes
+        best_genome_in_gen_list = list()
+        for gen in x_axis_generations:
+            best_genome_id = self.tfne_state_backups[gen].best_genome.get_id()
+            best_genome_in_gen_list.append(f'Generation {gen} - Genome #{best_genome_id}')
+        self.ga_list_generations.addItems(best_genome_in_gen_list)
 
     def action_close_triggered(self):
         """"""
