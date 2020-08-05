@@ -68,6 +68,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mba_list_members.itemClicked.connect(self.click_mba_list_members)
         self.svg_btn_genome_analysis.mousePressEvent = self.event_svg_btn_genome_analysis
         self.svg_btn_mod_bp_analysis.mousePressEvent = self.event_svg_btn_module_blueprint_analysis
+        self.svg_btn_mod_spec_analysis.mousePressEvent = self.event_svg_btn_module_species_analysis
+        self.svg_btn_bp_spec_analysis.mousePressEvent = self.event_svg_btn_blueprint_species_analysis
 
     def event_svg_btn_genome_analysis(self, *args, **kwargs):
         """"""
@@ -154,6 +156,58 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             generations_list.append(f'Generation {gen}')
         self.mba_list_generations.clear()
         self.mba_list_generations.addItems(generations_list)
+
+    def event_svg_btn_module_species_analysis(self, *args, **kwargs):
+        """"""
+        # Set Color focus on Genome Analysis
+        svg_btn_genome_analysis_bg = QtGui.QPalette(self.svg_btn_genome_analysis.palette())
+        svg_btn_genome_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_genome_analysis.setPalette(svg_btn_genome_analysis_bg)
+        self.svg_btn_genome_analysis.setAutoFillBackground(True)
+        svg_btn_mod_bp_analysis_bg = QtGui.QPalette(self.svg_btn_mod_bp_analysis.palette())
+        svg_btn_mod_bp_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_mod_bp_analysis.setPalette(svg_btn_mod_bp_analysis_bg)
+        self.svg_btn_mod_bp_analysis.setAutoFillBackground(True)
+        svg_btn_mod_spec_analysis_bg = QtGui.QPalette(self.svg_btn_mod_spec_analysis.palette())
+        svg_btn_mod_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
+        self.svg_btn_mod_spec_analysis.setPalette(svg_btn_mod_spec_analysis_bg)
+        self.svg_btn_mod_spec_analysis.setAutoFillBackground(True)
+        svg_btn_bp_spec_analysis_bg = QtGui.QPalette(self.svg_btn_bp_spec_analysis.palette())
+        svg_btn_bp_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_bp_spec_analysis.setPalette(svg_btn_bp_spec_analysis_bg)
+        self.svg_btn_bp_spec_analysis.setAutoFillBackground(True)
+
+        # Activate genome analysis mode, deactivate other modes
+        self.widget_genome_analysis.close()
+        self.widget_mod_bp_analysis.close()
+        self.widget_mod_species_analysis.show()
+        self.widget_bp_species_analysis.close()
+
+    def event_svg_btn_blueprint_species_analysis(self, *args, **kwargs):
+        """"""
+        # Set Color focus on Genome Analysis
+        svg_btn_genome_analysis_bg = QtGui.QPalette(self.svg_btn_genome_analysis.palette())
+        svg_btn_genome_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_genome_analysis.setPalette(svg_btn_genome_analysis_bg)
+        self.svg_btn_genome_analysis.setAutoFillBackground(True)
+        svg_btn_mod_bp_analysis_bg = QtGui.QPalette(self.svg_btn_mod_bp_analysis.palette())
+        svg_btn_mod_bp_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_mod_bp_analysis.setPalette(svg_btn_mod_bp_analysis_bg)
+        self.svg_btn_mod_bp_analysis.setAutoFillBackground(True)
+        svg_btn_mod_spec_analysis_bg = QtGui.QPalette(self.svg_btn_mod_spec_analysis.palette())
+        svg_btn_mod_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('darkGray'))
+        self.svg_btn_mod_spec_analysis.setPalette(svg_btn_mod_spec_analysis_bg)
+        self.svg_btn_mod_spec_analysis.setAutoFillBackground(True)
+        svg_btn_bp_spec_analysis_bg = QtGui.QPalette(self.svg_btn_bp_spec_analysis.palette())
+        svg_btn_bp_spec_analysis_bg.setColor(QtGui.QPalette.Window, QtGui.QColor('gray'))
+        self.svg_btn_bp_spec_analysis.setPalette(svg_btn_bp_spec_analysis_bg)
+        self.svg_btn_bp_spec_analysis.setAutoFillBackground(True)
+
+        # Activate genome analysis mode, deactivate other modes
+        self.widget_genome_analysis.close()
+        self.widget_mod_bp_analysis.close()
+        self.widget_mod_species_analysis.close()
+        self.widget_bp_species_analysis.show()
 
     def click_ga_list_generations(self, item):
         """"""
