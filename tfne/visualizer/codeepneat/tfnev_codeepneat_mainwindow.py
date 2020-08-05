@@ -92,6 +92,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Activate genome analysis mode, deactivate other modes
         self.widget_genome_analysis.show()
         self.widget_mod_bp_analysis.close()
+        self.widget_mod_species_analysis.close()
+        self.widget_bp_species_analysis.close()
 
         # Create graph showing the best genome fitness over the generations and display it
         x_axis_generations = sorted(self.tfne_state_backups.keys())
@@ -138,6 +140,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Activate genome analysis mode, deactivate other modes
         self.widget_genome_analysis.close()
         self.widget_mod_bp_analysis.show()
+        self.widget_mod_species_analysis.close()
+        self.widget_bp_species_analysis.close()
 
         # Close both module and blueprint analysis widgets of the right side, opening them only if specific module or
         # blueprint has been selected

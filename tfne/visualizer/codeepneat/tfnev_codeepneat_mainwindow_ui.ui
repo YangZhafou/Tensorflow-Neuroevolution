@@ -1235,6 +1235,26 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QWidget" name="widget_mod_species_analysis" native="true">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>930</width>
+      <height>660</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_bp_species_analysis" native="true">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>930</width>
+      <height>660</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
