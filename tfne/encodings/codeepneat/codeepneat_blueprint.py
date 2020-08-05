@@ -1,6 +1,8 @@
+import tempfile
 from copy import deepcopy
 
 import tensorflow as tf
+from graphviz import Digraph
 
 
 class CoDeepNEATBlueprintNode:
@@ -112,6 +114,45 @@ class CoDeepNEATBlueprint:
                     len(self.node_species),
                     self.species,
                     self.optimizer_factory.get_name())
+
+    def visualize(self, show=True, save_dir_path=None) -> str:
+        """"""
+        # Check if save_dir_path is supplied and if it is supplied in the correct format. If not correct format or
+        # create a new save_dir_path
+        if save_dir_path is None:
+            save_dir_path = tempfile.gettempdir()
+        if save_dir_path[-1] != '/':
+            save_dir_path += '/'
+
+        # Set filename and save file path as the blueprint id and indicate that its the graph being plotted
+        filename = f"blueprint_{self.blueprint_id}_graph"
+
+        # Create Digraph, setting name and graph orientaion
+        dot = Digraph(name=filename, graph_attr={'rankdir': 'TB'})
+
+        # Traverse all bp graph genes, adding the nodes and edges to the graph
+        for gene in self.blueprint_graph.values():
+            if isinstance(gene, CoDeepNEATBlueprintNode):
+                label = f"Node {gene.node}"
+                if gene.node != 1:
+                    label += f"\nSpecies {gene.species}"
+                dot.node(name=str(gene.node), label=label)
+            elif gene.enabled:
+                dot.edge(str(gene.conn_start), str(gene.conn_end))
+
+        # Highlight Input and Output Nodes
+        with dot.subgraph(name='cluster_1') as dot_in:
+            dot_in.node('1')
+            dot_in.attr(label='inputs', color='blue')
+        with dot.subgraph(name='cluster_2') as dot_out:
+            dot_out.node('2')
+            dot_out.attr(label='outputs', color='grey')
+
+        # Render created dot graph, optionally showing it
+        dot.render(filename=filename, directory=save_dir_path, view=show, cleanup=True, format='svg')
+
+        # Return the file path to which the blueprint graph plot was saved
+        return save_dir_path + f"{filename}.svg"
 
     def calculate_gene_distance(self, other_bp) -> float:
         """"""

@@ -25,9 +25,15 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Initialize image widgets of all views to refer to them when changing views in order not to create new widgets
         # each time and stack them infinitely
-        self.ga_widget_genome_visualization_image = QtSvg.QSvgWidget(self.ga_widget_genome_visualization)
-        self.ga_widget_genome_visualization_image.setMaximumHeight(460)
-        self.ga_widget_genome_visualization_image.setMaximumWidth(460)
+        self.ga_genome_visualization_image = QtSvg.QSvgWidget(self.ga_widget_genome_visualization)
+        self.ga_genome_visualization_image.setMaximumHeight(460)
+        self.ga_genome_visualization_image.setMaximumWidth(460)
+        self.mba_bp_visualization_image = QtSvg.QSvgWidget(self.mba_widget_blueprint_visualization)
+        self.mba_bp_visualization_image.setMaximumHeight(460)
+        self.mba_bp_visualization_image.setMaximumWidth(460)
+
+        # Declare global variables relevant throughout different events
+        self.mba_selected_gen = None
 
         # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
         self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self.centralwidget)
@@ -48,7 +54,10 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Set layouts
         ga_widget_genome_visualization_layout = QtWidgets.QVBoxLayout(self.ga_widget_genome_visualization)
         ga_widget_genome_visualization_layout.setAlignment(QtCore.Qt.AlignCenter)
-        ga_widget_genome_visualization_layout.addWidget(self.ga_widget_genome_visualization_image)
+        ga_widget_genome_visualization_layout.addWidget(self.ga_genome_visualization_image)
+        mba_widget_blueprint_visualization_layout = QtWidgets.QVBoxLayout(self.mba_widget_blueprint_visualization)
+        mba_widget_blueprint_visualization_layout.setAlignment(QtCore.Qt.AlignCenter)
+        mba_widget_blueprint_visualization_layout.addWidget(self.mba_bp_visualization_image)
 
         # Connect Signals
         self.action_documentation.triggered.connect(self.action_documentation_triggered)
@@ -153,9 +162,9 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                       save_dir_path=self.temp_dir,
                                                       show_shapes=True,
                                                       show_layer_names=False)
-        self.ga_widget_genome_visualization_image.close()
-        self.ga_widget_genome_visualization_image.load(best_genome_plot_path)
-        self.ga_widget_genome_visualization_image.show()
+        self.ga_genome_visualization_image.close()
+        self.ga_genome_visualization_image.load(best_genome_plot_path)
+        self.ga_genome_visualization_image.show()
 
         # Update genome info labels to show genome information
         mod_spec_to_mod_id = dict()
@@ -172,8 +181,9 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def click_mba_list_generations(self, item):
         """"""
-        # Determine selected generation
+        # Determine selected generation and save it as the currently set generation for mod/bp analysis
         chosen_gen = int(item.text()[11:])
+        self.mba_selected_gen = chosen_gen
 
         # Create strings that are displayed in the list of members
         members_list = list()
@@ -199,7 +209,31 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def click_mba_list_members(self, item):
         """"""
-        pass
+        # Determine if Blueprint or Module selected and which ID
+        item_text = item.text()
+        if item_text[:6] == 'Module':
+            chosen_mod_id = int(item_text[8:])
+
+            pass
+        else:
+            # Activate Blueprint analysis widget
+            self.mba_widget_blueprint.show()
+            self.mba_widget_module.close()
+
+            # Determine selected Blueprint
+            chosen_bp_id = int(item_text[11:])
+            chosen_bp = self.tfne_state_backups[self.mba_selected_gen].blueprints[chosen_bp_id]
+
+            # Create visualization of selected blueprint and display in image widget
+            bp_plot_path = chosen_bp.visualize(show=False, save_dir_path=self.temp_dir)
+            self.mba_bp_visualization_image.close()
+            self.mba_bp_visualization_image.load(bp_plot_path)
+            self.mba_bp_visualization_image.show()
+
+            # Update blueprint info labels to show blueprint information
+            self.mba_lbl_blueprint_heading.setText(f'Blueprint ID {chosen_bp.blueprint_id}')
+            self.mba_lbl_bp_parent_mut_value.setText(str(chosen_bp.parent_mutation))
+            self.mba_lbl_bp_optimizer_value.setText(str(chosen_bp.optimizer_factory))
 
     def action_close_triggered(self):
         """"""
