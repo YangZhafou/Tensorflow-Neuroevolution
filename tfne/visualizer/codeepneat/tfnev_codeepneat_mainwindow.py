@@ -127,8 +127,17 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.widget_genome_analysis.close()
         self.widget_mod_bp_analysis.show()
 
-        # TODO Create rest of the widgets for the rest of the analysis window
-        pass
+        # Close both module and blueprint analysis widgets of the right side, opening them only if specific module or
+        # blueprint has been selected
+        self.mba_widget_blueprint.close()
+        self.mba_widget_module.close()
+
+        # Create strings that are displayed in the list of generations
+        generations_list = list()
+        for gen in sorted(self.tfne_state_backups.keys()):
+            generations_list.append(f'Generation {gen}')
+        self.mba_list_generations.clear()
+        self.mba_list_generations.addItems(generations_list)
 
     def click_ga_list_generations(self, item):
         """"""
@@ -158,6 +167,14 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ga_lbl_genome_input_shape_value.setText(str(best_genome.input_shape))
         self.ga_lbl_genome_dtype_value.setText(str(best_genome.dtype))
         self.ga_lbl_genome_orig_gen_value.setText(str(best_genome.origin_generation))
+
+    def click_mba_list_generations(self, item):
+        """"""
+        pass
+
+    def click_mba_list_members(self, item):
+        """"""
+        pass
 
     def action_close_triggered(self):
         """"""
