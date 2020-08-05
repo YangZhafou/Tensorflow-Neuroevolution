@@ -98,6 +98,7 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         y_axis_fitness = list()
         for gen in x_axis_generations:
             y_axis_fitness.append(self.tfne_state_backups[gen].best_fitness)
+        plt.clf()
         plt.plot(x_axis_generations, y_axis_fitness)
         plt.ylabel('best fitness')
         plt.xlabel('generation')
