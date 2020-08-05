@@ -31,9 +31,37 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mba_bp_visualization_image = QtSvg.QSvgWidget(self.mba_widget_blueprint_visualization)
         self.mba_bp_visualization_image.setMaximumHeight(460)
         self.mba_bp_visualization_image.setMaximumWidth(460)
+        self.svg_best_genome_analysis = QtSvg.QSvgWidget(self.widget_genome_analysis)
+        self.svg_best_genome_analysis.setGeometry(QtCore.QRect(10, 0, 440, 320))
+        self.svg_mod_spec_fitness_analysis = QtSvg.QSvgWidget(self.widget_mod_species_analysis)
+        self.svg_mod_spec_fitness_analysis.setGeometry(QtCore.QRect(10, 0, 920, 660))
+        self.svg_bp_spec_fitness_analysis = QtSvg.QSvgWidget(self.widget_bp_species_analysis)
+        self.svg_bp_spec_fitness_analysis.setGeometry(QtCore.QRect(10, 0, 920, 660))
 
         # Declare global variables relevant throughout different events
         self.mba_selected_gen = None
+
+        # Create module species and blueprint species analysis dicts
+        generations = sorted(self.tfne_state_backups.keys())
+        self.mod_spec_analysis_dict = dict()
+        self.bp_spec_analysis_dict = dict()
+        for gen in generations:
+            for mod_spec_id, spec_fit_hist in self.tfne_state_backups[gen].mod_species_fitness_history.items():
+                if mod_spec_id in self.mod_spec_analysis_dict:
+                    self.mod_spec_analysis_dict[mod_spec_id]['x'].append(gen)
+                    self.mod_spec_analysis_dict[mod_spec_id]['y'].append(spec_fit_hist[gen])
+                else:
+                    self.mod_spec_analysis_dict[mod_spec_id] = dict()
+                    self.mod_spec_analysis_dict[mod_spec_id]['x'] = [gen]
+                    self.mod_spec_analysis_dict[mod_spec_id]['y'] = [spec_fit_hist[gen]]
+            for bp_spec_id, spec_fit_hist in self.tfne_state_backups[gen].bp_species_fitness_history.items():
+                if bp_spec_id in self.bp_spec_analysis_dict:
+                    self.bp_spec_analysis_dict[bp_spec_id]['x'].append(gen)
+                    self.bp_spec_analysis_dict[bp_spec_id]['y'].append(spec_fit_hist[gen])
+                else:
+                    self.bp_spec_analysis_dict[bp_spec_id] = dict()
+                    self.bp_spec_analysis_dict[bp_spec_id]['x'] = [gen]
+                    self.bp_spec_analysis_dict[bp_spec_id]['y'] = [spec_fit_hist[gen]]
 
         # Set up sidebar buttons to select the type of analysis. Default activate genome analysis mode
         self.svg_btn_genome_analysis = QtSvg.QSvgWidget(self.centralwidget)
@@ -107,9 +135,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.ylabel('best fitness')
         plt.xlabel('generation')
         plt.savefig(self.temp_dir + '/best_genome_fitness_analysis.svg')
-        self.svg_best_genome_analysis = QtSvg.QSvgWidget(self.widget_genome_analysis)
         self.svg_best_genome_analysis.load(self.temp_dir + '/best_genome_fitness_analysis.svg')
-        self.svg_best_genome_analysis.setGeometry(QtCore.QRect(10, 0, 440, 320))
+        self.svg_best_genome_analysis.show()
 
         # Create strings that are displayed in the list of best genomes
         best_genome_in_gen_list = list()
@@ -183,6 +210,17 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.widget_mod_species_analysis.show()
         self.widget_bp_species_analysis.close()
 
+        # Create graph showing the average fitness of the module species over the generations and display it
+        plt.clf()
+        for mod_spec_id, analysis_dict in self.mod_spec_analysis_dict.items():
+            plt.plot(analysis_dict['x'], analysis_dict['y'], label=f'Mod Species {mod_spec_id}')
+        plt.ylabel('average species fitness')
+        plt.xlabel('generation')
+        plt.legend()
+        plt.savefig(self.temp_dir + '/module_species_fitness_analysis.svg')
+        self.svg_mod_spec_fitness_analysis.load(self.temp_dir + '/module_species_fitness_analysis.svg')
+        self.svg_mod_spec_fitness_analysis.show()
+
     def event_svg_btn_blueprint_species_analysis(self, *args, **kwargs):
         """"""
         # Set Color focus on Genome Analysis
@@ -208,6 +246,17 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.widget_mod_bp_analysis.close()
         self.widget_mod_species_analysis.close()
         self.widget_bp_species_analysis.show()
+
+        # Create graph showing the average fitness of the blueprint species over the generations and display it
+        plt.clf()
+        for bp_spec_id, analysis_dict in self.bp_spec_analysis_dict.items():
+            plt.plot(analysis_dict['x'], analysis_dict['y'], label=f'BP Species {bp_spec_id}')
+        plt.ylabel('average species fitness')
+        plt.xlabel('generation')
+        plt.legend()
+        plt.savefig(self.temp_dir + '/blueprint_species_fitness_analysis.svg')
+        self.svg_bp_spec_fitness_analysis.load(self.temp_dir + '/blueprint_species_fitness_analysis.svg')
+        self.svg_bp_spec_fitness_analysis.show()
 
     def click_ga_list_generations(self, item):
         """"""
