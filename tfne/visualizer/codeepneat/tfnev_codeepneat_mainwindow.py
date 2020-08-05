@@ -55,6 +55,8 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.action_close.triggered.connect(self.action_close_triggered)
         self.action_exit.triggered.connect(self.action_exit_triggered)
         self.ga_list_generations.itemClicked.connect(self.click_ga_list_generations)
+        self.mba_list_generations.itemClicked.connect(self.click_mba_list_generations)
+        self.mba_list_members.itemClicked.connect(self.click_mba_list_members)
         self.svg_btn_genome_analysis.mousePressEvent = self.event_svg_btn_genome_analysis
         self.svg_btn_mod_bp_analysis.mousePressEvent = self.event_svg_btn_module_blueprint_analysis
 
@@ -170,7 +172,30 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def click_mba_list_generations(self, item):
         """"""
-        pass
+        # Determine selected generation
+        chosen_gen = int(item.text()[11:])
+
+        # Create strings that are displayed in the list of members
+        members_list = list()
+        module_ids = list(self.tfne_state_backups[chosen_gen].modules.keys())
+        for mod_id in module_ids:
+            members_list.append(f"Module #{mod_id}")
+        blueprint_ids = list(self.tfne_state_backups[chosen_gen].blueprints.keys())
+        for bp_id in blueprint_ids:
+            members_list.append(f"Blueprint #{bp_id}")
+        self.mba_list_members.clear()
+        self.mba_list_members.addItems(members_list)
+
+        # Update generation info labels to show generational information
+        self.mba_lbl_gen_summary_heading.setText(f'Summary of Generation {chosen_gen}')
+        self.mba_lbl_gen_mod_spec_value.setText(str(self.tfne_state_backups[chosen_gen].mod_species))
+        self.mba_lbl_gen_mod_spec_repr_value.setText(str(self.tfne_state_backups[chosen_gen].mod_species_repr))
+        self.mba_lbl_gen_mod_spec_fit_hist_value.setText(
+            str(self.tfne_state_backups[chosen_gen].mod_species_fitness_history))
+        self.mba_lbl_gen_bp_spec_value.setText(str(self.tfne_state_backups[chosen_gen].bp_species))
+        self.mba_lbl_gen_bp_spec_repr_value.setText(str(self.tfne_state_backups[chosen_gen].bp_species_repr))
+        self.mba_lbl_gen_bp_spec_fit_hist_value.setText(
+            str(self.tfne_state_backups[chosen_gen].bp_species_fitness_history))
 
     def click_mba_list_members(self, item):
         """"""
