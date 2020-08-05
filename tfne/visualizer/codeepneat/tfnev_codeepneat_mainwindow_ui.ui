@@ -425,6 +425,134 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="widget_mod_bp_analysis" native="true">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>10</y>
+      <width>930</width>
+      <height>660</height>
+     </rect>
+    </property>
+    <widget class="Line" name="mba_hline_1">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>320</y>
+       <width>460</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="Line" name="mba_vline_1">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>0</y>
+       <width>20</width>
+       <height>660</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="mba_list_generations">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>215</width>
+       <height>290</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="mba_list_members">
+     <property name="geometry">
+      <rect>
+       <x>235</x>
+       <y>30</y>
+       <width>215</width>
+       <height>290</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="mba_lbl_heading_generations">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>215</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Select Generation:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="mba_lbl_heading_members">
+     <property name="geometry">
+      <rect>
+       <x>235</x>
+       <y>0</y>
+       <width>215</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Select Member:</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="mba_widget_module" native="true">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>0</y>
+       <width>460</width>
+       <height>660</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QWidget" name="mba_widget_blueprint" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>460</width>
+       <height>660</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="mba_widget_blueprint_visualization" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>460</width>
+        <height>460</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
