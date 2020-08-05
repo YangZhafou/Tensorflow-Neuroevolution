@@ -133,9 +133,9 @@ class CoDeepNEATBlueprint:
         # Traverse all bp graph genes, adding the nodes and edges to the graph
         for gene in self.blueprint_graph.values():
             if isinstance(gene, CoDeepNEATBlueprintNode):
-                label = f"Node {gene.node}"
+                label = f"Node: {gene.node}"
                 if gene.node != 1:
-                    label += f"\nSpecies {gene.species}"
+                    label += f"\nSpecies: {gene.species}"
                 dot.node(name=str(gene.node), label=label)
             elif gene.enabled:
                 dot.edge(str(gene.conn_start), str(gene.conn_end))

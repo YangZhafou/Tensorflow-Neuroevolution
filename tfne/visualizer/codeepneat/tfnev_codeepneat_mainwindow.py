@@ -212,9 +212,22 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Determine if Blueprint or Module selected and which ID
         item_text = item.text()
         if item_text[:6] == 'Module':
-            chosen_mod_id = int(item_text[8:])
+            # Activate Module analysis widget
+            self.mba_widget_blueprint.close()
+            self.mba_widget_module.show()
 
-            pass
+            # Determine selected Module
+            chosen_mod_id = int(item_text[8:])
+            chosen_mod = self.tfne_state_backups[self.mba_selected_gen].modules[chosen_mod_id]
+
+            # Update module info labels to show module information
+            module_summary_dict = chosen_mod.serialize()
+            self.mba_lbl_module_heading.setText(f'Summary of Module ID {chosen_mod_id}')
+            module_summary_str = ""
+            for mod_param, param_value in module_summary_dict.items():
+                param_summary = str(mod_param) + ': ' + str(param_value) + '\n\n'
+                module_summary_str += param_summary
+            self.mba_lbl_module_summary.setText(module_summary_str)
         else:
             # Activate Blueprint analysis widget
             self.mba_widget_blueprint.show()
