@@ -73,7 +73,7 @@ class CoDeepNEATGenome(BaseGenome):
         save_file_path = save_dir_path + f"genome_{self.genome_id}_model.svg"
 
         # Create plot of model through keras util. Set DPI to None until keras utils API fixed the 'dpi for svg' bug.
-        # See Tensorflow issue: TODO LINK ISSUE
+        # See Tensorflow issue: https://github.com/tensorflow/tensorflow/issues/42150
         kwargs['dpi'] = None
         tf.keras.utils.plot_model(model=self.model, to_file=save_file_path, **kwargs)
 
