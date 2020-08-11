@@ -515,10 +515,10 @@ class CoDeepNEATEvolutionBP:
                             and isinstance(opt_param_val_range['step'], float):
                         perturbed_param = np.random.normal(loc=parent_opt_params['config'][opt_param],
                                                            scale=opt_param_val_range['stddev'])
-                        chosen_opt_param = round(round_with_step(perturbed_param,
-                                                                 opt_param_val_range['min'],
-                                                                 opt_param_val_range['max'],
-                                                                 opt_param_val_range['step']), 4)
+                        chosen_opt_param = round_with_step(perturbed_param,
+                                                           opt_param_val_range['min'],
+                                                           opt_param_val_range['max'],
+                                                           opt_param_val_range['step'])
                     else:
                         raise NotImplementedError(f"Config parameter '{opt_param}' of the {offspring_optimizer_type} "
                                                   f"optimizer section is of type dict though the dict values are not "
@@ -557,10 +557,10 @@ class CoDeepNEATEvolutionBP:
                             and isinstance(opt_param_val_range['step'], float):
                         opt_param_random = random.uniform(opt_param_val_range['min'],
                                                           opt_param_val_range['max'])
-                        chosen_opt_param = round(round_with_step(opt_param_random,
-                                                                 opt_param_val_range['min'],
-                                                                 opt_param_val_range['max'],
-                                                                 opt_param_val_range['step']), 4)
+                        chosen_opt_param = round_with_step(opt_param_random,
+                                                           opt_param_val_range['min'],
+                                                           opt_param_val_range['max'],
+                                                           opt_param_val_range['step'])
                     else:
                         raise NotImplementedError(f"Config parameter '{opt_param}' of the {offspring_optimizer_type} "
                                                   f"optimizer section is of type dict though the dict values are not "

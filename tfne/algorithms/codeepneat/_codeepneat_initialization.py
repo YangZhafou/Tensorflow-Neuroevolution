@@ -50,10 +50,10 @@ class CoDeepNEATInitialization:
                         and isinstance(opt_param_val_range['step'], float):
                     opt_param_random = random.uniform(opt_param_val_range['min'],
                                                       opt_param_val_range['max'])
-                    chosen_opt_param = round(round_with_step(opt_param_random,
-                                                             opt_param_val_range['min'],
-                                                             opt_param_val_range['max'],
-                                                             opt_param_val_range['step']), 4)
+                    chosen_opt_param = round_with_step(opt_param_random,
+                                                       opt_param_val_range['min'],
+                                                       opt_param_val_range['max'],
+                                                       opt_param_val_range['step'])
                 else:
                     raise NotImplementedError(f"Config parameter '{opt_param}' of the {chosen_optimizer} optimizer "
                                               f"section is of type dict though the dict values are not of type int or "

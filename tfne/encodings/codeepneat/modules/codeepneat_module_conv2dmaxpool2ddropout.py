@@ -88,10 +88,10 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         self.dropout_flag = random.random() < self.config_params['dropout_flag']
         random_dropout_rate = random.uniform(self.config_params['dropout_rate']['min'],
                                              self.config_params['dropout_rate']['max'])
-        self.dropout_rate = round(round_with_step(random_dropout_rate,
-                                                  self.config_params['dropout_rate']['min'],
-                                                  self.config_params['dropout_rate']['max'],
-                                                  self.config_params['dropout_rate']['step']), 4)
+        self.dropout_rate = round_with_step(random_dropout_rate,
+                                            self.config_params['dropout_rate']['min'],
+                                            self.config_params['dropout_rate']['max'],
+                                            self.config_params['dropout_rate']['step'])
 
     def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
         """"""
@@ -248,10 +248,10 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
             else:  # param_to_mutate == 11:
                 perturbed_dropout_rate = np.random.normal(loc=self.dropout_rate,
                                                           scale=self.config_params['dropout_rate']['stddev'])
-                offspring_params['dropout_rate'] = round(round_with_step(perturbed_dropout_rate,
-                                                                         self.config_params['dropout_rate']['min'],
-                                                                         self.config_params['dropout_rate']['max'],
-                                                                         self.config_params['dropout_rate']['step']), 4)
+                offspring_params['dropout_rate'] = round_with_step(perturbed_dropout_rate,
+                                                                   self.config_params['dropout_rate']['min'],
+                                                                   self.config_params['dropout_rate']['max'],
+                                                                   self.config_params['dropout_rate']['step'])
                 parent_mutation['mutated_params']['dropout_rate'] = self.dropout_rate
 
         return CoDeepNEATModuleConv2DMaxPool2DDropout(config_params=self.config_params,
@@ -287,10 +287,10 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         offspring_params['max_pool_flag'] = self.max_pool_flag
         offspring_params['max_pool_size'] = self.max_pool_size
         offspring_params['dropout_flag'] = self.dropout_flag
-        crossed_over_dropout_rate = round(round_with_step(((self.dropout_rate + less_fit_module.dropout_rate) / 2),
-                                                          self.config_params['dropout_rate']['min'],
-                                                          self.config_params['dropout_rate']['max'],
-                                                          self.config_params['dropout_rate']['step']), 4)
+        crossed_over_dropout_rate = round_with_step(((self.dropout_rate + less_fit_module.dropout_rate) / 2),
+                                                      self.config_params['dropout_rate']['min'],
+                                                      self.config_params['dropout_rate']['max'],
+                                                      self.config_params['dropout_rate']['step'])
         offspring_params['dropout_rate'] = crossed_over_dropout_rate
 
         return CoDeepNEATModuleConv2DMaxPool2DDropout(config_params=self.config_params,

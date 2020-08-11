@@ -70,10 +70,10 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         self.dropout_flag = random.random() < self.config_params['dropout_flag']
         random_dropout_rate = random.uniform(self.config_params['dropout_rate']['min'],
                                              self.config_params['dropout_rate']['max'])
-        self.dropout_rate = round(round_with_step(random_dropout_rate,
-                                                  self.config_params['dropout_rate']['min'],
-                                                  self.config_params['dropout_rate']['max'],
-                                                  self.config_params['dropout_rate']['step']), 4)
+        self.dropout_rate = round_with_step(random_dropout_rate,
+                                            self.config_params['dropout_rate']['min'],
+                                            self.config_params['dropout_rate']['max'],
+                                            self.config_params['dropout_rate']['step'])
 
     def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
         """"""
@@ -151,10 +151,10 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
             else:  # param_to_mutate == 6:
                 perturbed_dropout_rate = np.random.normal(loc=self.dropout_rate,
                                                           scale=self.config_params['dropout_rate']['stddev'])
-                offspring_params['dropout_rate'] = round(round_with_step(perturbed_dropout_rate,
-                                                                         self.config_params['dropout_rate']['min'],
-                                                                         self.config_params['dropout_rate']['max'],
-                                                                         self.config_params['dropout_rate']['step']), 4)
+                offspring_params['dropout_rate'] = round_with_step(perturbed_dropout_rate,
+                                                                   self.config_params['dropout_rate']['min'],
+                                                                   self.config_params['dropout_rate']['max'],
+                                                                   self.config_params['dropout_rate']['step'])
                 parent_mutation['mutated_params']['dropout_rate'] = self.dropout_rate
 
         return CoDeepNEATModuleDenseDropout(config_params=self.config_params,
@@ -185,10 +185,10 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         offspring_params['kernel_init'] = self.kernel_init
         offspring_params['bias_init'] = self.bias_init
         offspring_params['dropout_flag'] = self.dropout_flag
-        offspring_params['dropout_rate'] = round(round_with_step((self.dropout_rate + less_fit_module.dropout_rate) / 2,
-                                                                 self.config_params['dropout_rate']['min'],
-                                                                 self.config_params['dropout_rate']['max'],
-                                                                 self.config_params['dropout_rate']['step'], ), 4)
+        offspring_params['dropout_rate'] = round_with_step((self.dropout_rate + less_fit_module.dropout_rate) / 2,
+                                                            self.config_params['dropout_rate']['min'],
+                                                            self.config_params['dropout_rate']['max'],
+                                                            self.config_params['dropout_rate']['step'])
 
         return CoDeepNEATModuleDenseDropout(config_params=self.config_params,
                                             module_id=offspring_id,
