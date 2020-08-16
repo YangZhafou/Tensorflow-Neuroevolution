@@ -172,7 +172,7 @@ class CoDeepNEATSelectionBP:
         for spec_id in bp_species_ordered:
             spec_fitness = self.pop.bp_species_fitness_history[spec_id][self.pop.generation_counter]
             spec_fitness_share = spec_fitness / total_avg_fitness
-            spec_intended_size = round(spec_fitness_share * available_bp_pop)
+            spec_intended_size = int(round(spec_fitness_share * available_bp_pop))
 
             if len(self.pop.bp_species[spec_id]) + self.bp_spec_min_offspring > spec_intended_size:
                 bp_spec_offspring[spec_id] = self.bp_spec_min_offspring

@@ -53,7 +53,7 @@ class CoDeepNEATSelectionMOD:
         for spec_id in mod_species_ordered:
             spec_fitness = self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter]
             spec_fitness_share = spec_fitness / total_avg_fitness
-            spec_intended_size = round(spec_fitness_share * available_mod_pop)
+            spec_intended_size = int(round(spec_fitness_share * available_mod_pop))
 
             if len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring > spec_intended_size:
                 mod_spec_offspring[spec_id] = self.mod_spec_min_offspring
@@ -216,7 +216,7 @@ class CoDeepNEATSelectionMOD:
         for spec_id in mod_species_ordered:
             spec_fitness = self.pop.mod_species_fitness_history[spec_id][self.pop.generation_counter]
             spec_fitness_share = spec_fitness / total_avg_fitness
-            spec_intended_size = round(spec_fitness_share * available_mod_pop)
+            spec_intended_size = int(round(spec_fitness_share * available_mod_pop))
 
             if len(self.pop.mod_species[spec_id]) + self.mod_spec_min_offspring > spec_intended_size:
                 mod_spec_offspring[spec_id] = self.mod_spec_min_offspring
