@@ -65,7 +65,7 @@ class CoDeepNEATEvolutionMOD:
                                                                      config_params=mod_config_params)
 
                 # Add newly created module to the module container and to the list of modules that have to be speciated
-                self.modules[new_mod_id] = new_mod
+                self.pop.modules[new_mod_id] = new_mod
                 new_module_ids.append(new_mod_id)
 
         # Return the list of new module ids for later speciation
