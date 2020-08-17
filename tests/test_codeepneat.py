@@ -3,10 +3,10 @@ import tempfile
 import tfne
 
 
-def test_codeepneat_example():
+def test_codeepneat():
     """"""
     # Initialize the environment and the specific NE algorithm
-    config = tfne.parse_configuration('./test_codeepneat_example_config.cfg')
+    config = tfne.parse_configuration('./test_codeepneat_config_1.cfg')
     environment = tfne.environments.XOREnvironment(config)
     ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
 
@@ -23,4 +23,4 @@ def test_codeepneat_example():
     best_genome = engine.train()
 
     best_genome_fitness = environment.eval_genome_fitness(best_genome)
-    assert 1.0 >= best_genome_fitness > 0
+    assert 100.0 >= best_genome_fitness > 0
