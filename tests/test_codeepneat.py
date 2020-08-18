@@ -1,3 +1,4 @@
+import os
 import tempfile
 
 import tfne
@@ -6,7 +7,7 @@ import tfne
 def test_codeepneat():
     """"""
     # Initialize the environment and the specific NE algorithm
-    config = tfne.parse_configuration('./test_codeepneat_config_1.cfg')
+    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_config_1.cfg')
     environment = tfne.environments.XOREnvironment(config)
     ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
 
