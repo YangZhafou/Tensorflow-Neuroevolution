@@ -32,7 +32,7 @@ class CoDeepNEATEvolutionBP:
                 bp_spec_parents[spec_id].remove(bp_id)
                 self.pop.bp_species[spec_id].append(new_bp_id)
                 bp_spec_parents[spec_id].append(new_bp_id)
-                if self.pop.bp_species_repr[spec_id] == bp_id:
+                if self.bp_spec_type != 'basic' and self.pop.bp_species_repr[spec_id] == bp_id:
                     self.pop.bp_species_repr[spec_id] = new_bp_id
                 del self.pop.blueprints[bp_id]
 
