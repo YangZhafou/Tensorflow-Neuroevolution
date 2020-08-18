@@ -7,7 +7,7 @@ import statistics
 import numpy as np
 import tensorflow as tf
 
-from . import CoDeepNEATModuleBase
+from .codeepneat_module_base import CoDeepNEATModuleBase
 from tfne.helper_functions import round_with_step
 
 

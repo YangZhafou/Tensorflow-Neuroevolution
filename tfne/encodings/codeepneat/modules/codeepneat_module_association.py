@@ -1,5 +1,5 @@
-from . import CoDeepNEATModuleDenseDropout
-from . import CoDeepNEATModuleConv2DMaxPool2DDropout
+from .codeepneat_module_densedropout import CoDeepNEATModuleDenseDropout
+from .codeepneat_module_conv2dmaxpool2ddropout import CoDeepNEATModuleConv2DMaxPool2DDropout
 
 MODULES = {
     'DenseDropout': CoDeepNEATModuleDenseDropout,
