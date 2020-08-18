@@ -29,6 +29,7 @@ class EvolutionEngine:
 
         # Initiate the Multiprocessing library ray and determine the actually available CPUs and GPUs as well as the
         # desired verbosity level for the genome evaluation
+        ray.shutdown()
         ray.init(num_cpus=num_cpus, num_gpus=num_gpus)
         self.available_num_cpus = ray.available_resources()['CPU']
         self.available_num_gpus = len(ray.get_gpu_ids())
