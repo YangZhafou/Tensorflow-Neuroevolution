@@ -1,6 +1,6 @@
 import statistics
 
-from tfne.populations.base_population import BasePopulation
+from ..base_population import BasePopulation
 
 
 class CoDeepNEATPopulation(BasePopulation):

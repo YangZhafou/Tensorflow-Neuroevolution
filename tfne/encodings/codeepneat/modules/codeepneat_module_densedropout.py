@@ -7,7 +7,7 @@ import statistics
 import numpy as np
 import tensorflow as tf
 
-from .codeepneat_module_base import CoDeepNEATModuleBase
+from . import CoDeepNEATModuleBase
 from tfne.helper_functions import round_with_step
 
 
@@ -186,9 +186,9 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         offspring_params['bias_init'] = self.bias_init
         offspring_params['dropout_flag'] = self.dropout_flag
         offspring_params['dropout_rate'] = round_with_step((self.dropout_rate + less_fit_module.dropout_rate) / 2,
-                                                            self.config_params['dropout_rate']['min'],
-                                                            self.config_params['dropout_rate']['max'],
-                                                            self.config_params['dropout_rate']['step'])
+                                                           self.config_params['dropout_rate']['min'],
+                                                           self.config_params['dropout_rate']['max'],
+                                                           self.config_params['dropout_rate']['step'])
 
         return CoDeepNEATModuleDenseDropout(config_params=self.config_params,
                                             module_id=offspring_id,

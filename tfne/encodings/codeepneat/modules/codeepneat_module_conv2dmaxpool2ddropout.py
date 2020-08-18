@@ -7,7 +7,7 @@ import statistics
 import numpy as np
 import tensorflow as tf
 
-from .codeepneat_module_base import CoDeepNEATModuleBase
+from . import CoDeepNEATModuleBase
 from tfne.helper_functions import round_with_step
 
 
@@ -288,9 +288,9 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
         offspring_params['max_pool_size'] = self.max_pool_size
         offspring_params['dropout_flag'] = self.dropout_flag
         crossed_over_dropout_rate = round_with_step(((self.dropout_rate + less_fit_module.dropout_rate) / 2),
-                                                      self.config_params['dropout_rate']['min'],
-                                                      self.config_params['dropout_rate']['max'],
-                                                      self.config_params['dropout_rate']['step'])
+                                                    self.config_params['dropout_rate']['min'],
+                                                    self.config_params['dropout_rate']['max'],
+                                                    self.config_params['dropout_rate']['step'])
         offspring_params['dropout_rate'] = crossed_over_dropout_rate
 
         return CoDeepNEATModuleConv2DMaxPool2DDropout(config_params=self.config_params,

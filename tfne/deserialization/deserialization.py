@@ -5,9 +5,9 @@ from tfne.encodings.base_genome import BaseGenome
 from tfne.encodings.base_encoding import BaseEncoding
 from tfne.populations.base_population import BasePopulation
 
-from tfne.deserialization.codeepneat.codeepneat_deserialization import deserialize_codeepneat_genome
-from tfne.deserialization.codeepneat.codeepneat_deserialization import deserialize_codeepneat_encoding
-from tfne.deserialization.codeepneat.codeepneat_deserialization import deserialize_codeepneat_population
+from tfne.deserialization.codeepneat import deserialize_codeepneat_genome
+from tfne.deserialization.codeepneat import deserialize_codeepneat_encoding
+from tfne.deserialization.codeepneat import deserialize_codeepneat_population
 
 
 def load_genome(genome_file_path=None, serialized_genome=None, **kwargs) -> BaseGenome:

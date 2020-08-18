@@ -5,8 +5,8 @@ from tfne.encodings.codeepneat import CoDeepNEATBlueprint
 from tfne.encodings.codeepneat.codeepneat_encoding import CoDeepNEATEncoding
 from tfne.encodings.codeepneat.codeepneat_blueprint import CoDeepNEATBlueprintNode, CoDeepNEATBlueprintConn
 from tfne.encodings.codeepneat.codeepneat_optimizer_factory import OptimizerFactory
-from tfne.encodings.codeepneat.modules.codeepneat_module_base import CoDeepNEATModuleBase
-from tfne.encodings.codeepneat.modules.codeepneat_module_association import MODULES
+from tfne.encodings.codeepneat.modules import CoDeepNEATModuleBase
+from tfne.encodings.codeepneat.modules import MODULES
 from tfne.populations.codeepneat.codeepneat_population import CoDeepNEATPopulation
 
 
