@@ -3,7 +3,7 @@
 **Version 0.2 BETA**
 
 [![Documentation Status](https://readthedocs.org/projects/tfne/badge/?version=latest)](https://tfne.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/master/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
+[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/dev_tfne_v0.2/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
 
 The **TensorFlow-NeuroEvolution [abbr. TFNE]** framework aims to provide a fast prototyping framework for neuroevolution algorithms realized with Tensorflow 2.x. While the framework is certainly optimized for high performance does the design focus on maintainability, modularity and extendability by allowing for a seamless interchange of the three main concerns of neuroevolution - the genome encoding, the neuroevolution algorithm and the evaluation environment. \
 TFNE comes with a variety of pre-implemented neuroevolution algorithms, encodings and environments that are all highly optimized and extensively documented. The phenotypes (Neural Networks encoded through the genome) created through the pre-implemented genome encodings make heavy use of Tensorflow and its internal optimization. The Tensorflow models are exclusively created through the keras functional API and therefore allow for high-performance as well as full compatibility with the rest of the Tensorflow ecosystem. This eliminates a common dread in other evolutionary frameworks in which the evolved genome and its phenotype is not compatible with other machine learning frameworks. \
