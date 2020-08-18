@@ -20,7 +20,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "tensorflow >= 2.0.0, <= 2.2.0",
+        "tensorflow",
         "ray",
         "graphviz",
         "matplotlib",
