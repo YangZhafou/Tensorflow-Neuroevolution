@@ -4,24 +4,87 @@ import tempfile
 import tfne
 
 
-def test_codeepneat():
+def sanity_check_algorithm_state(ne_algorithm):
     """"""
-    # Initialize the environment and the specific NE algorithm
-    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_config_1.cfg')
+    best_genome = ne_algorithm.get_best_genome()
+    assert 100 >= best_genome.get_fitness() > 0
+
+
+def test_codeepneat_1():
+    """"""
+    # Create test config
+    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_1_config.cfg')
     environment = tfne.environments.XOREnvironment(config)
     ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
 
-    # Initialize evolution engine and supply config as well as initialized NE elements. As CoDeepNEAT currently only
-    # supports single-instance evaluation, set num_cpus and num_gpus to 1
+    # Start test
     engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
                                   backup_dir_path=tempfile.gettempdir(),
                                   num_cpus=1,
                                   num_gpus=1,
                                   max_generations=10,
                                   max_fitness=None)
+    engine.train()
 
-    # Start training process, returning the best genome when training ends
-    best_genome = engine.train()
+    # Sanity check state of the algorithm
+    sanity_check_algorithm_state(ne_algorithm)
 
-    best_genome_fitness = environment.eval_genome_fitness(best_genome)
-    assert 100.0 >= best_genome_fitness > 0
+
+def test_codeepneat_2():
+    """"""
+    # Create test config
+    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_2_config.cfg')
+    environment = tfne.environments.XOREnvironment(config)
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
+
+    # Start test
+    engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
+                                  backup_dir_path=tempfile.gettempdir(),
+                                  num_cpus=1,
+                                  num_gpus=1,
+                                  max_generations=6,
+                                  max_fitness=None)
+    engine.train()
+
+    # Sanity check state of the algorithm
+    sanity_check_algorithm_state(ne_algorithm)
+
+
+def test_codeepneat_3():
+    """"""
+    # Create test config
+    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_3_config.cfg')
+    environment = tfne.environments.XOREnvironment(config)
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
+
+    # Start test
+    engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
+                                  backup_dir_path=tempfile.gettempdir(),
+                                  num_cpus=1,
+                                  num_gpus=1,
+                                  max_generations=6,
+                                  max_fitness=None)
+    engine.train()
+
+    # Sanity check state of the algorithm
+    sanity_check_algorithm_state(ne_algorithm)
+
+
+def test_codeepneat_4():
+    """"""
+    # Create test config
+    config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_4_config.cfg')
+    environment = tfne.environments.MNISTEnvironment(config)
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
+
+    # Start test
+    engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
+                                  backup_dir_path=tempfile.gettempdir(),
+                                  num_cpus=1,
+                                  num_gpus=1,
+                                  max_generations=2,
+                                  max_fitness=None)
+    engine.train()
+
+    # Sanity check state of the algorithm
+    sanity_check_algorithm_state(ne_algorithm)
