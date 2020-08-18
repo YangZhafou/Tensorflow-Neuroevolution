@@ -5,8 +5,8 @@ with open("README.md", "r") as readme:
 
 setuptools.setup(
     name='tfne',
-    version='0.2.1',
-    scripts=['tfne_visualizer.py'],
+    version='0.2.2',
+    scripts=['tfne_visualizer'],
     author='Paul Pauls',
     author_email='mail@paulpauls.de',
     description='A modular Neuroevolution framework for Tensorflow models',
