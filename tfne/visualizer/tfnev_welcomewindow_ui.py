@@ -14,11 +14,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_WelcomeWindow(object):
     def setupUi(self, WelcomeWindow):
         WelcomeWindow.setObjectName("WelcomeWindow")
-        WelcomeWindow.resize(200, 250)
+        WelcomeWindow.resize(220, 250)
         self.centralwidget = QtWidgets.QWidget(WelcomeWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.button_open_backup_dir = QtWidgets.QPushButton(self.centralwidget)
-        self.button_open_backup_dir.setGeometry(QtCore.QRect(10, 210, 180, 25))
+        self.button_open_backup_dir.setGeometry(QtCore.QRect(10, 210, 200, 25))
         self.button_open_backup_dir.setObjectName("button_open_backup_dir")
         WelcomeWindow.setCentralWidget(self.centralwidget)
 

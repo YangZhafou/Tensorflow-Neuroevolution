@@ -21,7 +21,7 @@ class TFNEVWelcomeWindow(QtWidgets.QMainWindow, Ui_WelcomeWindow):
         # Add TFNEV Logo for welcomewindow (placeholder for now)
         self.svg_logo = QtSvg.QSvgWidget(self.centralwidget)
         self.svg_logo.load(os.path.dirname(__file__) + '/tfnev_welcomewindow_logo.svg')
-        self.svg_logo.setGeometry(QtCore.QRect(10, 10, 180, 180))
+        self.svg_logo.setGeometry(QtCore.QRect(10, 10, 200, 170))
 
         # Connect signals
         self.button_open_backup_dir.clicked.connect(self.select_tfne_state_backup_folder)
