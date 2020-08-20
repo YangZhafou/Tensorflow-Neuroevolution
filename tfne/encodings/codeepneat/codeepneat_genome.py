@@ -48,7 +48,7 @@ class CoDeepNEATGenome(BaseGenome):
 
     def __call__(self, inputs) -> tf.Tensor:
         """"""
-        return self.model.predict(inputs)
+        return self.model(inputs)
 
     def __str__(self) -> str:
         """"""

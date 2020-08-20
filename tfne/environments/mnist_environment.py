@@ -66,9 +66,8 @@ class MNISTEnvironment(BaseEnvironment):
 
         # Determine fitness by creating model predictions with test images and then judging the fitness based on the
         # achieved model accuracy. Return this fitness
-        predictions = model.predict(self.test_images)
         self.accuracy_metric.reset_states()
-        self.accuracy_metric.update_state(self.test_labels, np.argmax(predictions, axis=-1))
+        self.accuracy_metric.update_state(self.test_labels, np.argmax(model(self.test_images), axis=-1))
         return round(self.accuracy_metric.result().numpy() * 100, 4)
 
     def _eval_genome_fitness_non_weight_training(self, genome) -> float:
@@ -82,9 +81,8 @@ class MNISTEnvironment(BaseEnvironment):
         # Determine fitness by creating model predictions with test images and then judging the fitness based on the
         # achieved model accuracy.
         model = genome.get_model()
-        predictions = model.predict(self.test_images)
         self.accuracy_metric.reset_states()
-        self.accuracy_metric.update_state(self.test_labels, np.argmax(predictions, axis=-1))
+        self.accuracy_metric.update_state(self.test_labels, np.argmax(model(self.test_images), axis=-1))
         evaluated_fitness = round(self.accuracy_metric.result().numpy() * 100, 4)
         print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
 

@@ -219,11 +219,12 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                 # Print population evaluation progress bar
                 genome_eval_counter += 1
                 progress_mult = int(round(genome_eval_counter / genome_eval_counter_div, 4))
-                print_str = "\r[{:40}] {}/{} Genomes | Genome ID {} achieved fitness of {}".format("=" * progress_mult,
-                                                                                                   genome_eval_counter,
-                                                                                                   genome_pop_size,
-                                                                                                   genome_id,
-                                                                                                   genome_fitness)
+                print_str = "\r[{:40}] {}/{} Genomes | Genome ID {} achieved fitness of {}\n".format(
+                    "=" * progress_mult,
+                    genome_eval_counter,
+                    genome_pop_size,
+                    genome_id,
+                    genome_fitness)
                 sys.stdout.write(print_str)
                 sys.stdout.flush()
 

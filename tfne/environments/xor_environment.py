@@ -60,7 +60,7 @@ class XOREnvironment(BaseEnvironment):
         model.fit(x=self.x, y=self.y, epochs=self.epochs, batch_size=self.batch_size, verbose=self.verbosity)
 
         # Evaluate and return its fitness
-        evaluated_fitness = float(100 * (1 - self.loss_function(self.y, model.predict(self.x))))
+        evaluated_fitness = float(100 * (1 - self.loss_function(self.y, model(self.x))))
 
         # FIXME Tensorflow arbitrary NaN loss when using float16 datatype. Confirmed by TF.
         # Github TF issue: https://github.com/tensorflow/tensorflow/issues/38457
