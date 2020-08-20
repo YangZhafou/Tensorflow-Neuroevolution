@@ -1,6 +1,9 @@
 import os
 import tempfile
 
+# Deactivate GPUs as pytest seems very error-prone in combination with Tensorflow
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 import tfne
 
 
