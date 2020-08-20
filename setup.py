@@ -20,11 +20,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "tensorflow",
+        "tensorflow >= 2.0.0",
         "ray",
         "graphviz",
         "matplotlib",
         "PyQt5",
     ],
-    python_requires='>=3.7',
+    python_requires='>= 3.7',
 )
