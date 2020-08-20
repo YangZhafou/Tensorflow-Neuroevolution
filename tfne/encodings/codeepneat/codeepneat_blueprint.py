@@ -1,3 +1,4 @@
+import os
 import tempfile
 from copy import deepcopy
 
@@ -118,11 +119,12 @@ class CoDeepNEATBlueprint:
     def visualize(self, show=True, save_dir_path=None) -> str:
         """"""
         # Check if save_dir_path is supplied and if it is supplied in the correct format. If not correct format or
-        # create a new save_dir_path
+        # create a new save_dir_path. Ensure that the save_dir_path exists by creating the directories.
         if save_dir_path is None:
             save_dir_path = tempfile.gettempdir()
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
+        os.makedirs(save_dir_path)
 
         # Set filename and save file path as the blueprint id and indicate that its the graph being plotted
         filename = f"blueprint_{self.blueprint_id}_graph"

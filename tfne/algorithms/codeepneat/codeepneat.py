@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import random
@@ -348,9 +349,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
 
     def save_state(self, save_dir_path):
         """"""
-        # Set save file name as 'pop backup' and including the current generation
+        # Set save file name as 'pop backup' and including the current generation. Ensure that the save_dir_path exists
+        # by creating the directories.
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
+        os.makedirs(save_dir_path)
         save_file_path = save_dir_path + f"tfne_state_backup_gen_{self.pop.generation_counter}.json"
 
         # Create serialized state of the evolutionary process. Set type of that serialized state.
