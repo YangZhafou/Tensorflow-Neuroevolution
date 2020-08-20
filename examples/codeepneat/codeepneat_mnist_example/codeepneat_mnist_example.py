@@ -54,16 +54,18 @@ def codeepneat_mnist_example(_):
 
     # Start training process, returning the best genome when training ends
     best_genome = engine.train()
+    print("Best genome returned by evolution:\n")
+    print(best_genome)
 
-    # Serialize and save genotype and Tensorflow model to demonstrate serialization/deserialization
-    genome_file_path = best_genome.save_genotype(save_dir_path='./')
-    best_genome.save_model(file_path='./')
+    # Increase epoch count in environment for a final training of the best genome. Train the genome and then replay it.
+    print("Training best genome for 200 epochs...\n")
+    environment.epochs = 200
+    environment.eval_genome_fitness(best_genome)
+    environment.replay_genome(best_genome)
 
-    # Load and deserialize the saved genotype and apply it again to the chosen environment
-    print("Best Genome returned by evolution:\n")
-    deserialized_genome = tfne.deserialization.load_genome(genome_file_path=genome_file_path)
-    print(deserialized_genome)
-    environment.replay_genome(deserialized_genome)
+    # Serialize and save genotype and Tensorflow model to demonstrate serialization
+    best_genome.save_genotype(save_dir_path='./best_genome_genotype/')
+    best_genome.save_model(file_path='./best_genome_model/')
 
 
 if __name__ == '__main__':
