@@ -50,7 +50,7 @@ class EvolutionEngine:
         backup_dir_str = datetime.now(tz=datetime.now().astimezone().tzinfo)
         backup_dir_str = backup_dir_str.strftime("tfne_state_backup_%Y-%b-%d_%H-%M-%S/")
         self.backup_dir_path += backup_dir_str
-        os.makedirs(self.backup_dir_path)
+        os.makedirs(self.backup_dir_path, exist_ok=True)
         print("Creating TFNE generational Backups to directory: {}".format(self.backup_dir_path))
 
     def train(self) -> BaseGenome:

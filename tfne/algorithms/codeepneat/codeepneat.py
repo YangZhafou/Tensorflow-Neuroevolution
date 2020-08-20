@@ -353,7 +353,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # by creating the directories.
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        os.makedirs(save_dir_path)
+        os.makedirs(save_dir_path, exist_ok=True)
         save_file_path = save_dir_path + f"tfne_state_backup_gen_{self.pop.generation_counter}.json"
 
         # Create serialized state of the evolutionary process. Set type of that serialized state.

@@ -68,7 +68,7 @@ class CoDeepNEATGenome(BaseGenome):
             save_dir_path = tempfile.gettempdir()
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        os.makedirs(save_dir_path)
+        os.makedirs(save_dir_path, exist_ok=True)
 
         # Set save file name as the genome id and indicate that its the model being plotted
         save_file_path = save_dir_path + f"genome_{self.genome_id}_model.svg"
@@ -123,7 +123,7 @@ class CoDeepNEATGenome(BaseGenome):
         # save_dir_path exists by creating the directories.
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        os.makedirs(save_dir_path)
+        os.makedirs(save_dir_path, exist_ok=True)
         save_file_path = save_dir_path + f"genome_{self.genome_id}_genotype.json"
 
         # Create serialization of the genome

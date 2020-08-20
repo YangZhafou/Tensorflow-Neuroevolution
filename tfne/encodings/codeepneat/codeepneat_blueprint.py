@@ -124,7 +124,7 @@ class CoDeepNEATBlueprint:
             save_dir_path = tempfile.gettempdir()
         if save_dir_path[-1] != '/':
             save_dir_path += '/'
-        os.makedirs(save_dir_path)
+        os.makedirs(save_dir_path, exist_ok=True)
 
         # Set filename and save file path as the blueprint id and indicate that its the graph being plotted
         filename = f"blueprint_{self.blueprint_id}_graph"
