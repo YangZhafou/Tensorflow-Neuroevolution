@@ -267,9 +267,7 @@ class TFNEVCoDeepNEATMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # create visualization of best genome and show in image widget
         best_genome_plot_path = best_genome.visualize(show=False,
-                                                      save_dir_path=self.temp_dir,
-                                                      show_shapes=True,
-                                                      show_layer_names=False)
+                                                      save_dir_path=self.temp_dir)
         self.ga_genome_visualization_image.close()
         self.ga_genome_visualization_image.load(best_genome_plot_path)
         self.ga_genome_visualization_image.show()

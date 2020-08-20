@@ -72,9 +72,16 @@ class CoDeepNEATGenome(BaseGenome):
         # Set save file name as the genome id and indicate that its the model being plotted
         save_file_path = save_dir_path + f"genome_{self.genome_id}_model.svg"
 
-        # Create plot of model through keras util. Set DPI to None until keras utils API fixed the 'dpi for svg' bug.
-        # See Tensorflow issue: https://github.com/tensorflow/tensorflow/issues/42150
+        # Adjust plotting model parameters to show shapes but not layers names by default if none of those parameters
+        # are supplied. Set DPI to None regardless of supplied parameters as keras utils API is bugged when supplying
+        # DPI for svg plots. See Tensorflow issue: https://github.com/tensorflow/tensorflow/issues/42150
+        if 'show_shapes' not in kwargs:
+            kwargs['show_shapes'] = True
+        if 'show_layer_names' not in kwargs:
+            kwargs['show_layer_names'] = False
         kwargs['dpi'] = None
+
+        # Create plot of model through keras util
         tf.keras.utils.plot_model(model=self.model, to_file=save_file_path, **kwargs)
 
         # If visualization is set to show, open it in the default image program
