@@ -6,13 +6,14 @@ import subprocess
 
 import tensorflow as tf
 
-from .codeepneat_model import create_model
+from .codeepneat_model import CoDeepNEATModel
 from .codeepneat_blueprint import CoDeepNEATBlueprint
 from .modules import CoDeepNEATModuleBase
 from tfne.encodings.base_genome import BaseGenome
 
 
-class CoDeepNEATGenome(BaseGenome):
+class CoDeepNEATGenome(BaseGenome,
+                       CoDeepNEATModel):
     """"""
 
     def __init__(self,
@@ -39,12 +40,9 @@ class CoDeepNEATGenome(BaseGenome):
         self.fitness = None
 
         # Create optimizer and model
+        self.model = None
         self.optimizer = self.blueprint.create_optimizer()
-        self.model = create_model(self.blueprint,
-                                  self.bp_assigned_modules,
-                                  self.output_layers,
-                                  self.input_shape,
-                                  self.dtype)
+        self._create_model()
 
     def __call__(self, inputs) -> tf.Tensor:
         """"""
