@@ -25,6 +25,7 @@ setuptools.setup(
         "graphviz",
         "matplotlib",
         "PyQt5",
+        "pydot",
     ],
     python_requires='>= 3.7',
 )
