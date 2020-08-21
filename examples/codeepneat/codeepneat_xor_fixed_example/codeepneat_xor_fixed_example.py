@@ -3,19 +3,28 @@ from absl import app, flags, logging
 import tfne
 
 flags.DEFINE_string('logging_level',
-                    default=None, help='TODO')
+                    default=None, help='Integer parameter specifying the verbosity of the absl logging library')
 flags.DEFINE_string('config_file',
-                    default=None, help='TODO')
+                    default=None, help='String parameter specifying the file path to the configuration file used for '
+                                       'the TFNE evolutionary process')
 flags.DEFINE_string('backup_dir',
-                    default=None, help='TODO')
+                    default=None, help='String parameter specifying the directory path to where the TFNE state backups '
+                                       'should be saved to')
 flags.DEFINE_integer('max_generations',
-                     default=None, help='TODO')
+                     default=None, help='Integer parameter specifying the intended maximum number of generations the '
+                                        'population should be evolved')
 flags.DEFINE_float('max_fitness',
-                   default=None, help='TODO')
+                   default=None, help='Float parameter specifying the fitness of the best genome at which point the '
+                                      'evolutionary process should preemptively end')
 
 
 def codeepneat_xor_example(_):
-    """"""
+    """
+    This Example evolves a CoDeepNEAT population on the XOR problem for 100 generations, using fixed speciation for
+    the modules and blueprints. Subsequently the best genome is trained for a final 100 epochs and its genotype and
+    Tensorflow model are backed up.
+    """
+
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
     config_file_path = './codeepneat_xor_fixed_example_config.cfg'
