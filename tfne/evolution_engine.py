@@ -9,7 +9,11 @@ from .encodings.base_genome import BaseGenome
 
 
 class EvolutionEngine:
-    """"""
+    """
+    Central engine that drives the evolution by calling the evolutionary steps of the evolutionary algorithm in the
+    correct order while checking if the evolutionary process went extinct, reached its maximum fitness/generations or
+    is otherwise in order.
+    """
 
     def __init__(self,
                  ne_algorithm,
@@ -18,7 +22,18 @@ class EvolutionEngine:
                  num_gpus=None,
                  max_generations=None,
                  max_fitness=None):
-        """"""
+        """
+        Creates a new evolutionary engine instance that initializes the multiprocessing library, creates TFNE state
+        backup directories and initializes the environment in order to prepare for the eventual training process.
+        @param ne_algorithm: instance of an TFNE compliant NE algorithm
+        @param backup_dir_path: string of a directory path into which the TFNE state backups are saved
+        @param num_cpus: integer specifying the number of CPUS to use for multiprocessing
+        @param num_gpus: float specifying the number of GPUs to use for multiprocessing
+        @param max_generations: integer specifying the maximum number of generations the population should be evolved to
+        @param max_fitness: float specifying the fitness of the best genome at which point the evolution process should
+                            be preemptively stopped
+        """
+
         # Register parameters
         self.ne_algorithm = ne_algorithm
         self.max_generations = max_generations
@@ -54,7 +69,12 @@ class EvolutionEngine:
         print("Creating TFNE generational Backups to directory: {}".format(self.backup_dir_path))
 
     def train(self) -> BaseGenome:
-        """"""
+        """
+        Starts the configured evolutionary training process. Initializes, then evaluates, summarizes and evolves
+        population in loop until exit condition (extinction, max generations/fitness reached) is met. Returns the genome
+        with the best achieved fitness
+        @return: TFNE compliant genome with the best achieved fitness
+        """
         # Initialize population. If pre-evolved population was supplied will this be used as the initial population.
         self.ne_algorithm.initialize_population()
 
