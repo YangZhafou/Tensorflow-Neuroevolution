@@ -8,13 +8,16 @@ import tfne
 
 
 def sanity_check_algorithm_state(ne_algorithm):
-    """"""
+    """
+    Very basic sanity check as the purpose of the pytest checks is the run of the evolutionary loops. If there are some
+    bugs in the evolutionary process the complex logic will fail. Therefore there is not much purpose in doing extensive
+    asserts after the evolutionary process succeded.
+    """
     best_genome = ne_algorithm.get_best_genome()
     assert 100 >= best_genome.get_fitness() > 0
 
 
 def test_codeepneat_1():
-    """"""
     # Create test config
     config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_1_config.cfg')
     environment = tfne.environments.XOREnvironment(config)
@@ -34,7 +37,6 @@ def test_codeepneat_1():
 
 
 def test_codeepneat_2():
-    """"""
     # Create test config
     config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_2_config.cfg')
     environment = tfne.environments.XOREnvironment(config)
@@ -54,7 +56,6 @@ def test_codeepneat_2():
 
 
 def test_codeepneat_3():
-    """"""
     # Create test config
     config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_3_config.cfg')
     environment = tfne.environments.XOREnvironment(config)
@@ -74,7 +75,6 @@ def test_codeepneat_3():
 
 
 def test_codeepneat_4():
-    """"""
     # Create test config
     config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_4_config.cfg')
     environment = tfne.environments.MNISTEnvironment(config)
@@ -94,7 +94,6 @@ def test_codeepneat_4():
 
 
 def test_codeepneat_5():
-    """"""
     # Create test config
     config = tfne.parse_configuration(os.path.dirname(__file__) + '/test_codeepneat_4_config.cfg')
     environment = tfne.environments.CIFAR10Environment(config)
