@@ -11,7 +11,14 @@ from tfne.deserialization.codeepneat import deserialize_codeepneat_population
 
 
 def load_genome(genome_file_path=None, serialized_genome=None, **kwargs) -> BaseGenome:
-    """"""
+    """
+    Loads, deserializes and returns a TFNE saved genotype as the according genome instance. Requires either a genome
+    file path or an already loaded but still serialized genome. Not both.
+    @param genome_file_path: string file path to the saved genome genotype
+    @param serialized_genome: dict serialized genome
+    @param kwargs: possible additional arguments for the specific algorithm genome deserialization
+    @return: instance of the loaded deserialized genome
+    """
     if genome_file_path is not None and serialized_genome is not None:
         # Either a file path or an already loaded genome are to be supplied. Not both.
         raise RuntimeError("load_genome function either requires the path to a genome file that is to be loaded and"
@@ -30,7 +37,15 @@ def load_genome(genome_file_path=None, serialized_genome=None, **kwargs) -> Base
 
 
 def load_population(population_file_path=None, serialized_population=None, dtype=None, **kwargs) -> BasePopulation:
-    """"""
+    """
+    Loads, deserializes and returns a TFNE population as a specific population instance. Requires either a population
+    file path or an already loaded but still serialized population. Not both.
+    @param population_file_path: string file path to the saved population
+    @param serialized_population: dict serialized population
+    @param dtype: string of the TF datatype the population should be deserialized to
+    @param kwargs: possible additional arguments for the specific algorithm population deserialization
+    @return: instance of the loaded deserialized population
+    """
     if population_file_path is not None and serialized_population is not None:
         # Either a file path or an already loaded population are to be supplied. Not both.
         raise RuntimeError("load_population function either requires the path to a population file that is to be "
@@ -49,7 +64,15 @@ def load_population(population_file_path=None, serialized_population=None, dtype
 
 
 def load_encoding(encoding_file_path=None, serialized_encoding=None, dtype=None, **kwargs) -> BaseEncoding:
-    """"""
+    """
+    Loads, deserializes and returns a TFNE encoding as a specific encoding instance. Requires either an encoding file
+    path or an already loaded but still serialized encoding. Not both.
+    @param encoding_file_path: string file path to the saved encoding
+    @param serialized_encoding: dict serialized encoding
+    @param dtype: string of the TF datatype the deserialized encoding should be initialized with
+    @param kwargs: possible additional arguments for the specific algorithm encoding deserialization
+    @return: instance of the loaded deserialized encoding
+    """
     if encoding_file_path is not None and serialized_encoding is not None:
         # Either a file path or an already loaded encoding are to be supplied. Not both.
         raise RuntimeError("load_encoding function either requires the path to a encoding file that is to be "
@@ -72,7 +95,17 @@ def load_state(state_file_path=None,
                dtype=None,
                population_only=False,
                **kwargs) -> (BasePopulation, Optional[BaseEncoding]):
-    """"""
+    """
+    Loads, deserializes and returns a TFNE state, consisting of population and encoding, as their specific according
+    encoding and population instances. Requires either a state file path or an already loaded but still serialized
+    state. Not both. Optionally, only the population can be deserialized and returned from the state.
+    @param state_file_path: string file path to the saved state
+    @param serialized_state: dict serialized state
+    @param dtype: string of the TF datatype the encoding and population should be deserialized with
+    @param population_only: bool flag indicating if only the population should be deserialized and returned
+    @param kwargs: possible additional arguments for the specific algorithm encoding and population deserialization
+    @return: instance of deserialized population OR instance of deserialized population and deserialized encoding
+    """
     if state_file_path is not None and serialized_state is not None:
         # Either a file path or an already loaded state are to be supplied. Not both.
         raise RuntimeError("load_state function either requires the path to a state file that is to be "

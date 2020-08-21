@@ -11,7 +11,14 @@ from tfne.populations.codeepneat.codeepneat_population import CoDeepNEATPopulati
 
 
 def deserialize_codeepneat_population(serialized_population, dtype, module_config_params=None) -> CoDeepNEATPopulation:
-    """"""
+    """
+    Deserializes a complete serialized CoDeepNEAT population and returns the CoDeepNEAT population instance
+    @param serialized_population: dict serialized CoDeepNEAT population
+    @param dtype: string of the TF datatype the CoDeepNEAT population should be deserialized to
+    @param module_config_params: dict of module config parameters specyifing the parameter range for all deserialized
+                                 modules
+    @return: instance of a deserialized CoDeepNEAT population
+    """
     # Deserialize all saved population internal evolution information except for the modules, blueprints and best
     # genome, as they have to be deserialized seperately. Save all in the initial state dict of the CoDeepNEAT pop.
     initial_state = dict()
@@ -49,7 +56,12 @@ def deserialize_codeepneat_population(serialized_population, dtype, module_confi
 
 
 def deserialize_codeepneat_encoding(serialized_encoding, dtype) -> CoDeepNEATEncoding:
-    """"""
+    """
+    Deserialize a serialized CoDeepNEAT encoding and return a specific CoDeepNEAT instance.
+    @param serialized_encoding: dict serialized CoDeepNEAT encoding
+    @param dtype: string of the TF datatype the deserialized CoDeepNEAT encoding should be initialized with
+    @return: instance of the deserialized CoDeepNEAT encoding
+    """
     # Deserialize all saved population internal evolution information, including the gene_to_gene_id associations and
     # connection split history. Save all in the initial state dict of the CoDeepNEAT encoding.
     inital_state = dict()
@@ -75,7 +87,13 @@ def deserialize_codeepneat_encoding(serialized_encoding, dtype) -> CoDeepNEATEnc
 
 
 def deserialize_codeepneat_genome(serialized_genome, module_config_params=None) -> CoDeepNEATGenome:
-    """"""
+    """
+    Deserializes a serialized CoDeepNEAT genome genotype and returns a specific CoDeepNEAT genome instance.
+    @param serialized_genome: dict serialized CoDeepNEAT genome genotype
+    @param module_config_params: dict of module config parameters specyifing the parameter range for all deserialized
+                                 modules
+    @return: instance of the deserialized CoDeepNEAT genome
+    """
     # Deserialize underlying blueprint of genome
     blueprint = deserialize_codeepneat_blueprint(serialized_genome['blueprint'])
 
@@ -99,7 +117,14 @@ def deserialize_codeepneat_genome(serialized_genome, module_config_params=None) 
 
 
 def deserialize_codeepneat_module(mod_params, dtype, module_config_params=None) -> CoDeepNEATModuleBase:
-    """"""
+    """
+    Deserializes a serialized CoDeepNEAT module and returns a specific CoDeepNEAT module instance
+    @param mod_params: dict serialized parameters of the CoDeepNEAT module
+    @param dtype: string of the TF datatype the deserialized CoDeepNEAT module should be initialized with
+    @param module_config_params: dict of module config parameters specyifing the parameter range for all deserialized
+                                 modules
+    @return: instance of the deserialized CoDeepNEAT module
+    """
     mod_type = mod_params['module_type']
     del mod_params['module_type']
     # If module is deserialized only for the purpose of inspection/visualization/layer creation, no module config params
@@ -116,7 +141,11 @@ def deserialize_codeepneat_module(mod_params, dtype, module_config_params=None) 
 
 
 def deserialize_codeepneat_blueprint(bp_params) -> CoDeepNEATBlueprint:
-    """"""
+    """
+    Deserializes a serialized CoDeepNEAT blueprint and returns a specific CoDeepNEAT blueprint instance
+    @param bp_params: dict serialized parameters of the CoDeepNEAT blueprint
+    @return: instance of the deserialized CoDeepNEAT blueprint
+    """
     # Deserialize Blueprint graph
     bp_graph = dict()
     for gene_id, gene_params in bp_params['blueprint_graph'].items():
