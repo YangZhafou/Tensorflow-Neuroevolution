@@ -8,10 +8,18 @@ from tfne.helper_functions import read_option_from_config
 
 
 class CIFAR10Environment(BaseEnvironment):
-    """"""
+    """
+    TFNE compatible environment for the CIFAR10 dataset
+    https://www.cs.toronto.edu/~kriz/cifar.html
+    """
 
     def __init__(self, config):
-        """"""
+        """
+        Initializes CIFAR10 environment by downloading and setting up dataset and storing config. Config will be
+        processed when the evaluation method will be set up.
+        @param config: ConfigParser instance holding an 'Environment' section specifying the required environment
+                       parameters for the chosen evaluation method.
+        """
         print("Setting up CIFAR10 environment...")
 
         # Load test data, unpack it and normalize the pixel values
@@ -29,7 +37,12 @@ class CIFAR10Environment(BaseEnvironment):
         self.verbosity = 1
 
     def set_up_evaluation(self, weight_training, verbosity):
-        """"""
+        """
+        Setting up the evaluation method to either the weight training or non-weight training variant. Possible
+        parameters for each weight training variant are drawn from the config.
+        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
+        @param verbosity: integer specifying the verbosity of the evaluation
+        """
         # Set the verbosity level
         self.verbosity = verbosity
 
@@ -47,12 +60,17 @@ class CIFAR10Environment(BaseEnvironment):
             raise NotImplementedError("Non-Weight training evaluation not yet implemented for CIFAR10 Environment")
 
     def eval_genome_fitness(self, genome) -> float:
-        """"""
         # TO BE OVERRIDEN
-        pass
+        raise RuntimeError("CIFAR10 Environment not yet set up by calling 'set_up_evaluation'")
 
     def _eval_genome_fitness_weight_training(self, genome) -> float:
-        """"""
+        """
+        Evaluates the genome's fitness by obtaining the associated Tensorflow model and optimizer, compiling them and
+        then training them for the config specified duration. The genomes fitness is then calculated and returned as
+        the percentage of test images classified correctly.
+        @param genome: TFNE compatible genome that is to be evaluated
+        @return: genome calculated fitness that is the percentage of test images classified correctly
+        """
         # Get model and optimizer required for compilation
         model = genome.get_model()
         optimizer = genome.get_optimizer()
@@ -76,7 +94,11 @@ class CIFAR10Environment(BaseEnvironment):
         raise NotImplementedError("Non-Weight training evaluation not yet implemented for CIFAR10 Environment")
 
     def replay_genome(self, genome):
-        """"""
+        """
+        Replay genome on environment by calculating its fitness and printing it. The fitness is the percentage of test
+        images classified correctly.
+        @param genome: TFNE compatible genome that is to be evaluated
+        """
         print("Replaying Genome #{}:".format(genome.get_id()))
 
         # Determine fitness by creating model predictions with test images and then judging the fitness based on the

@@ -8,10 +8,17 @@ from tfne.helper_functions import read_option_from_config
 
 
 class XOREnvironment(BaseEnvironment):
-    """"""
+    """
+    TFNE compatible environment for the XOR problem
+    """
 
     def __init__(self, config):
-        """"""
+        """
+        Initializes XOR environment by setting up the associated correct input and output pairs and storing the supplied
+        config. Config will be processed when the evaluation method will be set up.
+        @param config: ConfigParser instance holding an 'Environment' section specifying the required environment
+                       parameters for the chosen evaluation method.
+        """
         print("Setting up XOR environment...")
 
         # Initialize corresponding input and output mappings
@@ -27,7 +34,12 @@ class XOREnvironment(BaseEnvironment):
         self.verbosity = 1
 
     def set_up_evaluation(self, weight_training, verbosity):
-        """"""
+        """
+        Setting up the evaluation method to either the weight training or non-weight training variant. Possible
+        parameters for each weight training variant are drawn from the config.
+        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
+        @param verbosity: integer specifying the verbosity of the evaluation
+        """
         # Set the verbosity level
         self.verbosity = verbosity
 
@@ -45,12 +57,17 @@ class XOREnvironment(BaseEnvironment):
             self.eval_genome_fitness = self._eval_genome_fitness_non_weight_training
 
     def eval_genome_fitness(self, genome) -> float:
-        """"""
         # TO BE OVERRIDEN
-        pass
+        raise RuntimeError("XOR Environment not yet set up by calling 'set_up_evaluation'")
 
     def _eval_genome_fitness_weight_training(self, genome) -> float:
-        """"""
+        """
+        Evaluates the genome's fitness by obtaining the associated Tensorflow model and optimizer, compiling them and
+        then training them for the config specified duration. The genomes fitness is then calculated and returned as
+        the binary cross entropy in percent of the predicted to the actual results
+        @param genome: TFNE compatible genome that is to be evaluated
+        @return: genome calculated fitness
+        """
         # Get model and optimizer required for compilation
         model = genome.get_model()
         optimizer = genome.get_optimizer()
@@ -70,13 +87,21 @@ class XOREnvironment(BaseEnvironment):
         return round(evaluated_fitness, 4)
 
     def _eval_genome_fitness_non_weight_training(self, genome) -> float:
-        """"""
+        """
+        Evaluates genome's fitness by calculating and returning the binary cross entropy in percent of the predicted to
+        the actual results
+        @param genome: TFNE compatible genome that is to be evaluated
+        @return: genome calculated fitness
+        """
         # Evaluate and return its fitness by calling genome directly with input
         evaluated_fitness = float(100 * (1 - self.loss_function(self.y, genome(self.x))))
         return round(evaluated_fitness, 4)
 
     def replay_genome(self, genome):
-        """"""
+        """
+        Replay genome on environment by calculating its fitness and printing it.
+        @param genome: TFNE compatible genome that is to be evaluated
+        """
         print("Replaying Genome #{}:".format(genome.get_id()))
         evaluated_fitness = round(float(100 * (1 - self.loss_function(self.y, genome(self.x)))), 4)
         print("Solution Values: \t{}\n".format(self.y))
