@@ -5,7 +5,7 @@ with open("README.md", "r") as readme:
 
 setuptools.setup(
     name='tfne',
-    version='0.2.2',
+    version='0.21.0',
     scripts=['tfne_visualizer'],
     author='Paul Pauls',
     author_email='mail@paulpauls.de',

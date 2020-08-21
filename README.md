@@ -1,6 +1,6 @@
 ## The Tensorflow-Neuroevolution Framework ##
 
-**Version 0.2.2**
+**Version 0.21.0**
 
 [![PyPI version](https://badge.fury.io/py/tfne.svg)](https://badge.fury.io/py/tfne)
 [![Documentation Status](https://readthedocs.org/projects/tfne/badge/?version=latest)](https://tfne.readthedocs.io/en/latest/?badge=latest)
