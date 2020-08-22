@@ -4,6 +4,14 @@ CoDeepNEAT Configuration
 **[WORK IN PROGRESS]**
 
 
+**[ADD EXAMPLE CONFIG FROM ONE OF MY EXAMPLES AS CODE]**
+
+
+
+
+
+
+
 
 [POPULATION] Config Parameters
 ------------------------------

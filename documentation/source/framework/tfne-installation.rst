@@ -1,5 +1,5 @@
-TFNE Installation
-=================
+Installation
+============
 
 **[WORK IN PROGRESS]**
 

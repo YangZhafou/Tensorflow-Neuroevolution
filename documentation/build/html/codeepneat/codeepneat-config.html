@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CoDeepNEAT Configuration &mdash; Tensorflow-Neuroevolution Framework 0.2 documentation</title>
+  <title>CoDeepNEAT Configuration &mdash; Tensorflow-Neuroevolution Framework 0.21.0 documentation</title>
   
 
   
@@ -84,23 +84,10 @@
             
               <p class="caption"><span class="caption-text">TFNE Framework</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-installation.html">TFNE Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-usage.html">TFNE Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-architecture.html">TFNE Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-usage.html">Using TFNE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../framework/tfne-visualizer.html">TFNE Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-version-history.html">TFNE Version History</a></li>
-</ul>
-<p class="caption"><span class="caption-text">NEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-overview.html">NEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-specification.html">NEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-config.html">NEAT Configuration</a></li>
-</ul>
-<p class="caption"><span class="caption-text">DeepNEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-overview.html">DeepNEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-specification.html">DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-config.html">DeepNEAT Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../framework/tfne-development.html">TFNE Development</a></li>
 </ul>
 <p class="caption"><span class="caption-text">CoDeepNEAT</span></p>
 <ul class="current">
@@ -119,15 +106,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-modules.html">CoDeepNEAT Modules</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SubGraphNEAT/-DeepNEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-overview.html">SubGraphNeat/-DeepNEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-specification.html">SubGraphNEAT/-DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Configuration</a></li>
-</ul>
 <p class="caption"><span class="caption-text">TFNE Evaluation Environments</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../environments/xor-environment.html">XOR Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments/mnist-environment.html">MNIST Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments/cifar10-environment.html">CIFAR10 Environment</a></li>
 </ul>
 
             
@@ -196,6 +179,7 @@
   <div class="section" id="codeepneat-configuration">
 <h1>CoDeepNEAT Configuration<a class="headerlink" href="#codeepneat-configuration" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
+<p><strong>[ADD EXAMPLE CONFIG FROM ONE OF MY EXAMPLES AS CODE]</strong></p>
 <div class="section" id="population-config-parameters">
 <h2>[POPULATION] Config Parameters<a class="headerlink" href="#population-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
@@ -241,7 +225,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">mod_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
 <p><strong>Description</strong>: <strong>[Only applicable when using ‘param-distance-fixed’ or ‘param-distance-dynamic’ speciation]</strong> Specifies minimum distance of 2 modules such that they are classified into 2 different species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_mod_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<dt><code class="docutils literal notranslate"><span class="pre">mod_spec_mod_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
 <p><strong>Description</strong>: Specifies the amount of best modules in each species that will be carried over unchanged into the next generation after the evolution. The module elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">mod_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
@@ -292,7 +276,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">bp_spec_distance</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
 <p><strong>Description</strong>: <strong>[Only applicable when using ‘gene-overlap-fixed’ or ‘gene-overlap-dynamic’ speciation]</strong> Specifies the minimum distance of 2 blueprints such that they are classified into 2 different species.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_bp_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_spec_bp_elitism</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
 <p><strong>Description</strong>: Specifies the amount of best blueprints in each species that will be carried over unchanged into the next generation after the evolution. The blueprint elitism has to be at least 1 in order to carry over at least one species representative upon which newly evolved modules are judged if they belong into the same species.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bp_spec_min_offspring</span></code></dt><dd><p><strong>Value Range</strong>: int &gt;= 0</p>
@@ -334,7 +318,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_rem_node_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
 <p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by removing a node from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_node_spec_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_node_spec_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt; 0</p>
 <p><strong>Description</strong>: Specifies the probability that a new blueprint is evolved by mutating the species of the blueprint nodes from an elligible parent blueprint. Evolution probabilities of blueprints must add up to 1.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">bp_mutation_optimizer_prob</span></code></dt><dd><p><strong>Value Range</strong>: 1.0 &gt;= float &gt;= 0</p>

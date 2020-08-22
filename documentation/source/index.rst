@@ -16,35 +16,34 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
 
    framework/tfne-installation
    framework/tfne-usage
-   framework/tfne-architecture
    framework/tfne-visualizer
-   framework/tfne-version-history
+   framework/tfne-development
+
+
+..
+  [See here for the NEAT algorithm and how it is implemented in TFNE
+  ==================================================================
+
+  .. toctree::
+     :maxdepth: 3
+     :caption: NEAT
+
+     neat/neat-overview
+     neat/neat-specification
+     neat/neat-config
 
 
 
-[See here for the NEAT algorithm and how it is implemented in TFNE
-==================================================================
+  [See here for the DeepNEAT algorithm and how it is implemented in TFNE
+  ======================================================================
 
-.. toctree::
-   :maxdepth: 3
-   :caption: NEAT
+  .. toctree::
+     :maxdepth: 3
+     :caption: DeepNEAT
 
-   neat/neat-overview
-   neat/neat-specification
-   neat/neat-config
-
-
-
-[See here for the DeepNEAT algorithm and how it is implemented in TFNE
-======================================================================
-
-.. toctree::
-   :maxdepth: 3
-   :caption: DeepNEAT
-
-   deepneat/deepneat-overview
-   deepneat/deepneat-specification
-   deepneat/deepneat-config
+     deepneat/deepneat-overview
+     deepneat/deepneat-specification
+     deepneat/deepneat-config
 
 
 
@@ -61,17 +60,17 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
    codeepneat/codeepneat-modules
 
 
+..
+  [See here for the SubGraphNEAT/-DeepNEAT algorithm and how it is implemented in TFNE
+  ====================================================================================
 
-[See here for the SubGraphNEAT/-DeepNEAT algorithm and how it is implemented in TFNE
-====================================================================================
+  .. toctree::
+     :maxdepth: 3
+     :caption: SubGraphNEAT/-DeepNEAT
 
-.. toctree::
-   :maxdepth: 3
-   :caption: SubGraphNEAT/-DeepNEAT
-
-   subgraphneat-deepneat/subgraphneat-deepneat-overview
-   subgraphneat-deepneat/subgraphneat-deepneat-specification
-   subgraphneat-deepneat/subgraphneat-deepneat-config
+     subgraphneat-deepneat/subgraphneat-deepneat-overview
+     subgraphneat-deepneat/subgraphneat-deepneat-specification
+     subgraphneat-deepneat/subgraphneat-deepneat-config
 
 
 
@@ -83,4 +82,6 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
    :caption: TFNE Evaluation Environments
 
    environments/xor-environment
+   environments/mnist-environment
+   environments/cifar10-environment
 

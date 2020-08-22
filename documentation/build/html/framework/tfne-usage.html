@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TFNE Usage &mdash; Tensorflow-Neuroevolution Framework 0.2 documentation</title>
+  <title>Using TFNE &mdash; Tensorflow-Neuroevolution Framework 0.21.0 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TFNE Architecture" href="tfne-architecture.html" />
-    <link rel="prev" title="TFNE Installation" href="tfne-installation.html" /> 
+    <link rel="next" title="TFNE Visualizer" href="tfne-visualizer.html" />
+    <link rel="prev" title="Installation" href="tfne-installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,27 +84,15 @@
             
               <p class="caption"><span class="caption-text">TFNE Framework</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="tfne-installation.html">TFNE Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">TFNE Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subheading-1">Subheading 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#subheading-2">Subheading 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tfne-installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using TFNE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#framework-architecture">Framework Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deserialization">Deserialization</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tfne-architecture.html">TFNE Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tfne-visualizer.html">TFNE Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tfne-version-history.html">TFNE Version History</a></li>
-</ul>
-<p class="caption"><span class="caption-text">NEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-overview.html">NEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-specification.html">NEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../neat/neat-config.html">NEAT Configuration</a></li>
-</ul>
-<p class="caption"><span class="caption-text">DeepNEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-overview.html">DeepNEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-specification.html">DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../deepneat/deepneat-config.html">DeepNEAT Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tfne-development.html">TFNE Development</a></li>
 </ul>
 <p class="caption"><span class="caption-text">CoDeepNEAT</span></p>
 <ul>
@@ -113,15 +101,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-config.html">CoDeepNEAT Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../codeepneat/codeepneat-modules.html">CoDeepNEAT Modules</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SubGraphNEAT/-DeepNEAT</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-overview.html">SubGraphNeat/-DeepNEAT Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-specification.html">SubGraphNEAT/-DeepNEAT Specification</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../subgraphneat-deepneat/subgraphneat-deepneat-config.html">SubGraphNEAT/-DeepNEAT Configuration</a></li>
-</ul>
 <p class="caption"><span class="caption-text">TFNE Evaluation Environments</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../environments/xor-environment.html">XOR Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments/mnist-environment.html">MNIST Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../environments/cifar10-environment.html">CIFAR10 Environment</a></li>
 </ul>
 
             
@@ -168,7 +152,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>TFNE Usage</li>
+      <li>Using TFNE</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -187,18 +171,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tfne-usage">
-<h1>TFNE Usage<a class="headerlink" href="#tfne-usage" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="using-tfne">
+<h1>Using TFNE<a class="headerlink" href="#using-tfne" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
-<p>This page will cover:</p>
-<ul class="simple">
-<li><p>…</p></li>
-</ul>
-<div class="section" id="subheading-1">
-<h2>Subheading 1<a class="headerlink" href="#subheading-1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="framework-architecture">
+<h2>Framework Architecture<a class="headerlink" href="#framework-architecture" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="subheading-2">
-<h2>Subheading 2<a class="headerlink" href="#subheading-2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="serialization">
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="deserialization">
+<h2>Deserialization<a class="headerlink" href="#deserialization" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -210,10 +193,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tfne-architecture.html" class="btn btn-neutral float-right" title="TFNE Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tfne-visualizer.html" class="btn btn-neutral float-right" title="TFNE Visualizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="tfne-installation.html" class="btn btn-neutral float-left" title="TFNE Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tfne-installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
