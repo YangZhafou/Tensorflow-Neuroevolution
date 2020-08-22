@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-overview.html">CoDeepNEAT Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-specification.html">CoDeepNEAT Specification</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CoDeepNEAT Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-codeepneat-configuration">Example CoDeepNEAT Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#population-config-parameters">[POPULATION] Config Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#genome-config-parameters">[GENOME] Config Parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-speciation-config-parameters">[MODULE_SPECIATION] Config Parameters</a></li>
@@ -179,7 +180,93 @@
   <div class="section" id="codeepneat-configuration">
 <h1>CoDeepNEAT Configuration<a class="headerlink" href="#codeepneat-configuration" title="Permalink to this headline">¶</a></h1>
 <p><strong>[WORK IN PROGRESS]</strong></p>
-<p><strong>[ADD EXAMPLE CONFIG FROM ONE OF MY EXAMPLES AS CODE]</strong></p>
+<div class="section" id="example-codeepneat-configuration">
+<h2>Example CoDeepNEAT Configuration<a class="headerlink" href="#example-codeepneat-configuration" title="Permalink to this headline">¶</a></h2>
+<p><em>This example configuration includes an [EVALUATION] section not specific to the CoDeepNEAT algorithm’s configuration, though which has been included for the purpose of providing a full, functional config file.</em></p>
+<div class="highlight-cfg notranslate"><div class="highlight"><pre><span></span><span class="k">[EVALUATION]</span>
+<span class="na">epochs</span>        <span class="o">=</span> <span class="s">8</span>
+<span class="na">batch_size</span>    <span class="o">=</span> <span class="s">None</span>
+<span class="na">preprocessing</span> <span class="o">=</span> <span class="s">None</span>
+
+<span class="k">[POPULATION]</span>
+<span class="na">bp_pop_size</span>    <span class="o">=</span> <span class="s">25</span>
+<span class="na">mod_pop_size</span>   <span class="o">=</span> <span class="s">45</span>
+<span class="na">genomes_per_bp</span> <span class="o">=</span> <span class="s">4</span>
+
+<span class="k">[GENOME]</span>
+<span class="na">dtype</span>                <span class="o">=</span> <span class="s">&#39;float32&#39;</span>
+<span class="na">available_modules</span>    <span class="o">=</span> <span class="s">[&#39;Conv2DMaxPool2DDropout&#39;]</span>
+<span class="na">available_optimizers</span> <span class="o">=</span> <span class="s">[&#39;SGD&#39;, &#39;Adam&#39;]</span>
+<span class="na">output_layers</span>        <span class="o">=</span> <span class="s">[{&#39;class_name&#39;: &#39;Flatten&#39;, &#39;config&#39;: {}},</span>
+<span class="s">                        {&#39;class_name&#39;: &#39;Dense&#39;, &#39;config&#39;: {&#39;units&#39;: 10, &#39;activation&#39;: &#39;softmax&#39;}}]</span>
+
+<span class="k">[MODULE_SPECIATION]</span>
+<span class="na">mod_spec_type</span>            <span class="o">=</span> <span class="s">&#39;param-distance-dynamic&#39;</span>
+<span class="na">mod_spec_species_count</span>   <span class="o">=</span> <span class="s">4</span>
+<span class="na">mod_spec_distance</span>        <span class="o">=</span> <span class="s">0.3</span>
+<span class="na">mod_spec_mod_elitism</span>     <span class="o">=</span> <span class="s">2</span>
+<span class="na">mod_spec_min_offspring</span>   <span class="o">=</span> <span class="s">1</span>
+<span class="na">mod_spec_reprod_thres</span>    <span class="o">=</span> <span class="s">0.5</span>
+<span class="na">mod_spec_max_stagnation</span>  <span class="o">=</span> <span class="s">15</span>
+<span class="na">mod_spec_species_elitism</span> <span class="o">=</span> <span class="s">2</span>
+<span class="na">mod_spec_rebase_repr</span>     <span class="o">=</span> <span class="s">True</span>
+<span class="na">mod_spec_reinit_extinct</span>  <span class="o">=</span> <span class="s">False</span>
+
+<span class="k">[MODULE_EVOLUTION]</span>
+<span class="na">mod_max_mutation</span>   <span class="o">=</span> <span class="s">0.3</span>
+<span class="na">mod_mutation_prob</span>  <span class="o">=</span> <span class="s">0.8</span>
+<span class="na">mod_crossover_prob</span> <span class="o">=</span> <span class="s">0.2</span>
+
+<span class="k">[BP_SPECIATION]</span>
+<span class="na">bp_spec_type</span>            <span class="o">=</span> <span class="s">&#39;gene-overlap-dynamic&#39;</span>
+<span class="na">bp_spec_species_count</span>   <span class="o">=</span> <span class="s">3</span>
+<span class="na">bp_spec_distance</span>        <span class="o">=</span> <span class="s">0.3</span>
+<span class="na">bp_spec_bp_elitism</span>      <span class="o">=</span> <span class="s">2</span>
+<span class="na">bp_spec_min_offspring</span>   <span class="o">=</span> <span class="s">1</span>
+<span class="na">bp_spec_reprod_thres</span>    <span class="o">=</span> <span class="s">0.5</span>
+<span class="na">bp_spec_max_stagnation</span>  <span class="o">=</span> <span class="s">15</span>
+<span class="na">bp_spec_species_elitism</span> <span class="o">=</span> <span class="s">2</span>
+<span class="na">bp_spec_rebase_repr</span>     <span class="o">=</span> <span class="s">True</span>
+<span class="na">bp_spec_reinit_extinct</span>  <span class="o">=</span> <span class="s">True</span>
+
+<span class="k">[BP_EVOLUTION]</span>
+<span class="na">bp_max_mutation</span>            <span class="o">=</span> <span class="s">0.3</span>
+<span class="na">bp_mutation_add_conn_prob</span>  <span class="o">=</span> <span class="s">0.2</span>
+<span class="na">bp_mutation_add_node_prob</span>  <span class="o">=</span> <span class="s">0.2</span>
+<span class="na">bp_mutation_rem_conn_prob</span>  <span class="o">=</span> <span class="s">0.05</span>
+<span class="na">bp_mutation_rem_node_prob</span>  <span class="o">=</span> <span class="s">0.05</span>
+<span class="na">bp_mutation_node_spec_prob</span> <span class="o">=</span> <span class="s">0.3</span>
+<span class="na">bp_mutation_optimizer_prob</span> <span class="o">=</span> <span class="s">0.1</span>
+<span class="na">bp_crossover_prob</span>          <span class="o">=</span> <span class="s">0.1</span>
+
+<span class="k">[MODULE_CONV2DMAXPOOL2DDROPOUT]</span>
+<span class="na">merge_method</span>  <span class="o">=</span> <span class="s">[{&#39;class_name&#39;: &#39;Concatenate&#39;, &#39;config&#39;: {&#39;axis&#39;: -1}},</span>
+<span class="s">                 {&#39;class_name&#39;: &#39;Add&#39;, &#39;config&#39;: {}}]</span>
+<span class="na">filters</span>       <span class="o">=</span> <span class="s">{&#39;min&#39;: 32, &#39;max&#39;: 256, &#39;step&#39;: 32, &#39;stddev&#39;: 32}</span>
+<span class="na">kernel_size</span>   <span class="o">=</span> <span class="s">[1, 2, 3]</span>
+<span class="na">strides</span>       <span class="o">=</span> <span class="s">[1]</span>
+<span class="na">padding</span>       <span class="o">=</span> <span class="s">[&#39;valid&#39;, &#39;same&#39;]</span>
+<span class="na">activation</span>    <span class="o">=</span> <span class="s">[&#39;linear&#39;, &#39;elu&#39;, &#39;relu&#39;]</span>
+<span class="na">kernel_init</span>   <span class="o">=</span> <span class="s">[&#39;glorot_uniform&#39;]</span>
+<span class="na">bias_init</span>     <span class="o">=</span> <span class="s">[&#39;zeros&#39;]</span>
+<span class="na">max_pool_flag</span> <span class="o">=</span> <span class="s">0.5</span>
+<span class="na">max_pool_size</span> <span class="o">=</span> <span class="s">[2]</span>
+<span class="na">dropout_flag</span>  <span class="o">=</span> <span class="s">0.5</span>
+<span class="na">dropout_rate</span>  <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.1, &#39;max&#39;: 0.7, &#39;step&#39;: 0.1, &#39;stddev&#39;: 0.2}</span>
+
+<span class="k">[OPTIMIZER_SGD]</span>
+<span class="na">learning_rate</span> <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.0001, &#39;max&#39;: 0.1, &#39;step&#39;: 0.0001, &#39;stddev&#39;: 0.02}</span>
+<span class="na">momentum</span>      <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.68, &#39;max&#39;: 0.99, &#39;step&#39;: 0.01, &#39;stddev&#39;: 0.05}</span>
+<span class="na">nesterov</span>      <span class="o">=</span> <span class="s">[True, False]</span>
+
+<span class="k">[OPTIMIZER_ADAM]</span>
+<span class="na">learning_rate</span> <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.0001, &#39;max&#39;: 0.1, &#39;step&#39;: 0.0001, &#39;stddev&#39;: 0.02}</span>
+<span class="na">beta_1</span>        <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.6, &#39;max&#39;: 1.5, &#39;step&#39;: 0.05, &#39;stddev&#39;: 0.2}</span>
+<span class="na">beta_2</span>        <span class="o">=</span> <span class="s">{&#39;min&#39;: 0.8, &#39;max&#39;: 1.2, &#39;step&#39;: 0.001, &#39;stddev&#39;: 0.1}</span>
+<span class="na">epsilon</span>       <span class="o">=</span> <span class="s">{&#39;min&#39;: 1e-8, &#39;max&#39;: 1e-6, &#39;step&#39;: 1e-8, &#39;stddev&#39;: 1e-7}</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="population-config-parameters">
 <h2>[POPULATION] Config Parameters<a class="headerlink" href="#population-config-parameters" title="Permalink to this headline">¶</a></h2>
 <dl>
