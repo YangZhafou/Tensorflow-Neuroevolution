@@ -15,28 +15,28 @@
 
 --------------------------------------------------------------------------------
 
-#### Installation ####
+### Installation ###
 
 foobar
 
 
 --------------------------------------------------------------------------------
 
-#### Examples ####
+### Examples ###
 
 foobar
 
 
 --------------------------------------------------------------------------------
 
-#### Documentation ####
+### Documentation ###
 
 foobar
 
 
 --------------------------------------------------------------------------------
 
-#### About ####
+### About ###
 
 Project developed by [Paul Pauls](https://github.com/PaulPauls) in collaboration with [Rezsa Farahani](https://www.linkedin.com/in/rezsa). \
 We would like to thank the larger Google Tensorflow team for their support in this project!
