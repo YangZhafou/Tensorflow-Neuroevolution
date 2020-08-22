@@ -6,8 +6,8 @@ Welcome to the documentation of the Tensorflow-Neuroevolution framework!
    :align: center
 
 | Documentation of the Tensorflow-Neuroevolution framework.
-| Github: `<https://github.com/PaulPauls/Tensorflow-Neuroevolution>`_
-| PyPI: `<https://pypi.org/project/tfne/>`_
+| TFNE on Github: `<https://github.com/PaulPauls/Tensorflow-Neuroevolution>`_
+| TFNE on PyPI: `<https://pypi.org/project/tfne/>`_
 | Copyright: Paul Pauls
 
 
