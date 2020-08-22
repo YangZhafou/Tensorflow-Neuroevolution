@@ -4,6 +4,44 @@
   <img src="./documentation/source/illustrations/tfne_logo.svg" width="40%" alt="TFNE Logo"/>
 </p>
 
+**Version 0.21.0**
+
+[![PyPI version](https://badge.fury.io/py/tfne.svg)](https://badge.fury.io/py/tfne)
+[![Documentation Status](https://readthedocs.org/projects/tfne/badge/?version=latest)](https://tfne.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/dev_tfne_v0.2/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
+
+[TFNE PROJECT DESCRIPTION HERE]
+
+
+--------------------------------------------------------------------------------
+
+#### Installation ####
+
+foobar
+
+
+--------------------------------------------------------------------------------
+
+#### Examples ####
+
+foobar
+
+
+--------------------------------------------------------------------------------
+
+#### Documentation ####
+
+foobar
+
+
+--------------------------------------------------------------------------------
+
+#### About ####
+
+Project developed by [Paul Pauls](https://github.com/PaulPauls) in collaboration with [Rezsa Farahani](https://www.linkedin.com/in/rezsa). \
+We would like to thank the larger Google Tensorflow team for their support in this project!
+
+
 <!---
 
 Rework Notes:
@@ -14,16 +52,9 @@ Rework Notes:
 > Mention only the most popular environments in README and list all environments
   in RTD
 
-**Version 0.21.0**
-
-[![PyPI version](https://badge.fury.io/py/tfne.svg)](https://badge.fury.io/py/tfne)
-[![Documentation Status](https://readthedocs.org/projects/tfne/badge/?version=latest)](https://tfne.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/dev_tfne_v0.2/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
-
 The **TensorFlow-NeuroEvolution [abbr. TFNE]** framework aims to provide a fast prototyping framework for neuroevolution algorithms realized with Tensorflow 2.x. While the framework is certainly optimized for high performance does the design focus on maintainability, modularity and extendability by allowing for a seamless interchange of the three main concerns of neuroevolution - the genome encoding, the neuroevolution algorithm and the evaluation environment. \
 TFNE comes with a variety of pre-implemented neuroevolution algorithms, encodings and environments that are all highly optimized and extensively documented. The phenotypes (Neural Networks encoded through the genome) created through the pre-implemented genome encodings make heavy use of Tensorflow and its internal optimization. The Tensorflow models are exclusively created through the keras functional API and therefore allow for high-performance as well as full compatibility with the rest of the Tensorflow ecosystem. This eliminates a common dread in other evolutionary frameworks in which the evolved genome and its phenotype is not compatible with other machine learning frameworks. \
 All neuroevolution algorithms are controlled through the central evolution engine, which initializes required libraries and initiates each step of the evolutionary process. The evolution engine allows for the usage of custom or prototyped algorithms, encodings or environments, given they adhere to the abstract interfaces supplied for each neuroevolution aspect.
-
 
 ---------------------------------------------------------
 
@@ -45,8 +76,6 @@ All neuroevolution algorithms are controlled through the central evolution engin
 * [X] (see v0.1) OpenAI Gym CartPole [doc | code]
 * [X] CIFAR10 [doc | [code](./tfne/environments/cifar10_environment.py)]
 
-
-
 ---------------------------------------------------------
 
 ### Installation ###
@@ -54,8 +83,6 @@ All neuroevolution algorithms are controlled through the central evolution engin
 TFNE requires Python 3.7 or later. \
 For the required Python packages, see [`./requirements.txt`](./requirements.txt) \
 Installation of the system package `graphviz` is required for the usage of the TFNE visualizer.
-
-
 
 ---------------------------------------------------------
 
@@ -65,23 +92,12 @@ Online documentation: https://tfne.readthedocs.io \
 Offline documentation: [`./documentation/build/html/index.html`](./documentation/build/html/index.html) \
 Both documentations are identical.
 
-
-
 ---------------------------------------------------------
 
 ### Examples ###
 
 For a variety of examples using different algorithms, encodings and environments, see: [`./examples/`](./examples/) \
 Example usage of TFNE in a video format will be recorded, uploaded and linked here in the coming months.
-
-
-
----------------------------------------------------------
-
-### About ###
-
-Project developed by [Paul Pauls](https://github.com/PaulPauls) in collaboration with [Rezsa Farahani](https://www.linkedin.com/in/rezsa). \
-We would like to thank Google as well as the Tensorflow Team, who have supported this project during the Google Summer of Code 2019 and 2020.
 
 --->
 
