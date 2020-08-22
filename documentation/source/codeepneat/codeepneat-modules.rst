@@ -3,6 +3,20 @@ CoDeepNEAT Modules
 
 **[WORK IN PROGRESS]**
 
+CoDeepNEAT Module Abstract
+--------------------------
+
+
+
+Dense-Dropout Module
+--------------------
+
+
+
+Conv2D-MaxPool2D-Dropout Module
+-------------------------------
+
+
 
 Subheading 1
 ------------

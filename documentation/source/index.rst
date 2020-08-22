@@ -14,8 +14,8 @@ Tensorflow-Neuroevolution documentation. Currently a work in progress.
    :maxdepth: 3
    :caption: TFNE Framework
 
-   framework/tfne-installation
    framework/tfne-usage
+   framework/tfne-architecture
    framework/tfne-visualizer
    framework/tfne-development
 
