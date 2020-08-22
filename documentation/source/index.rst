@@ -5,6 +5,19 @@ Welcome to the documentation of the Tensorflow-Neuroevolution framework!
    :width: 50%
    :align: center
 
+**Version 0.21.0**
+
+.. image:: https://img.shields.io/badge/python-v3.7%2B-informational
+
+.. image:: https://badge.fury.io/py/tfne.svg
+  :target: https://badge.fury.io/py/tfne
+
+.. image:: https://readthedocs.org/projects/tfne/badge/?version=latest
+  :target: https://tfne.readthedocs.io/en/latest/?badge=latest
+
+.. image:: https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution
+
 | Documentation of the Tensorflow-Neuroevolution framework.
 | TFNE on Github: `<https://github.com/PaulPauls/Tensorflow-Neuroevolution>`_
 | TFNE on PyPI: `<https://pypi.org/project/tfne/>`_
