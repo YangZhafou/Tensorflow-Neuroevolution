@@ -6,17 +6,21 @@ MNIST Environment
 Overview
 --------
 
-Ipsum Lorem
+foobar
 
 
+--------------------------------------------------------------------------------
 
 Specifications
 --------------
 
-Ipsum Lorem
+foobar
 
 
+--------------------------------------------------------------------------------
 
 [EVALUATION] Config Parameters
 ------------------------------
+
+foobar
 

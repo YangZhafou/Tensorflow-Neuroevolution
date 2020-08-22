@@ -10,26 +10,16 @@ Research paper that introduced the CoDeepNEAT method:
 * `Evolving Deep Neural Networks [2017] <https://arxiv.org/abs/1703.00548>`_
 
 
+--------------------------------------------------------------------------------
+
 Subheading 1
 ------------
 
-Ipsum Lorem
+foobar
 
 
 SubSubHeading 1
 ~~~~~~~~~~~~~~~
 
 foobar
-
-
-Subheading 2
-------------
-
-this is an example text
-
-
-SubSubHeading 2
-~~~~~~~~~~~~~~~
-
-that is continued here
 

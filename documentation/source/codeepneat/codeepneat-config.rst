@@ -93,6 +93,8 @@ Example CoDeepNEAT Configuration
    epsilon       = {'min': 1e-8, 'max': 1e-6, 'step': 1e-8, 'stddev': 1e-7}
 
 
+--------------------------------------------------------------------------------
+
 [POPULATION] Config Parameters
 ------------------------------
 
@@ -113,9 +115,8 @@ Example CoDeepNEAT Configuration
 
   **Description**: Specifies the amount of genomes that are created from blueprints and modules for the evaluation phase of each generation. Each blueprint is accordingly often used as the base topology to create genomes.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [GENOME] Config Parameters
 --------------------------
@@ -143,9 +144,8 @@ Example CoDeepNEAT Configuration
 
   **Description**: Specifies the layers and their configuration that will be appended to the evolved CoDeepNEAT genome in order to control the output despite fitness oriented evolution of the phenotype. The output layers will be appended to the genome in the same order in which they are listed.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [MODULE_SPECIATION] Config Parameters
 -------------------------------------
@@ -209,9 +209,8 @@ Example CoDeepNEAT Configuration
 
   **Description**: **[Only applicable when using 'param-distance-fixed' or 'param-distance-dynamic' speciation]** Specifies if the population size occupied by a species should be reinitialized to new modules upon species extinction or if the population size occupied by the extinct species should be divided among the remaining species.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [MODULE_EVOLUTION] Config Parameters
 ------------------------------------
@@ -233,9 +232,8 @@ Example CoDeepNEAT Configuration
 
   **Description**: Specifies the probability that a new module is evolved through crossover of two elligible parent modules. Evolution probabilities of modules must add up to 1.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [BP_SPECIATION] Config Parameters
 ---------------------------------
@@ -299,9 +297,8 @@ Example CoDeepNEAT Configuration
 
   **Description**: **[Only applicable when using 'gene-overlap-fixed' or 'gene-overlap-dynamic' speciation]** Specifies if the population size occupied by a species should be reinitialized to new blueprints upon species extinction or if the population size occupied by the extinct species should be divided among the remaining species.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [BP_EVOLUTION] Config Parameters
 --------------------------------
@@ -353,21 +350,19 @@ Example CoDeepNEAT Configuration
 
   **Description**: Specifies the probability that a new blueprint is evolved by crossing over 2 elligible parent blueprints. Evolution probabilities of blueprints must add up to 1.
 
+
 --------------------------------------------------------------------------------
-
-
 
 [MODULE_<MODULE>] Config Parameters
 -----------------------------------
 
-Lorem ipsum dolor sit amet
+foobar
+
 
 --------------------------------------------------------------------------------
-
-
 
 [OPTIMIZER_<OPTIMIZER>] Config Parameters
 -----------------------------------------
 
-Lorem ipsum dolor sit amet
+foobar
 

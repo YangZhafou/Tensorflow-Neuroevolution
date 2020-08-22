@@ -6,7 +6,10 @@ Using TFNE
 Installation
 ------------
 
+foobar
 
+
+--------------------------------------------------------------------------------
 
 Quick Start
 -----------
@@ -14,20 +17,26 @@ Quick Start
 Explaining usage on pre-implemented examples
 
 
+--------------------------------------------------------------------------------
 
 Serialization
 -------------
 
+foobar
 
+
+--------------------------------------------------------------------------------
 
 Deserialization
 ---------------
 
+foobar
 
+
+--------------------------------------------------------------------------------
 
 Advanced Usage
 --------------
 
-Explaining Creation of custom Environments and algorithms adhering to the
-abstract interfaces
+Explaining creation of custom environments and algorithms adhering to the abstract interfaces
 

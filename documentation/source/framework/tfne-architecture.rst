@@ -6,8 +6,5 @@ Framework Architecture
 Subheading 1
 ------------
 
-
-
-Subheading 2
-------------
+foobar
 
