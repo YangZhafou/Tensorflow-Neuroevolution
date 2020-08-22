@@ -6,9 +6,10 @@
 
 **Version 0.21.0**
 
+![Python version req](https://img.shields.io/badge/python-v3.7%2B-informational)
 [![PyPI version](https://badge.fury.io/py/tfne.svg)](https://badge.fury.io/py/tfne)
 [![Documentation Status](https://readthedocs.org/projects/tfne/badge/?version=latest)](https://tfne.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/dev_tfne_v0.2/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
+[![codecov](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution/branch/master/graph/badge.svg)](https://codecov.io/gh/PaulPauls/Tensorflow-Neuroevolution)
 
 [TFNE PROJECT DESCRIPTION HERE]
 
