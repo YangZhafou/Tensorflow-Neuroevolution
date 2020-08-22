@@ -39,7 +39,7 @@ foobar
 foobar
 
 <p align="center">
-  <img src="./documentation/source/illustrations/tfnev_illustration.svg" width="80%" alt="TFNEV Illustration"/>
+  <img src="./documentation/source/illustrations/tfnev_illustration.png" width="80%" alt="TFNEV Illustration"/>
 </p>
 
 
