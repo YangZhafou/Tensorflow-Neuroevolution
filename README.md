@@ -1,7 +1,7 @@
 ## The Tensorflow-Neuroevolution Framework ##
 
 <p align="center">
-  <img src="./documentation/source/illustrations/tfne_logo.svg" width="200" alt="TFNE Logo"/>
+  <img src="./documentation/source/illustrations/tfne_logo.svg" width="40%" alt="TFNE Logo"/>
 </p>
 
 <!---
