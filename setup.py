@@ -8,7 +8,7 @@ setuptools.setup(
     version='0.21.0',
     scripts=['tfne_visualizer'],
     author='Paul Pauls',
-    author_email='mail@paulpauls.de',
+    author_email='tfne@paulpauls.de',
     description='A modular Neuroevolution framework for Tensorflow models',
     long_description=long_description,
     long_description_content_type='text/markdown',
