@@ -27,9 +27,11 @@ foobar
 
 [list examples]
 
-[list general usage of TFNE and its extendability]
+[list general usage of TFNE and its extendability. Refer to Architecture in terms of extending TFNE by following abstract interface classes]
 
-[show TFNE Architecture illustration in the context of being relevant when talking about extending TFNE]
+<p align="center">
+  <img src="./documentation/source/illustrations/tfne_architecture_illustration_v0.21.svg" width="80%" alt="TFNE Architecture"/>
+</p>
 
 
 --------------------------------------------------------------------------------
