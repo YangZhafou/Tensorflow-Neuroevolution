@@ -1,6 +1,6 @@
 ## The Tensorflow-Neuroevolution Framework ##
 
-![TFNE Logo](./documentation/source/illustrations/tfne_logo.svg)
+![TFNE Logo](./documentation/source/illustrations/tfne_logo.svg =40x)
 
 <!---
 
