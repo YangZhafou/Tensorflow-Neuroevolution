@@ -23,9 +23,24 @@ foobar
 
 --------------------------------------------------------------------------------
 
-### Examples ###
+### Usage ###
+
+[list examples]
+
+[list general usage of TFNE and its extendability]
+
+[show TFNE Architecture illustration in the context of being relevant when talking about extending TFNE]
+
+
+--------------------------------------------------------------------------------
+
+### Visualizer ###
 
 foobar
+
+<p align="center">
+  <img src="./documentation/source/illustrations/tfnev_illustration.svg" width="80%" alt="TFNEV Illustration"/>
+</p>
 
 
 --------------------------------------------------------------------------------
