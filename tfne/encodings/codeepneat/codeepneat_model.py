@@ -3,7 +3,13 @@ import tensorflow as tf
 
 class CoDeepNEATModel:
     def _create_model(self):
-        """"""
+        """
+        Create TF model from the supplied genotype. Create this model by iterating through the graph topology order that
+        has been created by the blueprint. Create the associated module layers for each node and, if multiple
+        connections are incoming, merge the inputs according to the associated module merging method. Append the
+        genotype specified output layers to the output node of the ordered graph topology and assign the created model
+        to self.model.
+        """
         # Get preprocessed information from blueprint required for TF model creation
         node_species = self.blueprint.get_node_species()
         node_dependencies = self.blueprint.get_node_dependencies()

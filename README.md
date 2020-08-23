@@ -38,7 +38,7 @@ Import the TFNE library into your code by using the same name (`import tfne`). T
 [list general usage of TFNE and its extendability. Refer to Architecture in terms of extending TFNE by following abstract interface classes]
 
 <p align="center">
-  <img src="./documentation/source/illustrations/tfne_architecture_illustration_v0.21.svg" width="80%" alt="TFNE Architecture"/>
+  <img src="./documentation/source/illustrations/tfne_v0.21_entity_sequence_diagram.svg" width="80%" alt="TFNE Architecture"/>
 </p>
 
 

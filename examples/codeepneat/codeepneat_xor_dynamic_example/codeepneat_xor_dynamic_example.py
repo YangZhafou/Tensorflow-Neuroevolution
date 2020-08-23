@@ -24,7 +24,6 @@ def codeepneat_xor_example(_):
     the modules and blueprints. Subsequently the best genome is trained for a final 100 epochs and its genotype and
     Tensorflow model are backed up.
     """
-
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
     config_file_path = './codeepneat_xor_dynamic_example_config.cfg'

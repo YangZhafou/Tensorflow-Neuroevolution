@@ -14,7 +14,10 @@ from tfne.encodings.base_genome import BaseGenome
 
 class CoDeepNEATGenome(BaseGenome,
                        CoDeepNEATModel):
-    """"""
+    """
+    CoDeepNEAT genome that encapsulates the genotype and its associated phenotype, being the translated TF model. It
+    furthermore encapsulates the phenotype visualization as well as serialization and genotype saving functionality.
+    """
 
     def __init__(self,
                  genome_id,
@@ -24,7 +27,17 @@ class CoDeepNEATGenome(BaseGenome,
                  input_shape,
                  dtype,
                  origin_generation):
-        """"""
+        """
+        Create CoDeepNEAT genome by saving the associated genotype parameters as well as additional information like
+        dtype and origin generation. Then create TF model from genotype.
+        @param genome_id: int of unique genome ID
+        @param blueprint: CoDeepNEAT blueprint instance
+        @param bp_assigned_modules: dict associating each BP species with a CoDeepNEAT module instance
+        @param output_layers: string of TF deserializable layers serving as output
+        @param input_shape: int-tuple specifying the input shape the genome model has to adhere to
+        @param dtype: string of TF dtype
+        @param origin_generation: int, specifying the evolution generation at which the genome was created
+        """
         # Register parameters
         self.genome_id = genome_id
         self.input_shape = input_shape
@@ -49,7 +62,9 @@ class CoDeepNEATGenome(BaseGenome,
         return self.model(inputs)
 
     def __str__(self) -> str:
-        """"""
+        """
+        @return: string representation of the genome
+        """
         return "CoDeepNEAT Genome | ID: {:>6} | Fitness: {:>6} | Blueprint ID: {:>6} | Module Species: {} | " \
                "Optimizer: {:>6} | Origin Gen: {:>4}".format(self.genome_id,
                                                              'None' if self.fitness is None else self.fitness,
@@ -59,7 +74,15 @@ class CoDeepNEATGenome(BaseGenome,
                                                              self.origin_generation)
 
     def visualize(self, show=True, save_dir_path=None, **kwargs) -> str:
-        """"""
+        """
+        Visualize the CoDeepNEAT genome through dot. If 'show' flag is set to true, display the genome after rendering.
+        If 'save_dir_path' is supplied, save the rendered genome as file to that directory.
+        Return the saved file path as string.
+        @param show: bool flag, indicating whether the rendered genome should be displayed or not
+        @param save_dir_path: string of the save directory path the rendered genome should be saved to.
+        @param kwargs: Optional additional arguments for tf.keras.utils.plot_model()
+        @return: string of the file path to which the rendered genome has been saved to
+        """
         # Check if save_dir_path is supplied and if it is supplied in the correct format. If not correct format or None
         # supplied create a new save_dir_path. Ensure that the save_dir_path exists by creating the directories.
         if save_dir_path is None:
@@ -94,7 +117,9 @@ class CoDeepNEATGenome(BaseGenome,
         return save_file_path
 
     def serialize(self) -> dict:
-        """"""
+        """
+        @return: serialized constructor variables of the genome as json compatible dict
+        """
         # Serialize the assignment of modules to the bp species for json output
         serialized_bp_assigned_mods = dict()
         for spec, assigned_mod in self.bp_assigned_modules.items():
@@ -116,7 +141,12 @@ class CoDeepNEATGenome(BaseGenome,
         return serialized_genome
 
     def save_genotype(self, save_dir_path) -> str:
-        """"""
+        """
+        Save genotype of CoDeepNEAT genome to 'save_dir_path' directory. Return file path to which the genotype has
+        been saved to as string.
+        @param save_dir_path: string of the save directory path the genotype should be saved to
+        @return: string of the file path to which the genotype has been saved to
+        """
         # Set save file name as the genome id and indicate that its the genotype that is being saved. Ensure that the
         # save_dir_path exists by creating the directories.
         if save_dir_path[-1] != '/':

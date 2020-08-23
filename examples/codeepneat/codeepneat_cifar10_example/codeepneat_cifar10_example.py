@@ -23,7 +23,6 @@ def codeepneat_cifar10_example(_):
     This Example evolves a CoDeepNEAT population on the CIFAR10 dataset for 72 generations. Subsequently the best
     genome is trained for a final 200 epochs and its genotype and Tensorflow model are backed up.
     """
-
     # Set standard configuration specific to TFNE but not the neuroevolution process
     logging_level = logging.INFO
     config_file_path = './codeepneat_cifar10_example_config.cfg'
