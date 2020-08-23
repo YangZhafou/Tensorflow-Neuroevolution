@@ -1,8 +1,6 @@
 Using TFNE
 ==========
 
-**[WORK IN PROGRESS]**
-
 Installation
 ------------
 

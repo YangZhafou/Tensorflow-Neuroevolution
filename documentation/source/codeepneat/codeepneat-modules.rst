@@ -1,8 +1,6 @@
 CoDeepNEAT Modules
 ==================
 
-**[WORK IN PROGRESS]**
-
 CoDeepNEAT Module Abstract Interface
 ------------------------------------
 

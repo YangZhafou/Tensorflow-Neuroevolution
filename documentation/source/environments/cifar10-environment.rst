@@ -1,8 +1,6 @@
 CIFAR10 Environment
 ===================
 
-**[WORK IN PROGRESS]**
-
 Overview
 --------
 

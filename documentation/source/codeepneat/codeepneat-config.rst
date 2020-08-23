@@ -1,8 +1,6 @@
 CoDeepNEAT Configuration
 ========================
 
-**[WORK IN PROGRESS]**
-
 Example CoDeepNEAT Configuration
 --------------------------------
 

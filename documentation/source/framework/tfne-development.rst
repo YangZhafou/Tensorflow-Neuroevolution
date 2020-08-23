@@ -1,8 +1,6 @@
 TFNE Development
 ================
 
-**[WORK IN PROGRESS]**
-
 Version History
 ---------------
 

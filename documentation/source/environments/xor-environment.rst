@@ -1,8 +1,6 @@
 XOR Environment
 ===============
 
-**[WORK IN PROGRESS]**
-
 Overview
 --------
 

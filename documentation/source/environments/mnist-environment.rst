@@ -1,8 +1,6 @@
 MNIST Environment
 =================
 
-**[WORK IN PROGRESS]**
-
 Overview
 --------
 

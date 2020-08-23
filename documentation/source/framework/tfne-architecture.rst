@@ -1,8 +1,6 @@
 Framework Architecture
 ======================
 
-**[WORK IN PROGRESS]**
-
 Subheading 1
 ------------
 
