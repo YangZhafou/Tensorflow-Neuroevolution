@@ -15,7 +15,6 @@ class CoDeepNEATPopulation(BasePopulation):
         such is supplied (usually when deserializing population)
         @param initial_state: dict object holding keys and values to all population variables
         """
-
         # Declare internal variables of the CoDeepNEAT population
         self.generation_counter = None
         self.best_genome = None
@@ -55,7 +54,6 @@ class CoDeepNEATPopulation(BasePopulation):
         """
         Prints the current state of all CoDeepNEAT population variables to stdout in a formatted and clear manner
         """
-
         # Determine average fitness of all blueprints
         bp_fitness_list = [self.blueprints[bp_id].get_fitness() for bp_id in self.blueprints]
         blueprints_avg_fitness = round(statistics.mean(bp_fitness_list), 4)
@@ -115,7 +113,6 @@ class CoDeepNEATPopulation(BasePopulation):
         Serializes all CoDeepNEAT population variables to a json compatible dictionary and returns it
         @return: serialized population variables as a json compatible dict
         """
-
         # Serialize all modules
         serialized_modules = dict()
         for mod_id, module in self.modules.items():

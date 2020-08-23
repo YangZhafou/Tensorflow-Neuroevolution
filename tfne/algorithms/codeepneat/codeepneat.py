@@ -32,20 +32,16 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                  CoDeepNEATSpeciationBP):
     """"""
 
-    def __init__(self, config, environment, initial_state_file_path=None):
+    def __init__(self, config, initial_state_file_path=None):
         """"""
         # Register and process the supplied configuration
         self.config = config
         self._process_config()
         self._sanity_check_config()
 
-        # Register the supplied environment and determine the environment parameters (input and output dimension/shape)
-        # to which the created neural networks have to adhere to.
-        self.environment = environment
-        self.input_shape = environment.get_input_shape()
-        self.input_dim = len(self.input_shape)
-        self.output_shape = environment.get_output_shape()
-        self.output_dim = len(self.output_shape)
+        # Declare variables of environment shapes to which the created genomes have to adhere to
+        self.input_shape = None
+        self.output_shape = None
 
         # If an initial state of the evolution was supplied, load and recreate this state for the algorithm as well as
         # its dependencies
@@ -65,17 +61,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             self.enc = tfne.encodings.CoDeepNEATEncoding(dtype=self.dtype)
             self.pop = tfne.populations.CoDeepNEATPopulation()
 
-    def initialize_environments(self, num_cpus, num_gpus, verbosity):
-        """"""
-        # Set up the evaluation of the environment as weight training and hand over the verbosity
-        self.environment.set_up_evaluation(weight_training=True, verbosity=verbosity)
-
-        # Print warning if attempting to run CoDeepNEAT in parallel
-        if num_cpus > 1 or num_gpus > 1:
-            logging.warning("Attempting to run CoDeepNEAT algorithm with more than a single instance of CPU or GPU."
-                            "TFNE CoDeepNEAT does currently only support single instance evaluation.")
-
-    def initialize_population(self):
+    def initialize_population(self, environment):
         """"""
         # If population already initialized, summarize status and abort initialization
         if self.pop.generation_counter is not None:
@@ -91,6 +77,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         # No pre-evolved population supplied. Initialize it from scratch
         print("Initializing a new population of {} blueprints and {} modules..."
               .format(self.bp_pop_size, self.mod_pop_size))
+
+        # Determine input and output shape parameters of the environment to which the created genomes of the population
+        # have to adhere to
+        self.input_shape = environment.get_input_shape()
+        self.output_shape = environment.get_output_shape()
 
         # Set internal variables of the population to the initialization of a new population
         self.pop.generation_counter = 0
@@ -153,7 +144,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             if self.bp_spec_type != 'basic' and self.pop.bp_species_counter not in self.pop.bp_species_repr:
                 self.pop.bp_species_repr[self.pop.bp_species_counter] = blueprint_id
 
-    def evaluate_population(self) -> (int, int):
+    def evaluate_population(self, environment) -> (int, int):
         """"""
         # Create container collecting the fitness of the genomes that involve specific modules. Calculate the average
         # fitness of the genomes in which a module is involved in later and assign it as the module's fitness
@@ -214,7 +205,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                     # Now evaluate genome on registered environment and set its fitness
                     # NOTE: As CoDeepNEAT implementation currently only supports 1 eval instance, automatically choose
                     # that instance from the environment list
-                    genome_fitness = self.environment.eval_genome_fitness(genome)
+                    genome_fitness = environment.eval_genome_fitness(genome)
                     genome.set_fitness(genome_fitness)
 
                 # Print population evaluation progress bar
@@ -376,3 +367,7 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
     def get_best_genome(self) -> CoDeepNEATGenome:
         """"""
         return self.pop.best_genome
+
+    def get_eval_instance_count(self) -> int:
+        """"""
+        return 1

@@ -3,7 +3,6 @@ from datetime import datetime
 
 import ray
 import tensorflow as tf
-from absl import logging
 
 from .encodings.base_genome import BaseGenome
 
@@ -17,46 +16,37 @@ class EvolutionEngine:
 
     def __init__(self,
                  ne_algorithm,
+                 environment,
                  backup_dir_path,
-                 num_cpus=None,
-                 num_gpus=None,
                  max_generations=None,
                  max_fitness=None):
         """
         Creates a new evolutionary engine instance that initializes the multiprocessing library, creates TFNE state
-        backup directories and initializes the environment in order to prepare for the eventual training process.
+        backup directories and sets up evaluation environments in order to prepare for the eventual training process.
         @param ne_algorithm: instance of an TFNE compliant NE algorithm
+        @param environment: instance of an TFNE compliant evaluation environment
         @param backup_dir_path: string of a directory path into which the TFNE state backups are saved
-        @param num_cpus: integer specifying the number of CPUS to use for multiprocessing
-        @param num_gpus: float specifying the number of GPUs to use for multiprocessing
         @param max_generations: integer specifying the maximum number of generations the population should be evolved to
         @param max_fitness: float specifying the fitness of the best genome at which point the evolution process should
                             be preemptively stopped
         """
-
-        # Register parameters
+        # Register parameters and print evolution information
         self.ne_algorithm = ne_algorithm
+        self.environment = environment
         self.max_generations = max_generations
         self.max_fitness = max_fitness
         print("Using Neuroevolution algorithm: {}".format(ne_algorithm.__class__.__name__))
+        print("Using evaluation environment: {}".format(environment.__class__.__name__))
         print("Maximum number of generations to evolve the population: {}".format(max_generations))
         print("Maximum fitness value to evolve population up to: {}".format(max_fitness))
 
-        # Initiate the Multiprocessing library ray and determine the actually available CPUs and GPUs as well as the
-        # desired verbosity level for the genome evaluation
-        ray.shutdown()
-        ray.init(num_cpus=num_cpus, num_gpus=num_gpus)
-        self.available_num_cpus = ray.available_resources()['CPU']
-        self.available_num_gpus = len(ray.get_gpu_ids())
-        self.verbosity = 0 if not logging.level_debug() else 1
-        print("Initialized the ray library with {} CPUs and {} GPUs".format(self.available_num_cpus,
-                                                                            self.available_num_gpus))
-
-        # Initialize the environments through the registered algorithm with the determined parameters for parallel
-        # evaluation and verbosity
-        self.ne_algorithm.initialize_environments(num_cpus=self.available_num_cpus,
-                                                  num_gpus=self.available_num_gpus,
-                                                  verbosity=self.verbosity)
+        # Check if NE algorithm supports multiple evaluation instances and if so, duplicate the evaluation environment
+        # for parallel evaluation.
+        eval_instance_count = ne_algorithm.get_eval_instance_count()
+        if eval_instance_count > 1:
+            self.environment = [environment]
+            for _ in range(eval_instance_count - 1):
+                self.environment.append(environment.duplicate())
 
         # Create the directory into wich the training process will backup the population each generation
         self.backup_dir_path = os.path.abspath(backup_dir_path)
@@ -75,14 +65,16 @@ class EvolutionEngine:
         with the best achieved fitness
         @return: TFNE compliant genome with the best achieved fitness
         """
-        # Initialize population. If pre-evolved population was supplied will this be used as the initial population.
-        self.ne_algorithm.initialize_population()
+        # Initialize population. If pre-evolved population was supplied will it be used as the initial population.
+        # Pass the environment as a parameter to the initialization in order to allow the determination of constraints
+        # the created genomes have to adhere to.
+        self.ne_algorithm.initialize_population(self.environment)
 
         # Start possibly endless training loop, only exited if population goes extinct, the maximum number of
         # generations or the maximum fitness has been reached
         while True:
             # Evaluate and summarize population
-            generation_counter, best_fitness = self.ne_algorithm.evaluate_population()
+            generation_counter, best_fitness = self.ne_algorithm.evaluate_population(self.environment)
             self.ne_algorithm.summarize_population()
 
             # Backup population
@@ -118,6 +110,6 @@ class EvolutionEngine:
         # evolutionary process, even if the population went extinct.
         return self.ne_algorithm.get_best_genome()
 
-    def get_backup_dir(self) -> str:
+    def get_backup_dir_path(self) -> str:
         """"""
         return self.backup_dir_path

@@ -10,16 +10,6 @@ class BaseEnvironment(object, metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def set_up_evaluation(self, weight_training, verbosity):
-        """
-        Setting up the evaluation method to either the weight training or non-weight training variant. Possible
-        parameters for each weight training variant are drawn from the config.
-        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
-        @param verbosity: integer specifying the verbosity of the evaluation
-        """
-        raise NotImplementedError("Subclass of BaseEnvironment does not implement 'set_up_evaluation()'")
-
-    @abstractmethod
     def eval_genome_fitness(self, genome) -> float:
         """
         Evaluates the genome's fitness in either the weight-training or non-weight-training variant. Returns the

@@ -48,15 +48,13 @@ def codeepneat_mnist_example(_):
     config = tfne.parse_configuration(config_file_path)
 
     # Initialize the environment and the specific NE algorithm
-    environment = tfne.environments.MNISTEnvironment(config)
-    ne_algorithm = tfne.algorithms.CoDeepNEAT(config, environment)
+    environment = tfne.environments.MNISTEnvironment(weight_training=True, config=config, verbosity=logging_level)
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config)
 
-    # Initialize evolution engine and supply config as well as initialized NE elements. As CoDeepNEAT currently only
-    # supports single-instance evaluation, set num_cpus and num_gpus to 1
+    # Initialize evolution engine and supply config as well as initialized NE algorithm and evaluation environment.
     engine = tfne.EvolutionEngine(ne_algorithm=ne_algorithm,
+                                  environment=environment,
                                   backup_dir_path=backup_dir_path,
-                                  num_cpus=1,
-                                  num_gpus=1,
                                   max_generations=max_generations,
                                   max_fitness=max_fitness)
 

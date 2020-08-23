@@ -12,53 +12,51 @@ class XOREnvironment(BaseEnvironment):
     TFNE compatible environment for the XOR problem
     """
 
-    def __init__(self, config):
+    def __init__(self, weight_training, config=None, verbosity=0, **kwargs):
         """
-        Initializes XOR environment by setting up the associated correct input and output pairs and storing the supplied
-        config. Config will be processed when the evaluation method will be set up.
+        Initializes XOR environment by setting up the dataset and processing the supplied config or supplied config
+        parameters. The configuration of the environment can either be supplied via a config file or via seperate config
+        parameters in the initialization.
+        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
         @param config: ConfigParser instance holding an 'Environment' section specifying the required environment
                        parameters for the chosen evaluation method.
+        @param verbosity: integer specifying the verbosity of the evaluation
+        @param kwargs: Optionally supplied dict of each configuration parameter seperately in order to allow the
+                       creation of the evaluation environment without the requirement of a config file.
         """
-        print("Setting up XOR environment...")
-
         # Initialize corresponding input and output mappings
+        print("Setting up XOR environment...")
         self.x = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         self.y = np.array([[0], [1], [1], [0]])
 
-        # Register the supplied config, which will be evaluated once the method of evaluation is set up
-        self.config = config
-
-        # Initialize loss function to evaluate performance on either evaluation method and set verbosity to TF standard
-        # value
+        # Initialize loss function to evaluate performance on either evaluation method and safe verbosity parameter
         self.loss_function = tf.keras.losses.BinaryCrossentropy()
-        self.verbosity = 1
-
-    def set_up_evaluation(self, weight_training, verbosity):
-        """
-        Setting up the evaluation method to either the weight training or non-weight training variant. Possible
-        parameters for each weight training variant are drawn from the config.
-        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
-        @param verbosity: integer specifying the verbosity of the evaluation
-        """
-        # Set the verbosity level
         self.verbosity = verbosity
 
-        # If environment is set to be weight training then set eval_genome_function accordingly and save the supplied
-        # weight training parameters
-        if weight_training:
-            # Register the weight training variant as the genome eval function
-            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
-
-            # Read the required evaluation parameters for a weight training XOR environment
-            self.epochs = read_option_from_config(self.config, 'EVALUATION', 'epochs')
-            self.batch_size = read_option_from_config(self.config, 'EVALUATION', 'batch_size')
-        else:
-            # Register the NON weight training variant as the genome eval function
+        # Determine and setup explicit evaluation method in accordance to supplied parameters
+        if not weight_training:
+            # Set up XOR environment as non-weight training, requiring no parameters
             self.eval_genome_fitness = self._eval_genome_fitness_non_weight_training
+
+        elif config is None and len(kwargs) == 0:
+            raise RuntimeError("XOR environment is being set up as weight training, though neither config file nor "
+                               "explicit config parameters for the weight training were supplied")
+
+        elif len(kwargs) == 0:
+            # Set up XOR environment as weight training and with a supplied config file
+            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
+            self.epochs = read_option_from_config(config, 'EVALUATION', 'epochs')
+            self.batch_size = read_option_from_config(config, 'EVALUATION', 'batch_size')
+
+        elif config is None:
+            # Set up XOR environment as weight training and explicitely supplied parameters
+            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
+            self.epochs = kwargs['epochs']
+            self.batch_size = kwargs['batch_size']
 
     def eval_genome_fitness(self, genome) -> float:
         # TO BE OVERRIDEN
-        raise RuntimeError("XOR Environment not yet set up by calling 'set_up_evaluation'")
+        raise RuntimeError()
 
     def _eval_genome_fitness_weight_training(self, genome) -> float:
         """
@@ -109,8 +107,13 @@ class XOREnvironment(BaseEnvironment):
         print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
 
     def duplicate(self) -> XOREnvironment:
-        """"""
-        return XOREnvironment(self.config)
+        """
+        @return: New instance of the XOR environment with identical parameters
+        """
+        if hasattr(self, 'epochs'):
+            return XOREnvironment(True, verbosity=self.verbosity, epochs=self.epochs, batch_size=self.batch_size)
+        else:
+            return XOREnvironment(False, verbosity=self.verbosity)
 
     def get_input_shape(self) -> (int,):
         """"""

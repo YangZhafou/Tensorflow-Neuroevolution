@@ -13,55 +13,53 @@ class CIFAR10Environment(BaseEnvironment):
     https://www.cs.toronto.edu/~kriz/cifar.html
     """
 
-    def __init__(self, config):
+    def __init__(self, weight_training, config=None, verbosity=0, **kwargs):
         """
-        Initializes CIFAR10 environment by downloading and setting up dataset and storing config. Config will be
-        processed when the evaluation method will be set up.
+        Initializes CIFAR10 environment by setting up the dataset and processing the supplied config or supplied config
+        parameters. The configuration of the environment can either be supplied via a config file or via seperate config
+        parameters in the initialization.
+        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
         @param config: ConfigParser instance holding an 'Environment' section specifying the required environment
                        parameters for the chosen evaluation method.
+        @param verbosity: integer specifying the verbosity of the evaluation
+        @param kwargs: Optionally supplied dict of each configuration parameter seperately in order to allow the
+                       creation of the evaluation environment without the requirement of a config file.
         """
-        print("Setting up CIFAR10 environment...")
-
         # Load test data, unpack it and normalize the pixel values
+        print("Setting up CIFAR10 environment...")
         cifar10_dataset = tf.keras.datasets.cifar10.load_data()
         (self.train_images, self.train_labels), (self.test_images, test_labels) = cifar10_dataset
         self.train_images, self.test_images = self.train_images / 255.0, self.test_images / 255.0
         self.squeezed_test_labels = np.squeeze(test_labels)
 
-        # Initialize the accuracy metric, responsible for fitness determination
+        # Initialize the accuracy metric, responsible for fitness determination and safe the verbosity parameter
         self.accuracy_metric = tf.keras.metrics.Accuracy()
-
-        # Register the supplied config, which will be evaluated once the method of evaluation is set up and set
-        # verbosity to TF standard value
-        self.config = config
-        self.verbosity = 1
-
-    def set_up_evaluation(self, weight_training, verbosity):
-        """
-        Setting up the evaluation method to either the weight training or non-weight training variant. Possible
-        parameters for each weight training variant are drawn from the config.
-        @param weight_training: bool flag, indicating wether evaluation should be weight training or not
-        @param verbosity: integer specifying the verbosity of the evaluation
-        """
-        # Set the verbosity level
         self.verbosity = verbosity
 
-        # If environment is set to be weight training then set eval_genome_function accordingly and save the supplied
-        # weight training parameters
-        if weight_training:
-            # Register the weight training variant as the genome eval function
-            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
+        # Determine and setup explicit evaluation method in accordance to supplied parameters
+        if not weight_training:
+            raise NotImplementedError("CIFAR10 environment is being set up as non-weight training, though non-weight "
+                                      "training evaluation not yet implemented for CIFAR10 environment")
 
-            # Read the required evaluation parameters for a weight training XOR environment
-            self.epochs = read_option_from_config(self.config, 'EVALUATION', 'epochs')
-            self.batch_size = read_option_from_config(self.config, 'EVALUATION', 'batch_size')
-        else:
-            # Register the NON weight training variant as the genome eval function
-            raise NotImplementedError("Non-Weight training evaluation not yet implemented for CIFAR10 Environment")
+        elif config is None and len(kwargs) == 0:
+            raise RuntimeError("CIFAR10 environment is being set up as weight training, though neither config file nor "
+                               "explicit config parameters for the weight training were supplied")
+
+        elif len(kwargs) == 0:
+            # Set up CIFAR10 environment as weight training and with a supplied config file
+            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
+            self.epochs = read_option_from_config(config, 'EVALUATION', 'epochs')
+            self.batch_size = read_option_from_config(config, 'EVALUATION', 'batch_size')
+
+        elif config is None:
+            # Set up CIFAR10 environment as weight training and explicitely supplied parameters
+            self.eval_genome_fitness = self._eval_genome_fitness_weight_training
+            self.epochs = kwargs['epochs']
+            self.batch_size = kwargs['batch_size']
 
     def eval_genome_fitness(self, genome) -> float:
         # TO BE OVERRIDEN
-        raise RuntimeError("CIFAR10 Environment not yet set up by calling 'set_up_evaluation'")
+        raise RuntimeError()
 
     def _eval_genome_fitness_weight_training(self, genome) -> float:
         """
@@ -110,8 +108,13 @@ class CIFAR10Environment(BaseEnvironment):
         print("Achieved Fitness:\t{}\n".format(evaluated_fitness))
 
     def duplicate(self) -> CIFAR10Environment:
-        """"""
-        return CIFAR10Environment(self.config)
+        """
+        @return: New instance of the XOR environment with identical parameters
+        """
+        if hasattr(self, 'epochs'):
+            return CIFAR10Environment(True, verbosity=self.verbosity, epochs=self.epochs, batch_size=self.batch_size)
+        else:
+            return CIFAR10Environment(False, verbosity=self.verbosity)
 
     def get_input_shape(self) -> (int, int, int):
         """"""
