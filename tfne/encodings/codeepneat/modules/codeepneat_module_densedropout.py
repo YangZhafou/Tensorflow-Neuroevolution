@@ -42,7 +42,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
 
         # If self initialization flag is provided, initialize the module parameters as they are currently set to None
         if self_initialization_flag:
-            self.initialize()
+            self._initialize()
 
     def __str__(self) -> str:
         """"""
@@ -53,7 +53,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                     self.activation,
                     "None" if self.dropout_flag is False else self.dropout_rate)
 
-    def initialize(self):
+    def _initialize(self):
         """"""
         # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
@@ -75,7 +75,7 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                             self.config_params['dropout_rate']['max'],
                                             self.config_params['dropout_rate']['step'])
 
-    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
+    def create_module_layers(self) -> (tf.keras.layers.Layer, ...):
         """"""
         # Create the basic keras Dense layer, needed in all variants of the module
         dense_layer = tf.keras.layers.Dense(units=self.units,

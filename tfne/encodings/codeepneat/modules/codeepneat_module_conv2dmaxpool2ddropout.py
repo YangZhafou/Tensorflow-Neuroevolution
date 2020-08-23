@@ -52,7 +52,7 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
 
         # If self initialization flag is provided, initialize the module parameters as they are currently set to None
         if self_initialization_flag:
-            self.initialize()
+            self._initialize()
 
     def __str__(self) -> str:
         """"""
@@ -66,7 +66,7 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
                     "None" if self.max_pool_flag is False else str(self.max_pool_size),
                     "None" if self.dropout_flag is False else self.dropout_rate)
 
-    def initialize(self):
+    def _initialize(self):
         """"""
         # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
@@ -93,7 +93,7 @@ class CoDeepNEATModuleConv2DMaxPool2DDropout(CoDeepNEATModuleBase):
                                             self.config_params['dropout_rate']['max'],
                                             self.config_params['dropout_rate']['step'])
 
-    def create_module_layers(self) -> [tf.keras.layers.Layer, ...]:
+    def create_module_layers(self) -> (tf.keras.layers.Layer, ...):
         """"""
         # Create iterable that contains all layers concatenated in this module
         module_layers = list()
