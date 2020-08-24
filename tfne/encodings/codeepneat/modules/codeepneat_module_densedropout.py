@@ -12,7 +12,10 @@ from tfne.helper_functions import round_with_step
 
 
 class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
-    """"""
+    """
+    TFNE CoDeepNEAT module encapsulating a Dense layer followed by an optional Dropout layer. No Downsampling layer
+    defined.
+    """
 
     def __init__(self,
                  config_params,
@@ -27,7 +30,22 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                  dropout_flag=None,
                  dropout_rate=None,
                  self_initialization_flag=False):
-        """"""
+        """
+        Create module by storing supplied parameters. If self initialization flag is supplied, randomly initialize the
+        module parameters based on the range of parameters allowed by config_params
+        @param config_params: dict of the module parameter range supplied via config
+        @param module_id: int of unique module ID
+        @param parent_mutation: dict summarizing the mutation of the parent module
+        @param dtype: string of deserializable TF dtype
+        @param merge_method: dict representing a TF deserializable merge layer
+        @param units: see TF documentation
+        @param activation: see TF documentation
+        @param kernel_init: see TF documentation
+        @param bias_init: see TF documentation
+        @param dropout_flag: see TF documentation
+        @param dropout_rate: see TF documentation
+        @param self_initialization_flag: bool flag indicating if all module parameters should be randomly initialized
+        """
         # Register the implementation specifics by calling parent class
         super().__init__(config_params, module_id, parent_mutation, dtype)
 
@@ -45,7 +63,9 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
             self._initialize()
 
     def __str__(self) -> str:
-        """"""
+        """
+        @return: string representation of the module
+        """
         return "CoDeepNEAT DENSE Module | ID: {:>6} | Fitness: {:>6} | Units: {:>4} | Activ: {:>6} | Dropout: {:>4}" \
             .format('#' + str(self.module_id),
                     self.fitness,
@@ -54,7 +74,10 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                     "None" if self.dropout_flag is False else self.dropout_rate)
 
     def _initialize(self):
-        """"""
+        """
+        Randomly initialize all parameters of the module based on the range of parameters allowed by the config_params
+        variable.
+        """
         # Uniform randomly set module parameters
         self.merge_method = random.choice(self.config_params['merge_method'])
         self.merge_method['config']['dtype'] = self.dtype
@@ -76,7 +99,11 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                             self.config_params['dropout_rate']['step'])
 
     def create_module_layers(self) -> (tf.keras.layers.Layer, ...):
-        """"""
+        """
+        Instantiate TF layers with their respective configuration that are represented by the current module
+        configuration. Return the instantiated module layers in their respective order as a tuple.
+        @return: tuple of instantiated TF layers represented by the module configuration.
+        """
         # Create the basic keras Dense layer, needed in all variants of the module
         dense_layer = tf.keras.layers.Dense(units=self.units,
                                             activation=self.activation,
@@ -100,7 +127,14 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
     def create_mutation(self,
                         offspring_id,
                         max_degree_of_mutation) -> CoDeepNEATModuleDenseDropout:
-        """"""
+        """
+        Create mutated DenseDropout module and return it. Categorical parameters are chosen randomly from all available
+        values. Sortable parameters are perturbed through a random normal distribution with the current value as mean
+        and the config specified stddev
+        @param offspring_id: int of unique module ID of the offspring
+        @param max_degree_of_mutation: float between 0 and 1 specifying the maximum degree of mutation
+        @return: instantiated DenseDropout module with mutated parameters
+        """
         # Copy the parameters of this parent module for the parameters of the offspring
         offspring_params = {'merge_method': self.merge_method,
                             'units': self.units,
@@ -167,7 +201,14 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                          offspring_id,
                          less_fit_module,
                          max_degree_of_mutation) -> CoDeepNEATModuleDenseDropout:
-        """"""
+        """
+        Create crossed over DenseDropout module and return it. Carry over parameters of fitter parent for categorical
+        parameters and calculate parameter average between both modules for sortable parameters
+        @param offspring_id: int of unique module ID of the offspring
+        @param less_fit_module: second DenseDropout module with lower fitness
+        @param max_degree_of_mutation: float between 0 and 1 specifying the maximum degree of mutation
+        @return: instantiated DenseDropout module with crossed over parameters
+        """
         # Create offspring parameters by carrying over parameters of fitter parent for categorical parameters and
         # calculating parameter average between both modules for sortable parameters
         offspring_params = dict()
@@ -197,7 +238,9 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
                                             **offspring_params)
 
     def serialize(self) -> dict:
-        """"""
+        """
+        @return: serialized constructor variables of the module as json compatible dict
+        """
         return {
             'module_type': self.get_module_type(),
             'module_id': self.module_id,
@@ -212,12 +255,15 @@ class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
         }
 
     def get_distance(self, other_module) -> float:
-        """"""
-        # Calculate distance of modules by inspecting each parameter, calculating the congruence between each and
-        # eventually averaging the out the congruence. The distance is returned as the average congruences distance to
-        # 1.0. The congruence of continuous parameters is calculated by their relative distance. The congruence of
-        # categorical parameters is either 1.0 in case they are the same or it's 1 divided to the amount of possible
-        # values for that specific parameter
+        """
+        Calculate distance between 2 DenseDropout modules by inspecting each parameter, calculating the congruence
+        between each and eventually averaging the out the congruence. The distance is returned as the average
+        congruences distance to 1.0. The congruence of continuous parameters is calculated by their relative distance.
+        The congruence of categorical parameters is either 1.0 in case they are the same or it's 1 divided to the amount
+        of possible values for that specific parameter. Return the calculated distance.
+        @param other_module: second DenseDropout module to which the distance has to be calculated
+        @return: float between 0 and 1. High values indicating difference, low values indicating similarity
+        """
         congruence_list = list()
         if self.merge_method == other_module.merge_method:
             congruence_list.append(1.0)
