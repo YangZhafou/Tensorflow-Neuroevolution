@@ -5,7 +5,10 @@ from tfne.helper_functions import read_option_from_config
 
 class CoDeepNEATConfigProcessing:
     def _process_config(self):
-        """"""
+        """
+        Process TFNE CoDeepNEAT compatible config file by reading all parameters as per documentation and saving them
+        as instance variables.
+        """
         # Read and process the population config values for CoDeepNEAT
         self.bp_pop_size = read_option_from_config(self.config, 'POPULATION', 'bp_pop_size')
         self.mod_pop_size = read_option_from_config(self.config, 'POPULATION', 'mod_pop_size')
@@ -187,7 +190,9 @@ class CoDeepNEATConfigProcessing:
             self.available_opt_params[available_opt] = opt_section_params
 
     def _sanity_check_config(self):
-        """"""
+        """
+        Perform very basic sanity checks of the TFNE CoDeepNEAT config, as also apparent in the documentation
+        """
         # Sanity check [POPULATION] section
         assert self.bp_pop_size > 0 and isinstance(self.bp_pop_size, int)
         assert self.mod_pop_size > 0 and isinstance(self.mod_pop_size, int)

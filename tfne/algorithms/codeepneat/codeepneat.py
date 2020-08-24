@@ -30,10 +30,20 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
                  CoDeepNEATEvolutionBP,
                  CoDeepNEATSpeciationMOD,
                  CoDeepNEATSpeciationBP):
-    """"""
+    """
+    TFNE's implementation of the CoDeepNEAT algorithm.
+    See the paper: https://arxiv.org/abs/1703.00548
+    """
 
     def __init__(self, config, initial_state_file_path=None):
-        """"""
+        """
+        Initialize the CoDeepNEAT algorithm by processing and sanity checking the supplied configuration, which saves
+        all algorithm config parameters as instance variables. Then initialize the CoDeepNEAT encoding and population.
+        Alternatively, if a backup-state is supplied, reinitialize the encoding and population with the state present
+        in that backup.
+        @param config: ConfigParser instance holding all documentation specified sections of the CoDeepNEAT algorithm
+        @param initial_state_file_path: string file path to a state backup that is to be resumed
+        """
         # Register and process the supplied configuration
         self.config = config
         self._process_config()
@@ -62,7 +72,13 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             self.pop = tfne.populations.CoDeepNEATPopulation()
 
     def initialize_population(self, environment):
-        """"""
+        """
+        Initialize the population according to the CoDeepNEAT algorithm. Initialize the module population by letting
+        them all self initialize with random variables and assigning them to one species, as first occurs in the
+        evolution. Initialize the blueprint population with each blueprint having a minimal graph and having the species
+        1 as the node species. Also assign all created blueprints to one species.
+        @param environment: instance of the evaluation environment
+        """
         # If population already initialized, summarize status and abort initialization
         if self.pop.generation_counter is not None:
             print("Using supplied pre-evolved population. Supplied population summary:")
@@ -144,8 +160,15 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
             if self.bp_spec_type != 'basic' and self.pop.bp_species_counter not in self.pop.bp_species_repr:
                 self.pop.bp_species_repr[self.pop.bp_species_counter] = blueprint_id
 
-    def evaluate_population(self, environment) -> (int, int):
-        """"""
+    def evaluate_population(self, environment) -> (int, float):
+        """
+        Evaluate the population by building the specified amount of genomes from each blueprint, all having randomly
+        assigned specific modules for the inherent blueprint module species. Set the evaluated fitness of each blueprint
+        and each module as the average fitness achieved by all genomes in which the respective member was invovled in.
+        Return the generational counter as well as the achieved fitness of the best genome.
+        @param environment: instance of the evaluation environment
+        @return: tuple of generation counter and best fitness achieved by best genome
+        """
         # Create container collecting the fitness of the genomes that involve specific modules. Calculate the average
         # fitness of the genomes in which a module is involved in later and assign it as the module's fitness
         mod_fitnesses_in_genomes = dict()
@@ -278,7 +301,15 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         self.pop.summarize_population()
 
     def evolve_population(self) -> bool:
-        """"""
+        """
+        Evolve the population according to the CoDeepNEAT algorithm by first selecting all modules and blueprints, which
+        eliminates low performing members and species and determines members elligible for being parents of offspring.
+        Then evolve the module population by creating mutations or crossovers of elligible parents. Evolve the blueprint
+        population by adding nodes or connections, removing nodes or connections, mutating module species or optimizers,
+        etc. Subsequently speciate the module and blueprint population according to the chosen speciation method, which
+        clusters the modules and blueprints according to their similarity.
+        @return: bool flag, indicating ig population went extinct during evolution
+        """
         #### Select Modules ####
         if self.mod_spec_type == 'basic':
             mod_spec_offspring, mod_spec_parents, mod_spec_extinct = self._select_modules_basic()
@@ -339,7 +370,11 @@ class CoDeepNEAT(BaseNeuroevolutionAlgorithm,
         return False
 
     def save_state(self, save_dir_path):
-        """"""
+        """
+        Save the state of the algorithm and the current evolutionary process by serializing all aspects to json
+        compatible dicts and saving it as file to the supplied save dir path.
+        @param save_dir_path: string of directory path to which the state should be saved
+        """
         # Set save file name as 'pop backup' and including the current generation. Ensure that the save_dir_path exists
         # by creating the directories.
         if save_dir_path[-1] != '/':
