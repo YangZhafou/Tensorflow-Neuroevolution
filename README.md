@@ -18,7 +18,7 @@
 
 ### Installation ###
 
-TFNE, being still in the beta development phase, changes rapidly. To get the most current working release from the PyPI repository, use the following command:
+TFNE, being still in the beta development phase, changes often. To get the most current working release from the PyPI repository, use the following command:
 
     pip install tfne
 
