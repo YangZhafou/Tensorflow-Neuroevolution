@@ -86,10 +86,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tfne-usage.html">Using TFNE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tfne-customization.html">TFNE Architecture &amp; Customization</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">TFNE Visualizer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subheading-1">Subheading 1</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TFNE Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tfne-development.html">TFNE Development</a></li>
 </ul>
 <p class="caption"><span class="caption-text">CoDeepNEAT</span></p>
@@ -171,16 +168,21 @@
             
   <div class="section" id="tfne-visualizer">
 <h1>TFNE Visualizer<a class="headerlink" href="#tfne-visualizer" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subheading-1">
-<h2>Subheading 1<a class="headerlink" href="#subheading-1" title="Permalink to this headline">¶</a></h2>
+<p>The TFNE Visualizer is included in the PyPI package of TFNE and offers visualization of the neuroevolution process for all pre-implemented TFNE algorithms. The TFNE Visualizer can be started as a seperate script by executing <code class="docutils literal notranslate"><span class="pre">tfne_visualizer</span></code> from the command line or by initializing it via the following function of TFNE, optionally supplying the path to the tfne state backup that is to be visualized:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tfne</span>
+
+<span class="n">tfne</span><span class="o">.</span><span class="n">start_visualizer</span><span class="p">(</span><span class="s1">&#39;./tfne_state_backups/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If no path to the TFNE state backup is supplied in the function call or the visualizer is started as a script from the command line, does TFNEV show the welcome window, as seen in the figure below. The welcome window allows to open a file dialog and to choose the TFNE state backup via the familiar directory interface.</p>
 <div class="figure align-center" id="id1">
 <img alt="../_images/tfnev_welcome_illustration.png" src="../_images/tfnev_welcome_illustration.png" />
-<p class="caption"><span class="caption-text">This is the image caption</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">TFNE Visualizer Welcome Window</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
+<p>Once a TFNE state backup folder has been selected does the visualizer automatically load all population backups, analyze the type of backup and open the visualization window for the appropriate NE algorithm. The figure below illustrates the visualization of an example CoDeepNEAT state trace that is provided with the CoDeepNEAT-MNIST example that can be found <a class="reference external" href="https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/master/examples/codeepneat/codeepneat_mnist_example">here</a>.</p>
 <div class="figure align-center" id="id2">
 <img alt="../_images/tfnev_illustration.png" src="../_images/tfnev_illustration.png" />
-<p class="caption"><span class="caption-text">This is the image caption</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+<p class="caption"><span class="caption-text">TFNE Visualizer CoDeepNEAT Window</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 
