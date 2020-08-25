@@ -62,8 +62,6 @@ def codeepneat_mnist_example(_):
     print("Best genome returned by evolution:\n")
     print(best_genome)
 
-    tfne.s
-
     # Increase epoch count in environment for a final training of the best genome. Train the genome and then replay it.
     print("Training best genome for 200 epochs...\n")
     environment.epochs = 200
