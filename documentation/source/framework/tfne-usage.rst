@@ -93,6 +93,31 @@ TFNE however also serves as a prototyping platform for custom neuroevolution alg
 Serialization & Deserialization
 -------------------------------
 
-foobar
+All pre-implemented NE algorithms in the TFNE framework serialize and save the state of the evolution in each generation as json files. These backups serve as the input for the `TFNE Visualizer <./tfne-visualizer.html>`_ or they can serve as initial states for the NE algorithms in case the evolution should be continued from a certain generation onward with a different algorithm configuration (though necessarily the same evaluation environment).
 
+.. code-block:: python
+
+    import tfne
+
+    config = tfne.parse_configuration('./config-file.cfg')
+
+    # Supply path to a backup serving as the initial state
+    ne_algorithm = tfne.algorithms.CoDeepNEAT(config,
+                                              initial_state_file_path='./tfne_state_backup_gen_15.json')
+
+
+Serialization and deserialization is also possible for single genomes, e.g. in case the best genome of the evolution should be saved and deserialized later.
+
+.. code-block:: python
+
+    # Train and save best genome
+    best_genome = engine.train()
+    best_genome_file_path = best_genome.save_genotype(save_dir_path='./')
+
+    # Load the serialized best genome and get the encoded TF model
+    loaded_genome = tfne.deserialization.load_genome(best_genome_file_path)
+    tf_model = loaded_genome.get_model()
+
+    # Alternatively, it is also possible to save the TF model directly
+    best_genome.save_model(file_path='./best_genome_model/')
 

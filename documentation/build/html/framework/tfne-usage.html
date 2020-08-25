@@ -238,7 +238,29 @@
 <hr class="docutils" />
 <div class="section" id="serialization-deserialization">
 <h2>Serialization &amp; Deserialization<a class="headerlink" href="#serialization-deserialization" title="Permalink to this headline">¶</a></h2>
-<p>foobar</p>
+<p>All pre-implemented NE algorithms in the TFNE framework serialize and save the state of the evolution in each generation as json files. These backups serve as the input for the <a class="reference external" href="./tfne-visualizer.html">TFNE Visualizer</a> or they can serve as initial states for the NE algorithms in case the evolution should be continued from a certain generation onward with a different algorithm configuration (though necessarily the same evaluation environment).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tfne</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">tfne</span><span class="o">.</span><span class="n">parse_configuration</span><span class="p">(</span><span class="s1">&#39;./config-file.cfg&#39;</span><span class="p">)</span>
+
+<span class="c1"># Supply path to a backup serving as the initial state</span>
+<span class="n">ne_algorithm</span> <span class="o">=</span> <span class="n">tfne</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">CoDeepNEAT</span><span class="p">(</span><span class="n">config</span><span class="p">,</span>
+                                          <span class="n">initial_state_file_path</span><span class="o">=</span><span class="s1">&#39;./tfne_state_backup_gen_15.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Serialization and deserialization is also possible for single genomes, e.g. in case the best genome of the evolution should be saved and deserialized later.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train and save best genome</span>
+<span class="n">best_genome</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">best_genome_file_path</span> <span class="o">=</span> <span class="n">best_genome</span><span class="o">.</span><span class="n">save_genotype</span><span class="p">(</span><span class="n">save_dir_path</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load the serialized best genome and get the encoded TF model</span>
+<span class="n">loaded_genome</span> <span class="o">=</span> <span class="n">tfne</span><span class="o">.</span><span class="n">deserialization</span><span class="o">.</span><span class="n">load_genome</span><span class="p">(</span><span class="n">best_genome_file_path</span><span class="p">)</span>
+<span class="n">tf_model</span> <span class="o">=</span> <span class="n">loaded_genome</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
+
+<span class="c1"># Alternatively, it is also possible to save the TF model directly</span>
+<span class="n">best_genome</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;./best_genome_model/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
