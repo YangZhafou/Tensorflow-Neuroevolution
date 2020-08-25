@@ -12,6 +12,12 @@ foobar
 Specifications
 --------------
 
++-----------------------------------+-----------+
+| supports weight-training eval     |      True |
++-----------------------------------+-----------+
+| supports non-weight-training eval |      True |
++-----------------------------------+-----------+
+
 foobar
 
 
