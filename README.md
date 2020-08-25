@@ -13,6 +13,8 @@
 
 [TFNE PROJECT DESCRIPTION HERE]
 
+Mention usage/requirement of TF 2.x
+
 
 --------------------------------------------------------------------------------
 

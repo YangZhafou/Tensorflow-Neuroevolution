@@ -89,12 +89,22 @@
 <li class="toctree-l1"><a class="reference internal" href="tfne-visualizer.html">TFNE Visualizer</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TFNE Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#version-history">Version History</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#v0-21-0">v0.21.0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#v0-2">v0.2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#v0-1">v0.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v0-21-0-26th-aug-2020">v0.21.0 (26th Aug, 2020)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v0-2-5th-june-2020">v0.2 (5th June, 2020)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v0-1-23rd-march-2020">v0.1 (23rd March, 2020)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#future-todos">Future ToDos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-todos">Future ToDos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-improvements">Code Improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#neat">NEAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deepneat">DeepNEAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#codeepneat">CoDeepNEAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subgraphneat">SubGraphNEAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subgraphdeepneat">SubGraphDeepNEAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#research-ideas">Research Ideas</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -179,29 +189,86 @@
 <h1>TFNE Development<a class="headerlink" href="#tfne-development" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="v0-21-0">
-<h3>v0.21.0<a class="headerlink" href="#v0-21-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="v0-21-0-26th-aug-2020">
+<h3>v0.21.0 (26th Aug, 2020)<a class="headerlink" href="#v0-21-0-26th-aug-2020" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>foobar</p></li>
+<li><p>Bug fix and performance optimize beta version of CoDeepNEAT, releasing CoDeepNEAT fully with all intended speciation methods</p></li>
+<li><p>Implement TFNE Visualizer with capability to process CoDeepNEAT population backups</p></li>
+<li><p>Create ReadTheDocs documentation for TFNE</p></li>
+<li><p>Implement extensive unit tests and coverage reporting</p></li>
+<li><p>Make TFNE available via PyPI</p></li>
 </ul>
 </div>
-<div class="section" id="v0-2">
-<h3>v0.2<a class="headerlink" href="#v0-2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="v0-2-5th-june-2020">
+<h3>v0.2 (5th June, 2020)<a class="headerlink" href="#v0-2-5th-june-2020" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>foobar</p></li>
+<li><p>Extensively rework framework architecture to enable higher modularity, performance and maintainability</p></li>
+<li><p>Release beta version of CoDeepNEAT, including basic speciation</p></li>
+<li><p>Implement MNIST and CIFAR10 environments with corresponding examples</p></li>
+<li><p>Implement full periodic state backup and deserialization</p></li>
 </ul>
 </div>
-<div class="section" id="v0-1">
-<h3>v0.1<a class="headerlink" href="#v0-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="v0-1-23rd-march-2020">
+<h3>v0.1 (23rd March, 2020)<a class="headerlink" href="#v0-1-23rd-march-2020" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>foobar</p></li>
+<li><p>Initial release providing prototyping framework for neuroevolution with TF 2.x</p></li>
+<li><p>Implement NEAT algorithm with direct encoding and fully TF translateable phenotype</p></li>
+<li><p>Implement OpenAI gym test environments and provide examples in combination with NEAT</p></li>
+<li><p>Implement configurable reporting agents that backup the population and visualize genomes each generation</p></li>
 </ul>
 </div>
 </div>
 <hr class="docutils" />
 <div class="section" id="future-todos">
 <h2>Future ToDos<a class="headerlink" href="#future-todos" title="Permalink to this headline">¶</a></h2>
-<p>foobar</p>
+<div class="section" id="general">
+<h3>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Implement custom tf.keras.preprocessing functions as used for example in CDN paper, using tf.image API/functions. Integrate those preprocessing options into the TFNE environments.</p></li>
+<li><p>Implement a test-wise multi-objective evolution environment [e.g. decreasing fitness based on age; decreasing fitness based on genome complexity]</p></li>
+</ul>
+</div>
+<div class="section" id="code-improvements">
+<h3>Code Improvements<a class="headerlink" href="#code-improvements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Implement bidirection connections for the phenotype graphs of all NEAT-like algorithms, as they currently only support feedforward graphs.</p></li>
+<li><p>Replace numpy with Google JAX backend and test if it improves performance. Especially relevant for vanilla NEAT, which utilizes numpy extensively.</p></li>
+<li><p>Attempt to accelerate TFNE and its algorithms (particularly vanilla NEAT)using tf.function</p></li>
+</ul>
+</div>
+<div class="section" id="neat">
+<h3>NEAT<a class="headerlink" href="#neat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Completely rework NEAT implementation. Accelerate implementation by parallelizing it. Test possible acceleration by using Google JAX.</p></li>
+<li><p>Implement flag to either disable bias, to allow bias being a seperate node or to integrate bias into nodes</p></li>
+</ul>
+</div>
+<div class="section" id="deepneat">
+<h3>DeepNEAT<a class="headerlink" href="#deepneat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Implement DeepNEAT. Consider layers: Attention, AveragePoolingX, BatchNormalization, BiDirectional, ConvX, Dense, Dropout, Embedding, Flatten, GRU, GlobalAvgPoolX, GlobalMaxPoolX, LSTM, MaxPoolingX, SimpleRNN</p></li>
+</ul>
+</div>
+<div class="section" id="codeepneat">
+<h3>CoDeepNEAT<a class="headerlink" href="#codeepneat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>CoDeepNEAT: Create function to register new modules created outside of code structure. This way it is easier to add new modules if you use TFNE exclusively as a library.</p></li>
+</ul>
+</div>
+<div class="section" id="subgraphneat">
+<h3>SubGraphNEAT<a class="headerlink" href="#subgraphneat" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="subgraphdeepneat">
+<h3>SubGraphDeepNEAT<a class="headerlink" href="#subgraphdeepneat" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="research-ideas">
+<h3>Research Ideas<a class="headerlink" href="#research-ideas" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Find way to determine if 2 genomes represent identical phenotypes or identical functions but have different genotypes and are therefore classified as different species, therefore decreasing effective pop size.</p></li>
+<li><p>Implement Lamarckian Evolution for weight-training based NE algorithms (DeepNEAT, CoDeepNEAT, etc)</p></li>
+<li><p>Use a gram matrix to cluster member vectors and direct evolution</p></li>
+</ul>
+</div>
 </div>
 </div>
 
