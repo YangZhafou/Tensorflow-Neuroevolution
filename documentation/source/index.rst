@@ -31,7 +31,7 @@ Welcome to the documentation of the Tensorflow-Neuroevolution framework!
    :caption: TFNE Framework
 
    framework/tfne-usage
-   framework/tfne-architecture
+   framework/tfne-customization
    framework/tfne-visualizer
    framework/tfne-development
 
