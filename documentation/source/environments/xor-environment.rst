@@ -26,6 +26,9 @@ foobar
 [EVALUATION] Config Parameters
 ------------------------------
 
+`Weight-Training Evaluation`
+""""""""""""""""""""""""""""
+
 ``epochs``
   **Value Range**: int > 0
 
@@ -38,8 +41,8 @@ foobar
   **Description**: Supplied batch_size value for the model.fit function. batch_size is the number of training examples used for a single iteration of backpropagating the gradient of the loss function.
 
 
-``preprocessing``
-  **Value Range**: -
+`Non-Weight-Training Evaluation`
+""""""""""""""""""""""""""""""""
 
-  **Description**: <FEATURE STILL IN DEVELOPMENT>
+    **None**
 

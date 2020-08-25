@@ -101,7 +101,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">XOR Environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specifications">Specifications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#evaluation-config-parameters">[EVALUATION] Config Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-config-parameters">[EVALUATION] Config Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#weight-training-evaluation"><cite>Weight-Training Evaluation</cite></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#non-weight-training-evaluation"><cite>Non-Weight-Training Evaluation</cite></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mnist-environment.html">MNIST Environment</a></li>
@@ -199,6 +203,8 @@
 <hr class="docutils" />
 <div class="section" id="evaluation-config-parameters">
 <h2>[EVALUATION] Config Parameters<a class="headerlink" href="#evaluation-config-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="weight-training-evaluation">
+<h3><cite>Weight-Training Evaluation</cite><a class="headerlink" href="#weight-training-evaluation" title="Permalink to this headline">¶</a></h3>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">epochs</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0</p>
 <p><strong>Description</strong>: Specifies the amount of epochs a genome phenotype is to be trained on the environment before evaluating its fitness.</p>
@@ -206,10 +212,14 @@
 <dt><code class="docutils literal notranslate"><span class="pre">batch_size</span></code></dt><dd><p><strong>Value Range</strong>: int &gt; 0 | None</p>
 <p><strong>Description</strong>: Supplied batch_size value for the model.fit function. batch_size is the number of training examples used for a single iteration of backpropagating the gradient of the loss function.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></dt><dd><p><strong>Value Range</strong>: -</p>
-<p><strong>Description</strong>: &lt;FEATURE STILL IN DEVELOPMENT&gt;</p>
-</dd>
 </dl>
+</div>
+<div class="section" id="non-weight-training-evaluation">
+<h3><cite>Non-Weight-Training Evaluation</cite><a class="headerlink" href="#non-weight-training-evaluation" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p><strong>None</strong></p>
+</div></blockquote>
+</div>
 </div>
 </div>
 
