@@ -22,13 +22,17 @@ CIFAR-10 is a labeled subset of the 80 million tiny images dataset. When the dat
 Specifications
 --------------
 
-+-----------------------------------+-----------+
-| supports weight-training eval     |      True |
-+-----------------------------------+-----------+
-| supports non-weight-training eval |      True |
-+-----------------------------------+-----------+
++-------------------------------------------------------+----------------------+
+| Supports Weight-Training Eval                         |                 True |
++-------------------------------------------------------+----------------------+
+| Supports Non-Weight-Training Eval                     |                 True |
++-------------------------------------------------------+----------------------+
+| Input Shape                                           |          (32, 32, 3) |
++-------------------------------------------------------+----------------------+
+| required Output Shape                                 |                (10,) |
++-------------------------------------------------------+----------------------+
 
-foobar
+The fitness is calculated through the keras accuracy metric, calculating the percentage of how many of the test images are classified correctly.
 
 
 --------------------------------------------------------------------------------

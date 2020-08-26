@@ -179,26 +179,66 @@
 <h1>XOR Environment<a class="headerlink" href="#xor-environment" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>foobar</p>
+<p>The XOR problem is a classic problem in ML research and particularly relevant for research in Neuroevolution, as it is a very simple problem that nonetheless can only be solved if an applied ANN features hidden nodes. The XOR problem measures an ANNs ability to reproduce the XOR function, which takes 2 binary inputs and produces 1 binary output according to the following truth table:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 34%" />
+<col style="width: 31%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>A_in</strong></p></td>
+<td><p><strong>B_in</strong></p></td>
+<td><p><strong>out</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>This function can not be replicated by a minimal topology graph when attempting to learn the associations purely by training the associated weights and biases. It therefore requires an additional hidden node in the topology graph and is therefore particularly interesting for the research of neuroevolution algorithms and their ability to generate novel and beneficial topological structures. See the figure below for the most efficient topological mutation when starting from a minimal topology.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/xor_evolution_illustration.svg"><img alt="../_images/xor_evolution_illustration.svg" src="../_images/xor_evolution_illustration.svg" width="50%" /></a>
+<p class="caption"><span class="caption-text">Beneficial Topological Mutation from minimal topology for the XOR problem</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 <hr class="docutils" />
 <div class="section" id="specifications">
 <h2>Specifications<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 76%" />
-<col style="width: 24%" />
+<col style="width: 71%" />
+<col style="width: 29%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p>supports weight-training eval</p></td>
+<tr class="row-odd"><td><p>Supports Weight-Training Eval</p></td>
 <td><p>True</p></td>
 </tr>
-<tr class="row-even"><td><p>supports non-weight-training eval</p></td>
+<tr class="row-even"><td><p>Supports Non-Weight-Training Eval</p></td>
 <td><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input Shape</p></td>
+<td><p>(2,)</p></td>
+</tr>
+<tr class="row-even"><td><p>required Output Shape</p></td>
+<td><p>(1,)</p></td>
 </tr>
 </tbody>
 </table>
-<p>foobar</p>
+<p>The fitness is calculated as the inverse cross-entropy loss between the actual and the predicted outputs, multiplied by 100 to get the degree of accuracy in percent.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="evaluation-config-parameters">
