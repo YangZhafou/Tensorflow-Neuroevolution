@@ -1,10 +1,23 @@
 TFNE Architecture & Customization
 =================================
 
+Framework Architecture
+----------------------
+
+The following illustration shows the architecture of the TFNE framework beginning from v0.21.0 onwards. The architecture is shown via an entity-sequence diagram and omits many minor functions in order to emphasize the core evolutionary loop employed by TFNE as well as the most relevant functions of each aspect.
+
+.. figure:: ../illustrations/tfne_v0.21_entity_sequence_diagram.svg
+   :align: center
+
+   Entity-Sequence Diagram Illustrating the Architecture of TFNE
+
+
+--------------------------------------------------------------------------------
+
 Customizing TFNE
 ----------------
 
-One design goal of TFNE is to be modular and provide a basic prototyping platform for the implementation of similar experimental NE algorithms. TFNE therefore supports custom algorithms, encodings and environments and provides clear abstract interfaces that summarize the requirements for their implementations. While the abstract base classes extensively describe the requirements of the function that they are overwritten with, please also consider the architecture of the TFNE framework as listed below to get a top level view of the module usage in the evolutionary process.
+One design goal of TFNE is to be modular and provide a basic prototyping platform for the implementation of similar experimental NE algorithms. TFNE therefore supports custom algorithms, encodings and environments and provides clear abstract interfaces that summarize the requirements for their implementations. While the abstract base classes extensively describe the requirements of the function that they are overwritten with, please also consider the architecture of the TFNE framework as listed above to get a top level view of the module usage in the evolutionary process.
 
 The following 5 abstract base classes are currently present in TFNE and the 3 most important are listed in full:
 
@@ -252,17 +265,4 @@ BaseEnvironment (see `here <https://github.com/PaulPauls/Tensorflow-Neuroevoluti
             @return: Environment output shape that is required from the applied TF models
             """
             raise NotImplementedError("Subclass of BaseEnvironment does not implement 'get_output_shape()'")
-
-
---------------------------------------------------------------------------------
-
-Framework Architecture
-----------------------
-
-The following illustration shows the architecture of the TFNE framework beginning from v0.21.0 onwards. The architecture is shown via an entity-sequence diagram and omits many minor functions in order to emphasize the core evolutionary loop employed by TFNE as well as the most relevant functions of each aspect.
-
-.. figure:: ../illustrations/tfne_v0.21_entity_sequence_diagram.svg
-   :align: center
-
-   Entity-Sequence Diagram Illustrating the Architecture of TFNE
 

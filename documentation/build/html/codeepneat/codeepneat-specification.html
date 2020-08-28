@@ -93,13 +93,13 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="codeepneat-overview.html">CoDeepNEAT Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CoDeepNEAT Specification</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#codeepneat-population">CoDeepNEAT Population</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#codeepneat-encoding">CoDeepNEAT Encoding</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#codeepneat-blueprint">CoDeepNEAT Blueprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codeepneat-module">CoDeepNEAT Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#codeepneat-genome">CoDeepNEAT Genome</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#codeepneat-population">CoDeepNEAT Population</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#codeepneat-algorithm">CoDeepNEAT Algorithm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#initialization">Initialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#evaluation">Evaluation</a></li>
@@ -192,20 +192,9 @@
 <p>This documentation outlines the CoDeepNEAT algorithm &amp; encoding specifications as understood by the TFNE project. While the TFNE project aims to stay as close as possible to the original specification, does it also aim to be a superset of the configuration options of the original specification. This specification also concretizes the algorithm specification if the original specification is too vague and no code was supplied. If you find an issue with the specification or the implementation details please contact <a class="reference external" href="mailto:tfne&#37;&#52;&#48;paulpauls&#46;de">tfne<span>&#64;</span>paulpauls<span>&#46;</span>de</a>. Thank you.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="codeepneat-population">
-<h2>CoDeepNEAT Population<a class="headerlink" href="#codeepneat-population" title="Permalink to this headline">¶</a></h2>
-<p>foobar</p>
-</div>
-<hr class="docutils" />
 <div class="section" id="codeepneat-encoding">
 <h2>CoDeepNEAT Encoding<a class="headerlink" href="#codeepneat-encoding" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Details about blueprints, modules, etc.</p></li>
-<li><p>How a genome is made up of blueprints and modules and how the Model is build
-from them</p></li>
-<li><p>Include short references to variables</p></li>
-<li><p>SubSubHeadings are made up of BP/Modules/Genomes, etc</p></li>
-</ul>
+<p>The genotype of a CoDeepNEAT genome is made up of 2 essential parts. The first part is the CoDeepNEAT blueprint, specifying the ANN topology and the training hyperparameters that will be associated with the genome. The second part is a collection of small fully functional deep neural networks, termed the CoDeepNEAT modules, that will replace the nodes in the blueprint specified ANN topology. It is important to understand these two essential parts, what they entail, their exact contribution to the final genome and how exactly they are evolved in order to fully understand the CoDeepNEAT encoding and resulting genomes.</p>
 <div class="section" id="codeepneat-blueprint">
 <h3>CoDeepNEAT Blueprint<a class="headerlink" href="#codeepneat-blueprint" title="Permalink to this headline">¶</a></h3>
 <p>foobar</p>
@@ -218,6 +207,11 @@ from them</p></li>
 <h3>CoDeepNEAT Genome<a class="headerlink" href="#codeepneat-genome" title="Permalink to this headline">¶</a></h3>
 <p>foobar</p>
 </div>
+</div>
+<hr class="docutils" />
+<div class="section" id="codeepneat-population">
+<h2>CoDeepNEAT Population<a class="headerlink" href="#codeepneat-population" title="Permalink to this headline">¶</a></h2>
+<p>foobar</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="codeepneat-algorithm">

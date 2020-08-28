@@ -8,22 +8,10 @@ CoDeepNEAT Specification
 
 --------------------------------------------------------------------------------
 
-CoDeepNEAT Population
----------------------
-
-foobar
-
-
---------------------------------------------------------------------------------
-
 CoDeepNEAT Encoding
 -------------------
 
-* Details about blueprints, modules, etc.
-* How a genome is made up of blueprints and modules and how the Model is build
-  from them
-* Include short references to variables
-* SubSubHeadings are made up of BP/Modules/Genomes, etc
+The genotype of a CoDeepNEAT genome is made up of 2 essential parts. The first part is the CoDeepNEAT blueprint, specifying the ANN topology and the training hyperparameters that will be associated with the genome. The second part is a collection of small fully functional deep neural networks, termed the CoDeepNEAT modules, that will replace the nodes in the blueprint specified ANN topology. It is important to understand these two essential parts, what they entail, their exact contribution to the final genome and how exactly they are evolved in order to fully understand the CoDeepNEAT encoding and resulting genomes.
 
 
 CoDeepNEAT Blueprint
@@ -40,6 +28,14 @@ foobar
 
 CoDeepNEAT Genome
 ~~~~~~~~~~~~~~~~~
+
+foobar
+
+
+--------------------------------------------------------------------------------
+
+CoDeepNEAT Population
+---------------------
 
 foobar
 

@@ -86,13 +86,13 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tfne-usage.html">Using TFNE</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TFNE Architecture &amp; Customization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#framework-architecture">Framework Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customizing-tfne">Customizing TFNE</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#baseneuroevolutionalgorithm-see-here">BaseNeuroevolutionAlgorithm (see here)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basegenome-see-here">BaseGenome (see here)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#baseenvironment-see-here">BaseEnvironment (see here)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#framework-architecture">Framework Architecture</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tfne-visualizer.html">TFNE Visualizer</a></li>
@@ -177,9 +177,17 @@
             
   <div class="section" id="tfne-architecture-customization">
 <h1>TFNE Architecture &amp; Customization<a class="headerlink" href="#tfne-architecture-customization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="framework-architecture">
+<h2>Framework Architecture<a class="headerlink" href="#framework-architecture" title="Permalink to this headline">¶</a></h2>
+<p>The following illustration shows the architecture of the TFNE framework beginning from v0.21.0 onwards. The architecture is shown via an entity-sequence diagram and omits many minor functions in order to emphasize the core evolutionary loop employed by TFNE as well as the most relevant functions of each aspect.</p>
+<div class="figure align-center" id="id3">
+<img alt="../_images/tfne_v0.21_entity_sequence_diagram.svg" src="../_images/tfne_v0.21_entity_sequence_diagram.svg" /><p class="caption"><span class="caption-text">Entity-Sequence Diagram Illustrating the Architecture of TFNE</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<hr class="docutils" />
 <div class="section" id="customizing-tfne">
 <h2>Customizing TFNE<a class="headerlink" href="#customizing-tfne" title="Permalink to this headline">¶</a></h2>
-<p>One design goal of TFNE is to be modular and provide a basic prototyping platform for the implementation of similar experimental NE algorithms. TFNE therefore supports custom algorithms, encodings and environments and provides clear abstract interfaces that summarize the requirements for their implementations. While the abstract base classes extensively describe the requirements of the function that they are overwritten with, please also consider the architecture of the TFNE framework as listed below to get a top level view of the module usage in the evolutionary process.</p>
+<p>One design goal of TFNE is to be modular and provide a basic prototyping platform for the implementation of similar experimental NE algorithms. TFNE therefore supports custom algorithms, encodings and environments and provides clear abstract interfaces that summarize the requirements for their implementations. While the abstract base classes extensively describe the requirements of the function that they are overwritten with, please also consider the architecture of the TFNE framework as listed above to get a top level view of the module usage in the evolutionary process.</p>
 <p>The following 5 abstract base classes are currently present in TFNE and the 3 most important are listed in full:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tfne</span>
 
@@ -418,14 +426,6 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass of BaseEnvironment does not implement &#39;get_output_shape()&#39;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<hr class="docutils" />
-</div>
-<div class="section" id="framework-architecture">
-<h2>Framework Architecture<a class="headerlink" href="#framework-architecture" title="Permalink to this headline">¶</a></h2>
-<p>The following illustration shows the architecture of the TFNE framework beginning from v0.21.0 onwards. The architecture is shown via an entity-sequence diagram and omits many minor functions in order to emphasize the core evolutionary loop employed by TFNE as well as the most relevant functions of each aspect.</p>
-<div class="figure align-center" id="id3">
-<img alt="../_images/tfne_v0.21_entity_sequence_diagram.svg" src="../_images/tfne_v0.21_entity_sequence_diagram.svg" /><p class="caption"><span class="caption-text">Entity-Sequence Diagram Illustrating the Architecture of TFNE</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
