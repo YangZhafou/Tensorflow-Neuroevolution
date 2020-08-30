@@ -15,26 +15,25 @@ Research papers that introduced the NEAT method:
 Genome Encoding
 ---------------
 
-All information of a NEAT genotype is saved in the individual genes that make up the NEAT genome. The NEAT genome has no global parameters and its list of individual genes can be unordered.
-There are three types of NEAT genes: A node gene, a connection gene and a bias gene. Each gene has a unique gene id.
+foobar
 
 
 NEAT Algorithm
 --------------
 
-Ipsum Lorem
+foobar
 
 
 SubSubHeading 1
 ~~~~~~~~~~~~~~~
 
-this is an example text
+foobar
 
 
 SubSubHeading 2
 ~~~~~~~~~~~~~~~
 
-that is continued here
+foobar
 
 
 Evolution of Bias Nodes
