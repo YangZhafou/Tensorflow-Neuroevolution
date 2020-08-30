@@ -27,10 +27,10 @@ The genotype of a CoDeepNEAT genome is made up of 2 essential parts. The first p
 CoDeepNEAT Blueprint
 ~~~~~~~~~~~~~~~~~~~~
 
-+----------------------------------+-------------------------------------------+
-| Blueprint genotype               | |bullet| Blueprint graph |br|             |
-|                                  | |bullet| Optimizer configuration          |
-+----------------------------------+-------------------------------------------+
++-------------------------------------------+----------------------------------+
+| Blueprint genotype                        | |bullet| Blueprint graph |br|    |
+|                                           | |bullet| Optimizer configuration |
++-------------------------------------------+----------------------------------+
 
 A blueprint is the fundamental building block of a CoDeepNEAT genome, specifying the genome's basic ANN topology as well as all its hyperparameters that may be associated with that genome.
 
@@ -63,7 +63,38 @@ Each gene is assigned an ID. This ID is not unique to each gene instance but uni
 CoDeepNEAT Module
 ~~~~~~~~~~~~~~~~~
 
-foobar
++---------------------------------------------+--------------------------------+
+| Module genotype                             | |bullet| Merge method |br|     |
+|                                             | |bullet| Module DNN parameters |
++---------------------------------------------+--------------------------------+
+
+A CoDeepNEAT module is a class of small deep neural networks that can take on only limited complexity. The ANN topology as well as the parameters of the ANN layers are determined through a uniform set of parameters serving as the module genotype. However, since the set of parameters for a module instance is uniform and bounded, does this prevent the topology to become overly complex as only limited information can be stored in a CoDeepNEAT module instance. On the other hand does this allow for a direct comparison of module parameters as each module instance stores values for each module parameter.
+
+A simple example module is the pre-implemented ``DenseDropout`` module [see `CoDeepNEAT Modules <./codeepneat-modules.html>`_], whose genotype storing has been implemented in TFNE as listed below. The module stores multiple parameters for the initial dense layer, a flag determining the presence of an optional subsequent dropout layer as well as parameters for that subsequent dropout layer. This simple class of module can only represent 2 possible ANN topologies, though it can potentially represent any valid parameter combination for the layer configuration.
+
+.. code-block:: python
+
+    class CoDeepNEATModuleDenseDropout(CoDeepNEATModuleBase):
+
+        ...
+
+        # Register the module parameters
+        self.merge_method = merge_method
+        self.units = units
+        self.activation = activation
+        self.kernel_init = kernel_init
+        self.bias_init = bias_init
+        self.dropout_flag = dropout_flag
+        self.dropout_rate = dropout_rate
+
+
+Uniformity of parameters important for easy speciation, mutation and crossover
+
+
+Modules also feature merge methods, downsampling layers
+
+
+
 
 
 CoDeepNEAT Genome
