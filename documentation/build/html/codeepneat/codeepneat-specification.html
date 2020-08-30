@@ -199,8 +199,8 @@
 <h3>CoDeepNEAT Blueprint<a class="headerlink" href="#codeepneat-blueprint" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 56%" />
-<col style="width: 44%" />
+<col style="width: 57%" />
+<col style="width: 43%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Blueprint genotype</p></td>
@@ -246,7 +246,7 @@
 </tbody>
 </table>
 <p>A CoDeepNEAT module is a class of small deep neural networks that can take on only limited complexity. The ANN topology as well as the parameters of the ANN layers are determined through a uniform set of parameters serving as the module genotype. However, since the set of parameters for a module instance is uniform and bounded, does this prevent the topology to become overly complex as only limited information can be stored in a CoDeepNEAT module instance. On the other hand does this allow for a direct comparison of module parameters as each module instance stores values for each module parameter.</p>
-<p>A simple example module is the pre-implemented <code class="docutils literal notranslate"><span class="pre">DenseDropout</span></code> module [see <a class="reference external" href="./codeepneat-modules.html">CoDeepNEAT Modules</a>], whose genotype storing has been implemented in TFNE as listed below. The module stores multiple parameters for the initial dense layer, a flag determining the presence of an optional subsequent dropout layer as well as parameters for that subsequent dropout layer. This simple class of module can only represent 2 possible ANN topologies, though it can potentially represent any valid parameter combination for the layer configuration.</p>
+<p>A CoDeepNEAT module is obviously a very general concept and its specifics are highly dependent on the concrete implementation. A simple example module is the pre-implemented <code class="docutils literal notranslate"><span class="pre">DenseDropout</span></code> module [see <a class="reference external" href="./codeepneat-modules.html">CoDeepNEAT Modules</a>], whose genotype storing has been implemented in TFNE as listed below. The module stores multiple parameters for the initial dense layer, a flag determining the presence of an optional subsequent dropout layer as well as parameters for that subsequent dropout layer. This simple class of module can only represent 2 possible ANN topologies, though it can potentially represent any valid parameter combination for the layer configuration.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CoDeepNEATModuleDenseDropout</span><span class="p">(</span><span class="n">CoDeepNEATModuleBase</span><span class="p">):</span>
 
     <span class="o">...</span>
@@ -263,9 +263,23 @@
 </div>
 <p>The uniformity of module parameters mentioned above simplifies evolutionary operations such as speciation, mutation and crossover. More importantly however does the resulting limited complexity resemble the concept of CoDeepNEAT in that it aims to evolve effective small DNNs in a repetitive network topology quickly in order to exploit the same repetitive structure in the problem environment. These repetitive and deep structures are seen in many successful recent DNNs.</p>
 <p>The module genotype also requires a specification of a specific merge method as well as a method for downsampling input for this module. Both methods become relevant when combining blueprint and modules in the genome assembly. As the creation of an appropriate downsampling layer can be very complex is this functionality coded into the module itself in TFNE and is therefore not part of the genotype.</p>
+<p>The section <a class="reference external" href="./codeepneat-modules.html">CoDeepNEAT Modules</a> introduces multiple pre-implemented modules provided by TFNE.</p>
 </div>
 <div class="section" id="codeepneat-genome">
 <h3>CoDeepNEAT Genome<a class="headerlink" href="#codeepneat-genome" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Genome genotype</p></td>
+<td><p>• Blueprint <br />
+• 1 Module for each Mod species present in BP <br />
+• Output layers</p></td>
+</tr>
+</tbody>
+</table>
 <p>foobar</p>
 </div>
 </div>

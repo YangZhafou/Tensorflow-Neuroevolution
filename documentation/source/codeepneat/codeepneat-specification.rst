@@ -27,10 +27,10 @@ The genotype of a CoDeepNEAT genome is made up of 2 essential parts. The first p
 CoDeepNEAT Blueprint
 ~~~~~~~~~~~~~~~~~~~~
 
-+-------------------------------------------+----------------------------------+
-| Blueprint genotype                        | |bullet| Blueprint graph |br|    |
-|                                           | |bullet| Optimizer configuration |
-+-------------------------------------------+----------------------------------+
++---------------------------------------------+----------------------------------+
+| Blueprint genotype                          | |bullet| Blueprint graph |br|    |
+|                                             | |bullet| Optimizer configuration |
++---------------------------------------------+----------------------------------+
 
 A blueprint is the fundamental building block of a CoDeepNEAT genome, specifying the genome's basic ANN topology as well as all its hyperparameters that may be associated with that genome.
 
@@ -70,7 +70,7 @@ CoDeepNEAT Module
 
 A CoDeepNEAT module is a class of small deep neural networks that can take on only limited complexity. The ANN topology as well as the parameters of the ANN layers are determined through a uniform set of parameters serving as the module genotype. However, since the set of parameters for a module instance is uniform and bounded, does this prevent the topology to become overly complex as only limited information can be stored in a CoDeepNEAT module instance. On the other hand does this allow for a direct comparison of module parameters as each module instance stores values for each module parameter.
 
-A simple example module is the pre-implemented ``DenseDropout`` module [see `CoDeepNEAT Modules <./codeepneat-modules.html>`_], whose genotype storing has been implemented in TFNE as listed below. The module stores multiple parameters for the initial dense layer, a flag determining the presence of an optional subsequent dropout layer as well as parameters for that subsequent dropout layer. This simple class of module can only represent 2 possible ANN topologies, though it can potentially represent any valid parameter combination for the layer configuration.
+A CoDeepNEAT module is obviously a very general concept and its specifics are highly dependent on the concrete implementation. A simple example module is the pre-implemented ``DenseDropout`` module [see `CoDeepNEAT Modules <./codeepneat-modules.html>`_], whose genotype storing has been implemented in TFNE as listed below. The module stores multiple parameters for the initial dense layer, a flag determining the presence of an optional subsequent dropout layer as well as parameters for that subsequent dropout layer. This simple class of module can only represent 2 possible ANN topologies, though it can potentially represent any valid parameter combination for the layer configuration.
 
 .. code-block:: python
 
@@ -92,11 +92,33 @@ The uniformity of module parameters mentioned above simplifies evolutionary oper
 
 The module genotype also requires a specification of a specific merge method as well as a method for downsampling input for this module. Both methods become relevant when combining blueprint and modules in the genome assembly. As the creation of an appropriate downsampling layer can be very complex is this functionality coded into the module itself in TFNE and is therefore not part of the genotype.
 
+The section `CoDeepNEAT Modules <./codeepneat-modules.html>`_ introduces multiple pre-implemented modules provided by TFNE.
+
 
 CoDeepNEAT Genome
 ~~~~~~~~~~~~~~~~~
 
++---------------------------------------------+-----------------------------------------------------------+
+| Genome genotype                             | |bullet| Blueprint |br|                                   |
+|                                             | |bullet| 1 Module for each Mod species present in BP |br| |
+|                                             | |bullet| Output layers                                    |
++---------------------------------------------+-----------------------------------------------------------+
+
 foobar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 --------------------------------------------------------------------------------
