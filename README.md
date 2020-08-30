@@ -66,7 +66,9 @@ foobar
 
 ### Roadmap to *stable* ####
 
-foobar
+If you are reading this notice, you are looking at the public development version of TFNE...
+
+Any contribution, beginning with constructice feedback, pointing out bugs or even code contributions is welcome and we thoroughly thank you for it.
 
 
 --------------------------------------------------------------------------------

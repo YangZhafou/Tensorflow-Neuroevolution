@@ -197,7 +197,39 @@
 <p>The genotype of a CoDeepNEAT genome is made up of 2 essential parts. The first part is the CoDeepNEAT blueprint, specifying the ANN topology and the training hyperparameters that will be associated with the genome. The second part is a collection of small fully functional deep neural networks, termed the CoDeepNEAT modules, that will replace the nodes in the blueprint specified ANN topology. It is important to understand these two essential parts, what they entail, their exact contribution to the final genome and how exactly they are evolved in order to fully understand the CoDeepNEAT encoding and resulting genomes.</p>
 <div class="section" id="codeepneat-blueprint">
 <h3>CoDeepNEAT Blueprint<a class="headerlink" href="#codeepneat-blueprint" title="Permalink to this headline">¶</a></h3>
-<p>foobar</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Blueprint genotype</p></td>
+<td><p>• Blueprint graph <br />
+• Optimizer configuration</p></td>
+</tr>
+</tbody>
+</table>
+<p>A blueprint is the fundamental building block of a CoDeepNEAT genome, specifying the genome’s basic ANN topology as well as all its hyperparameters that may be associated with that genome.</p>
+<p>In TFNE the current extent of hyperparameters saved by blueprints is a full configuration of a Tensorflow optimizer, specifying all variables required for the training of the genome phenotype TF model. Additional hyperparameters such as possible training preprocessing operations can also be included, though are currently not part of TFNE’s CoDeepNEAT. This Tensorflow optimizer configuration is the first part of the blueprint’s genotype.</p>
+<p>The second part of the blueprint genotype is the graph that is specifying the basic ANN topology. This graph will be referred to as the blueprint graph. The blueprint graph is a collection of node and connection <em>gene</em> instances. In TFNE, those node and connection gene classes are defined as listed below, demonstrating the extent of the information they contain. The purpose and functionality of these blueprint graph genes is very similar to the functionality of genome genes in the original NEAT algorithm [see <a class="reference external" href="../neat/neat-overview.html">NEAT</a>], as they are adapted from those. The difference being that each node gene stores a module species and each connection gene merely indicates connections between nodes but not associated connection weights.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CoDeepNEATBlueprintNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene_id</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">species</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene_id</span> <span class="o">=</span> <span class="n">gene_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+
+<span class="k">class</span> <span class="nc">CoDeepNEATBlueprintConn</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gene_id</span><span class="p">,</span> <span class="n">conn_start</span><span class="p">,</span> <span class="n">conn_end</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gene_id</span> <span class="o">=</span> <span class="n">gene_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn_start</span> <span class="o">=</span> <span class="n">conn_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn_end</span> <span class="o">=</span> <span class="n">conn_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">enabled</span>
+
+    <span class="k">def</span> <span class="nf">set_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enabled</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">enabled</span>
+</pre></div>
+</div>
+<p>Each gene is assigned an ID. This ID is not unique to each gene instance but unique to each configuration of (node, species) or (conn_start, conn_end) respectively. This behaviour is important to adhere to the principle of <em>Historical Markings</em> [see <a class="reference external" href="../neat/neat-overview.html">NEAT</a>]. The <code class="docutils literal notranslate"><span class="pre">node</span></code> value is graph-unique integer identifier for each node and is specified in <code class="docutils literal notranslate"><span class="pre">conn_start</span></code> and <code class="docutils literal notranslate"><span class="pre">conn_end</span></code> as the start- and endpoint of the connection. Each connection can be disabled through a mutation or crossover. The <code class="docutils literal notranslate"><span class="pre">species</span></code> value is the ID of an existing, non-extinct module species and is relevant for the later assembly of the final genome phenotype model, combining blueprint and modules.</p>
 </div>
 <div class="section" id="codeepneat-module">
 <h3>CoDeepNEAT Module<a class="headerlink" href="#codeepneat-module" title="Permalink to this headline">¶</a></h3>
