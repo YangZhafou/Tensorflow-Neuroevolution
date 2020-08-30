@@ -51,7 +51,7 @@ Import the TFNE library into your code by using the same name (`import tfne`). T
 foobar
 
 <p align="center">
-  <img src="./documentation/source/illustrations/tfnev_illustration.png" width="80%" alt="TFNEV Illustration"/>
+  <img src="./documentation/source/illustrations/tfnev_demonstration.gif" width="80%" alt="TFNEV Illustration"/>
 </p>
 
 
@@ -64,10 +64,17 @@ foobar
 
 --------------------------------------------------------------------------------
 
+#### Roadmap to *stable* #####
+
+foobar
+
+
+--------------------------------------------------------------------------------
+
 ### About ###
 
 Project developed by [Paul Pauls](https://github.com/PaulPauls) in collaboration with [Rezsa Farahani](https://www.linkedin.com/in/rezsa). \
-We would like to thank the larger Google Tensorflow team for their support in this project!
+We would like to thank Google and the larger Tensorflow team, who have supported this project since the Google Summer of Code 2019!
 
 
 <!---

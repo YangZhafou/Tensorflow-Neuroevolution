@@ -20,7 +20,7 @@ If no path to the TFNE state backup is supplied in the function call or the visu
 
 Once a TFNE state backup folder has been selected does the visualizer automatically load all population backups, analyze the type of backup and open the visualization window for the appropriate NE algorithm. The figure below illustrates the visualization of an example CoDeepNEAT state trace that is provided with the CoDeepNEAT-MNIST example that can be found `here <https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/master/examples/codeepneat/codeepneat_mnist_example>`_.
 
-.. figure:: ../illustrations/tfnev_illustration.png
+.. figure:: ../illustrations/tfnev_demonstration.gif
    :align: center
 
    TFNE Visualizer CoDeepNEAT Window

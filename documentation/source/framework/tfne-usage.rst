@@ -33,7 +33,7 @@ The optimization process itself can be guided through various means in order to 
 Quick Start
 -----------
 
-The usage of TFNE is demonstrated in the `examples/` directory of the Github repository (`see here <https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/dev_tfne_v0.2/examples>`_). The examples employ multiple neuroevolution algorithms, problem environments and approaches to the problem and will be steadily extended in future TFNE releases. The basic approach to solving a problem in TFNE is as follows:
+The usage of TFNE is demonstrated in the ``examples/`` directory of the Github repository (`see here <https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/dev_tfne_v0.2/examples>`_). The examples employ multiple neuroevolution algorithms, problem environments and approaches to the problem and will be steadily extended in future TFNE releases. The basic approach to solving a problem in TFNE is as follows:
 
 The first step is to decide on which NE algorithm to use and to create a complete configuration for all sections and options of the chosen algorithm. This configuration file needs to be in a format readable by python's ConfigParser class and is named ``config-file.cfg`` in the example below.
 
@@ -120,4 +120,13 @@ Serialization and deserialization is also possible for single genomes, e.g. in c
 
     # Alternatively, it is also possible to save the TF model directly
     best_genome.save_model(file_path='./best_genome_model/')
+
+
+--------------------------------------------------------------------------------
+
+Projects Using TFNE
+-------------------
+
+* TBD
+
 

@@ -89,6 +89,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#neuroevolution">Neuroevolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#serialization-deserialization">Serialization &amp; Deserialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#projects-using-tfne">Projects Using TFNE</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tfne-customization.html">TFNE Architecture &amp; Customization</a></li>
@@ -195,7 +196,7 @@
 <hr class="docutils" />
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
-<p>The usage of TFNE is demonstrated in the <cite>examples/</cite> directory of the Github repository (<a class="reference external" href="https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/dev_tfne_v0.2/examples">see here</a>). The examples employ multiple neuroevolution algorithms, problem environments and approaches to the problem and will be steadily extended in future TFNE releases. The basic approach to solving a problem in TFNE is as follows:</p>
+<p>The usage of TFNE is demonstrated in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory of the Github repository (<a class="reference external" href="https://github.com/PaulPauls/Tensorflow-Neuroevolution/tree/dev_tfne_v0.2/examples">see here</a>). The examples employ multiple neuroevolution algorithms, problem environments and approaches to the problem and will be steadily extended in future TFNE releases. The basic approach to solving a problem in TFNE is as follows:</p>
 <p>The first step is to decide on which NE algorithm to use and to create a complete configuration for all sections and options of the chosen algorithm. This configuration file needs to be in a format readable by python’s ConfigParser class and is named <code class="docutils literal notranslate"><span class="pre">config-file.cfg</span></code> in the example below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tfne</span>
 
@@ -261,6 +262,13 @@
 <span class="n">best_genome</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;./best_genome_model/&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<hr class="docutils" />
+<div class="section" id="projects-using-tfne">
+<h2>Projects Using TFNE<a class="headerlink" href="#projects-using-tfne" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>TBD</p></li>
+</ul>
 </div>
 </div>
 
