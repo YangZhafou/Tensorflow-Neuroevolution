@@ -13,7 +13,7 @@ Research paper that introduced the CoDeepNEAT method:
 Subheading 1
 ------------
 
-foobar
+* mention CoDeepNEAT is a weight training, darwinian (non lamarckian!?) algo
 
 
 SubSubHeading 1

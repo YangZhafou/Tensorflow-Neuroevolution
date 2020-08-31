@@ -104,7 +104,17 @@ CoDeepNEAT Genome
 |                                             | |bullet| Output layers                                    |
 +---------------------------------------------+-----------------------------------------------------------+
 
-foobar
+A CoDeepNEAT genome is comprised of 1 blueprint and 1 module for each module species that is present in the nodes of the BP graph. The genome adopts all hyperparameters from the associated blueprint, which in TFNE implies the configuration of the TF optimizer used in the eventual model training.
+
+The phenotype of the genome is a Tensorflow model that is assembled by combining the blueprint graph and modules. The basic topology of the phenotype model is dictated by the graph represented in blueprint graph. TFNE currently only supporting feedforward graphs, though we hope to implement recurrent graphs soon. Each node in that blueprint graph will be replaced by a module, depending on the ``species`` value of the node. As modules themselves are small DNNs will the resulting graph be a full DNN consisting of multiple small DNNs that are connected to each other. If a module has multiple inputs will the inputs be merged according to the ``merge_method`` genotype value of the module. If a module has an input with mismatching dimensions will the input be downsampled through the specific downsampling method associated with the module type, which in TFNE can be accessed through ``create_downsampling_layer(...)``. The genotype graph is fully assembled when appending a predefined set of output layers to the final layer of the evolved graph, in order to conform with the required output of the problem environment.
+
+The modules that are chosen to replace the graph nodes based on their ``species`` value, are selected as follows: Each ``species`` value in the nodes of the blueprint graph is identifying an existing, non-extinct module species (a species is a cluster of similar members, see `CoDeepNEAT Evolution <./codeepneat-specification.html#evolution>`_ below). For each ``species`` value that is present in the blueprint graph, select one specific module from that identified module species. The created association between ``species`` ID value and specific module is the above mentioned part of the genome genotype. In the phenotype TF model assembly replace each node with the same corresponding specific module. This way beneficial topological structure and parametrized layers are replicated throughout the final TF model in order to exploit the same repetitive structure in the problem environment.
+
+To summarize is the exact process of translating the genome genotype into the phenotype model illustrated below:
+
+
+**ILLUSTRATION HERE**
+
 
 
 
