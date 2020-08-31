@@ -113,30 +113,7 @@ The modules that are chosen to replace the graph nodes based on their ``species`
 To summarize is the exact process of translating the genome genotype into the phenotype model illustrated below:
 
 
-**ILLUSTRATION HERE**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---------------------------------------------------------------------------------
-
-CoDeepNEAT Population
----------------------
-
-foobar
+**[ILLUSTRATION HERE]**
 
 
 --------------------------------------------------------------------------------
@@ -144,32 +121,38 @@ foobar
 CoDeepNEAT Algorithm
 --------------------
 
-* Describe initialization, evaluation, evolution, etc in detail in their own
-  SubSubHeadings.
-* Go into detail about constraints and possible algorithmic details
-* Include short references to variables
+Unlike traditional neuroevolution algorithms does the CoDeepNEAT algorithm not operate on and evolve genomes directly, but instead primarily operates on blueprints and modules. Genomes are only assembled during the evaluation in order to determine the fitness of the associated blueprints and modules.
 
 
 Initialization
 ~~~~~~~~~~~~~~
 
-**[see CoDeepNEAT.initialize_population()]**
+**see CoDeepNEAT.initialize_population(...)**
 
-foobar
+CoDeepNEAT initializes a minimal population as it has been modeled after NEAT, an additive neuroevolution algorithm. The initialization is therefore very simple. All modules of the population are initialized with random parameters and assigned to a single species.
+
+All blueprints are initialized with a minimal graph of 2 nodes and a connection. The first node is node 1, serving as a special, non mutateable, input layer. The second node is node 2, serving as the output layer and being assigned a ``species`` value identifying the single species ID all initialized modules have been assigned to. The hyperparameters of all blueprints are initialized with random parameters. As done for modules will all blueprints of the population be assigned to a single initial blueprint species.
 
 
 Evaluation
 ~~~~~~~~~~
 
-**[see CoDeepNEAT.evaluate_population()]**
+**[see CoDeepNEAT.evaluate_population(...)]**
 
-foobar
+As the CoDeepNEAT population consists exclusively of blueprints and modules is the
+The CoDeepNEAT population is evaluated by assembling genomes from the population of blueprints and modules, evaluating those genomes and then transferring the achieved genome fitness back to their blueprint and module components.
+
+For each blueprint in the population the algorithm assembles a predefined number of genomes that take that blueprint as their base. For each of these genomes that are to be assembled, specific modules of the referenced blueprint graph node species are chosen randomly from the module species. That blueprint, randomly chosen modules of all referenced module species as well as the constant set of output layers constitute a full genome genotype and generate a phenotype TF model according to the genome encoding `genome encoding <./codeepneat-specification.html#codeepneat-genome>`_ above. The assembled genome is then applied to the evaluation environment and assigned the recsulting fitness score.
+
+If due to the random choice of modules for the blueprint graph an invalid TF model is generated from the genome genotype, the assembled genome is assigned a fitness score of 0. As the evolutionary process evolves blueprints and modules seperately is it impossible to guarantee a genotype that results in a valid TF model when both blueprints and modules are paired randomly and without knowledge of that pairing during evolution.
+
+The fitness value of the blueprints and modules is calculated after all genomes of the generation have been generated and evaluated. The fitness value of both blueprints and modules is the average fitness value of all genomes in which the respective blueprint or module was involved in.
 
 
 Evolution
 ~~~~~~~~~
 
-**[see CoDeepNEAT.evolve_population()]**
+**[see CoDeepNEAT.evolve_population(...)]**
 
 foobar
 
