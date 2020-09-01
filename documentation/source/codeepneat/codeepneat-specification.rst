@@ -154,5 +154,75 @@ Evolution
 
 **[see CoDeepNEAT.evolve_population(...)]**
 
+Evolving the CoDeepNEAT population can be divided into three major steps. First, the CoDeepNEAT population needs to be *selected*, which means that species and members of the population deemed fit enough to create offspring are selected while the rest of the population is erased. The second step is the actual evolution, during which the parental members of the generation are mutated and crossed over in order to create novel offspring with beneficial features. The third and last step during the evolution of a generation is the speciation of the population. The speciation clusters the members of the population in similar groups in order to identify traits and features, determine if those traits and features are beneficial and if applicable, facilitate the spread of those features or remove them from the population. The evolution of NEAT-like neuroevolution algorithms is guided through this speciation. TFNE currently supports three speciation methods for both modules and blueprints respectively, which are based on speciation methods from the original NEAT algorithm, though which have not been explicitely defined in the original research paper.
+
+Since the different methods of speciation are very complex and take on an important role in NEAT-like neuroevolution algorithms is this specification of the CoDeepNEAT evolution subdivided into the specification of the actual mutation and crossover of the modules and blueprints as well as into the specification of the different speciation methods for them.
+
+
+Module Mutation & Crossover
+"""""""""""""""""""""""""""
+
+The actual mutation and crossover phase for modules is very simple. As during the preceding selection phase all elligible parents for offspring have been determined and the number of offspring for each species has been calculated. New modules are created by conforming to those determined parameters and mutate / crossover the intendend amount of parents until the determined amount of offspring for each species has been reached. New modules are not automatically assigned the same species as their parents but are to be assigned to a species independently in the following speciation phase. In TFNE, if the ``mod_spec_reinit_extinct`` parameter has been set to true will the amount of modules belonging to species that went extinct in the preceding phase be reinitialized and treated as regular offspring that will be speciated in the following phase.
+
+**Mutation** - Mutation for modules is the simple perturbation of the parameters of the parent module. The extent and manner in which this takes place is left up to the concrete implementation of module class. TFNE's pre-implemented modules perturb the parent module's parameters during mutation by selecting the offspring parameter from a normal distribution with the parent parameter value as the *mean* and the size of the standard distribution set via config. Mutating categorical parameters is done by randomly choosing a new value. TFNE also supports a config parameter (``mod_max_mutation``) that specifies the maximum degree in percent to which the parent parameters can be mutated.
+
+**Crossover** - Crossover for modules is again left up to the concrete module class implementation. In TFNE pre-implemented modules, crossover is performed by averaging out the sortable parameters of both parent modules while categorical parameters are carried over from the fitter parent module.
+
+
+Blueprint Mutation & Crossover
+""""""""""""""""""""""""""""""
+
+The mutation and crossover phase for blueprints is very similar to that of modules, with the exception of having different explicit mutation and crossover operations and an extra constraint regarding the extinction of module species. The first step of the mutation and crossover phase for blueprints is the check of all parental blueprints if their blueprint graphs contain references to module species (in the ``species`` value of the nodes) that are going extinct during this generation's evolution. If so, the parent's blueprint graph is mutated by replacing all references to extinct module species with references to randomly choosen non-extinct module species. The resulting mutated blueprint is then kept as a potential parent instead of the non-valid blueprint.
+
+The rest of the mutation and crossover phase for blueprints is identical to that of modules. New offspring for each species is generated according to the predetermined amount. The type of mutation or crossover through which the offspring is generated is determined via percentage chance set via the config. Reinitialized blueprints will be generated if the ``bp_spec_reinit_extinct`` config parameter has been enabled. All generated offspring will be speciated in the following phase.
+
+**Add Connection Mutation** - foobar
+
+**Add Node Mutation** - foobar
+
+**Remove Connection Mutation** - foobar
+
+**Remove Node Mutation** - foobar
+
+**Node Species Mutation** - foobar
+
+**Optimizer Mutation** - foobar
+
+**Crossover** - foobar
+
+
+'basic' Module Speciation
+"""""""""""""""""""""""""
+
+foobar
+
+
+'basic' Blueprint Speciation
+""""""""""""""""""""""""""""
+
+foobar
+
+
+'param-distance-fixed' Module Speciation
+""""""""""""""""""""""""""""""""""""""""
+
+foobar
+
+
+'gene-overlap-fixed' Blueprint Speciation
+"""""""""""""""""""""""""""""""""""""""""
+
+foobar
+
+
+'param-distance-dynamic' Module Speciation
+""""""""""""""""""""""""""""""""""""""""""
+
+foobar
+
+
+'gene-overlap-dynamic' Blueprint Speciation
+"""""""""""""""""""""""""""""""""""""""""""
+
 foobar
 
